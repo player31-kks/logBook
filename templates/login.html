@@ -1,13 +1,250 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body>
-    <h1>logbook</h1>
-    <h2>login</h2>
-  </body>
+
+<head>
+<<<<<<< HEAD
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Optional JavaScript --> <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+
+
+  <title>Document</title>
+</head>
+
+<style>
+  .button.is-sparta {
+    background-color: #e8344e;
+    border-color: transparent;
+    color: #fff !important;
+  }
+
+  .button.is-sparta.is-outlined {
+    background-color: transparent;
+    border-color: #e8344e;
+    color: #e8344e !important;
+  }
+
+  .help {
+    color: gray;
+  }
+</style>
+
+<script>
+  function sign_in() {
+    let username = $("#input-username").val()
+    let password = $("#input-password").val()
+
+    if (username == "") {
+      $("#help-id-login").text("아이디를 입력해주세요.")
+      $("#input-username").focus()
+      return;
+    } else {
+      $("#help-id-login").text("")
+    }
+
+    if (password == "") {
+      $("#help-password-login").text("비밀번호를 입력해주세요.")
+      $("#input-password").focus()
+      return;
+    } else {
+      $("#help-password-login").text("")
+    }
+    $.ajax({
+      type: "POST",
+      url: "/api/login",
+      data: {
+        username_give: username,
+        password_give: password
+      },
+      success: function (response) {
+        if (response['result'] == 'success') {
+          // $.cookie('mytoken', response['token'], {path: '/'});
+          window.location.replace("/")
+        } else {
+          alert(response['msg'])
+        }
+      }
+    });
+  }
+</script>
+
+
+<body>
+  <div class="container">
+    <div class="box" style="max-width: 480px;margin:auto">
+      <article class="media">
+        <div class="media-content">
+          <div class="content">
+            <div class="field has-addons">
+              <div class="control has-icons-left" style="width:100%">
+                <input id="input-username" class="input" type="text" placeholder="아이디">
+                <span class="icon is-small is-left"><i class="fa fa-user"></i></span>
+              </div>
+              <div id="btn-check-dup" class="control">
+                <button class="button is-sparta" onclick="check_dup()">중복확인</button>
+              </div>
+
+            </div>
+            <p id="help-id" class="help">아이디는 2-10자의 영문과 숫자와 일부 특수문자(._-)만 입력 가능합니다.</p>
+            <p id="help-id-login" class="help is-danger"></p>
+
+            <div class="field">
+              <div class="control has-icons-left">
+                <input id="input-password" class="input" type="password" placeholder="비밀번호">
+                <span class="icon is-small is-left"><i class="fa fa-lock"></i></span>
+              </div>
+              <p id="help-password" class="help">영문과 숫자 조합의 8-20자의 비밀번호를 설정해주세요. 특수문자(!@#$%^&*)도 사용 가능합니다.</p>
+            </div>
+
+
+          </div>
+          <div id="div-sign-in-or-up" class="has-text-centered">
+            <nav class="level is-mobile">
+              <button class="level-item button is-sparta" onclick="sign_in()">
+                로그인
+              </button>
+
+            </nav>
+            <hr>
+            <h4 class="mb-3">아직 회원이 아니라면</h4>
+            <nav class="level is-mobile">
+
+              <button class="level-item button is-sparta is-outlined" onclick="toggle_sign_up()">
+                회원가입하기
+              </button>
+            </nav>
+          </div>
+
+          <div id="sign-up-box">
+            <div class="mb-5">
+              <div class="field">
+                <div class="control has-icons-left" style="width:100%">
+                  <input id="input-password2" class="input" type="password" placeholder="비밀번호 재입력">
+                  <span class="icon is-small is-left"><i class="fa fa-lock"></i></span>
+                </div>
+                <p id="help-password2" class="help">비밀번호를 다시 한 번 입력해주세요.</p>
+
+              </div>
+            </div>
+            <nav class="level is-mobile">
+              <button class="level-item button is-sparta" onclick="sign_up()">
+                회원가입
+              </button>
+              <button class="level-item button is-sparta is-outlined" onclick="toggle_sign_up()">
+                취소
+              </button>
+            </nav>
+          </div>
+        </div>
+      </article>
+    </div>
+
+=======
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/static/reset.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+  <script>
+    function login() {
+      let username = $("#username").val()
+      let password = $("#password").val()
+
+      if (username == "") {
+                $("#help_id").text("아이디를 입력해주세요.")
+                $("#username").focus()
+                return;
+            } else {
+                $("#help_id").text("")
+            }
+
+            if (password == "") {
+                $("#help_pw").text("비밀번호를 입력해주세요.")
+                $("#password").focus()
+                return;
+            } else {
+                $("#help_pw").text("")
+            }
+
+      $.ajax({
+        type: "POST",
+        url: "/api/login",
+        data: { username_give: username, password_give: password },
+        success: function (response) {
+          if (response['result'] == 'success') {
+            $.cookie('mytoken', response['token']);
+
+            alert('로그인이 완료되었습니다.')
+            window.location.href = '#'
+          } else {
+            alert(response['msg'])
+          }
+        }
+      })
+    }
+  </script>
+  <style>
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .icon-box {
+      padding-bottom: 20px;
+    }
+
+    .box {
+      width: 30vw;
+    }
+    .sign {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="icon-box">
+      <img src="static/hanghae.png" alt="항해">
+    </div>
+    <form class="box">
+      <div class="field">
+        <label class="label">ID</label>
+        <div class="control">
+          <input id="username" class="input" type="text" placeholder="아이디를 입력하세요">
+          <p class="help_id"></p>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label">Password</label>
+        <div class="control">
+          <input id="password" class="input" type="text" placeholder="비밀번호를 입력하세요">
+          <p class="help_pw"></p>
+        </div>
+      </div>
+      <div class="sign">
+        <button class="button is-primary" onclick="login()">Sign in</button>
+        <a class="button is-primary" href="#">Sign Up</a>
+      </div>
+    </form>
+>>>>>>> 4088809e004f831cf8354becda90e2605c41f32b
+  </div>
+</body>
+
 </html>
