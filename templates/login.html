@@ -53,10 +53,10 @@
         data: { username_give: username, password_give: password },
         success: function (response) {
           if (response['result'] == 'success') {
-            $.cookie('mytoken', response['token']);
+            // $.cookie('mytoken', response['token']);
 
             alert('로그인이 완료되었습니다.')
-            window.location.href = '#'
+            window.location.href = '/'
           } else {
             alert(response['msg'])
           }
@@ -111,7 +111,7 @@
       </div>
       <div class="sign">
         <button class="button is-primary" onclick="login()">Sign in</button>
-        <a class="button is-primary" href="#">Sign Up</a>
+        <a class="button is-primary" href="./api/signup">Sign Up</a>
       </div>
     </form>
   </div>

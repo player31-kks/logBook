@@ -12,6 +12,7 @@ db = client.logbooks
 app = Flask(__name__)
 
 app.config["SECRET_KEY"] = 'TPmi4aLWRbyVq8zu9v82dWYW1'
+app.config["SESSION_COOKIE_NAME"] = 'user_id'
 
 # client = MongoClient('내AWS아이피', 27017, username="아이디", password="비밀번호")
 client = MongoClient('localhost', 27017)
@@ -20,7 +21,7 @@ db = client.LogBook
 # HTML 화면 보여주기
 @app.route('/')
 def home():
-    return render_template('join.html')
+    return render_template('login.html')
 
 # API 역할을 하는 부분
 ##login
@@ -29,7 +30,7 @@ def login_get():
     return render_template('login.html')
 
 @app.route('/api/login', methods=['POST'])
-def login_set():
+def login_post():
     username_receive = request.form['username_give']
     password_receive = request.form['password_give']
 
@@ -42,7 +43,8 @@ def login_set():
         
         session['user_id'] = username_receive
 
-        print('%s' % escape(session['user_id']))
+        # print('%s' % escape(session['user_id']))
+        print(escape(session['user_id']))
 
         return jsonify({'result': 'success'})
 
@@ -54,8 +56,13 @@ def login_set():
     return render_template('login.html')
 
 ##join
+@app.route('/api/signup', methods=['GET'])
+def signup_get():
+    return render_template('join.html')
+    
+
 @app.route('/api/signup', methods=['POST'])
-def signup():
+def signup_post():
     email = request.form['email']
     exists = bool(db.users.find_one({'email':email}))
     if exists:
@@ -76,20 +83,20 @@ def signup():
 
 ## comment
 @app.route('/api/comment', methods=['GET'])
-def get_comment():
+def comment_get():
     return render_template('login.html')
 
 @app.route('/api/comment', methods=['POST'])
-def create_comment():
+def comment_post():
     return render_template('login.html')
 
 ## ToDolist
 @app.route('/api/todolist', methods=['GET'])
-def get_todolist():
+def todolist_get():
     return render_template('login.html')
 
 @app.route('/api/todolist', methods=['POST'])
-def create_todolist():
+def todolist_post():
     return render_template('login.html')
 
 
