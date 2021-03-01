@@ -6,8 +6,6 @@ import secrets
 from flask import Flask, render_template, jsonify, request, redirect, url_for, session, escape
 from werkzeug.utils import secure_filename
 from datetime import datetime, timedelta
-client = MongoClient('localhost', 27017) 
-db = client.logbooks
 
 app = Flask(__name__)
 
@@ -20,7 +18,7 @@ db = client.LogBook
 # HTML 화면 보여주기
 @app.route('/')
 def home():
-    return render_template('join.html')
+    return render_template('login.html')
 
 # API 역할을 하는 부분
 ##login
@@ -56,23 +54,7 @@ def login_set():
 ##join
 @app.route('/api/signup', methods=['POST'])
 def signup():
-    email = request.form['email']
-    exists = bool(db.users.find_one({'email':email}))
-    if exists:
-        # return jsonify({'result' : "id is already exist"})
-        return render_template('fail.html')
-    name = request.form['name']
-    birth = request.form['birth']
-    password = request.form['password']
-    password_hash = hashlib.sha256(password.encode('utf-8')).hexdigest()
-    db.users.insert_one({
-        "email" : email,
-        "name" : name,
-        "birth" : birth,
-        "password" : password_hash
-    })
-    # return jsonify({"result":"success"})
-    return render_template('success.html')
+    return render_template('login.html')
 
 ## comment
 @app.route('/api/comment', methods=['GET'])
