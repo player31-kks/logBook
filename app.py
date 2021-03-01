@@ -1,15 +1,9 @@
-<<<<<<< HEAD
-
-from flask import Flask, render_template, jsonify
-
-app = Flask(__name__)
-=======
 from pymongo import MongoClient
 import jwt
 import datetime
 import hashlib
 import secrets
-from flask import Flask, render_template, jsonify, request, redirect, url_for, session, make_response, escape
+from flask import Flask, render_template, jsonify, request, redirect, url_for, session, escape
 from werkzeug.utils import secure_filename
 from datetime import datetime, timedelta
 
@@ -20,7 +14,6 @@ app.config["SECRET_KEY"] = 'TPmi4aLWRbyVq8zu9v82dWYW1'
 # client = MongoClient('내AWS아이피', 27017, username="아이디", password="비밀번호")
 client = MongoClient('localhost', 27017)
 db = client.LogBook
->>>>>>> kns
 
 # HTML 화면 보여주기
 @app.route('/')
