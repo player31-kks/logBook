@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+<<<<<<< HEAD
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -146,6 +147,103 @@
       </article>
     </div>
 
+=======
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/static/reset.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+  <script>
+    function login() {
+      let username = $("#username").val()
+      let password = $("#password").val()
+
+      if (username == "") {
+                $("#help_id").text("아이디를 입력해주세요.")
+                $("#username").focus()
+                return;
+            } else {
+                $("#help_id").text("")
+            }
+
+            if (password == "") {
+                $("#help_pw").text("비밀번호를 입력해주세요.")
+                $("#password").focus()
+                return;
+            } else {
+                $("#help_pw").text("")
+            }
+
+      $.ajax({
+        type: "POST",
+        url: "/api/login",
+        data: { username_give: username, password_give: password },
+        success: function (response) {
+          if (response['result'] == 'success') {
+            $.cookie('mytoken', response['token']);
+
+            alert('로그인이 완료되었습니다.')
+            window.location.href = '#'
+          } else {
+            alert(response['msg'])
+          }
+        }
+      })
+    }
+  </script>
+  <style>
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .icon-box {
+      padding-bottom: 20px;
+    }
+
+    .box {
+      width: 30vw;
+    }
+    .sign {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="icon-box">
+      <img src="static/hanghae.png" alt="항해">
+    </div>
+    <form class="box">
+      <div class="field">
+        <label class="label">ID</label>
+        <div class="control">
+          <input id="username" class="input" type="text" placeholder="아이디를 입력하세요">
+          <p class="help_id"></p>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label">Password</label>
+        <div class="control">
+          <input id="password" class="input" type="text" placeholder="비밀번호를 입력하세요">
+          <p class="help_pw"></p>
+        </div>
+      </div>
+      <div class="sign">
+        <button class="button is-primary" onclick="login()">Sign in</button>
+        <a class="button is-primary" href="#">Sign Up</a>
+      </div>
+    </form>
+>>>>>>> 4088809e004f831cf8354becda90e2605c41f32b
   </div>
 </body>
 
