@@ -1,11 +1,3 @@
-<<<<<<< HEAD
-
-from flask import Flask, render_template, jsonify,request
-from pymongo import MongoClient
-import hashlib       
-client = MongoClient('localhost', 27017) 
-db = client.logbooks
-=======
 from pymongo import MongoClient
 import jwt
 import datetime
@@ -14,7 +6,8 @@ import secrets
 from flask import Flask, render_template, jsonify, request, redirect, url_for, session, escape
 from werkzeug.utils import secure_filename
 from datetime import datetime, timedelta
->>>>>>> 820c5021519669f9320a4ee342ced1d662e880b5
+client = MongoClient('localhost', 27017) 
+db = client.logbooks
 
 app = Flask(__name__)
 
