@@ -9,13 +9,13 @@ from datetime import datetime, timedelta
 
 app = Flask(__name__)
 
-# client = MongoClient('내AWS아이피', 27017, username="아이디", password="비밀번호")
 client = MongoClient('localhost', 27017)
 db = client.LogBook
 
 SECRET_KEY = 'SPARTA'
 
 # HTML 화면 보여주기
+
 @app.route('/')
 def home():
     return render_template('login.html')
@@ -40,7 +40,7 @@ def login_post():
 
     if result is not None:
         payload = {
-         'email': username_receive,
+        'email': username_receive,
          'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24)  # 로그인 24시간 유지
         }
         token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
@@ -78,6 +78,15 @@ def signup_post():
     })
     
     return jsonify({"result":True})
+
+@app.route('/api/duplicate', methods=['POST'])
+def duplicate_post():
+    email = request.form['email']
+    exists = bool(db.users.find_one({"email": email}))
+    if not exists:
+        return jsonify({'result': True})
+    return jsonify({'result': False})
+
 
 ## comment
 @app.route('/api/comment', methods=['GET'])

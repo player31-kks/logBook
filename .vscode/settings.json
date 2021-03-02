@@ -1,3 +1,7 @@
 {
+<<<<<<< HEAD
   "python.pythonPath": "/Users/dabin/opt/anaconda3/envs/sparta/bin/python"
+=======
+  "python.pythonPath": "venv\\Scripts\\python.exe"
+>>>>>>> bee3cbe974d3ae3a2ef7268c788384c4e3a6ea98
 }
