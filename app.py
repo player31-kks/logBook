@@ -8,35 +8,37 @@ from werkzeug.utils import secure_filename
 from datetime import datetime, timedelta
 
 app = Flask(__name__)
-from pymongo import MongoClient
-import jwt
-import datetime
-import hashlib
-from flask import Flask, render_template, jsonify, request, redirect, url_for, session
-from werkzeug.utils import secure_filename
-from datetime import datetime, timedelta
-
-app = Flask(__name__)
 
 client = MongoClient('localhost', 27017)
 db = client.LogBook
+<<<<<<< HEAD
 SECRET_KEY = 'SPARTA'
 
 
+=======
+
+SECRET_KEY = 'SPARTA'
+
+# HTML 화면 보여주기
+>>>>>>> 71c5e003da94cb941dfac7c18f5371b21a88a210
 @app.route('/')
 def home():
     return render_template('login.html')
 
 ##login
+@app.route('/api/main', methods=['GET'])
+def main_get():
+    return render_template('main.html')
+
+##login
 @app.route('/api/login', methods=['GET'])
 def login_get():
-    return render_template('login.html')
+    return jsonify({'result': 'success'})
 
 @app.route('/api/login', methods=['POST'])
 def login_post():
     username_receive = request.form['username_give']
     password_receive = request.form['password_give']
-
 
     pw_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
     result = db.users.find_one({'email': username_receive, 'password': pw_hash})
@@ -98,6 +100,5 @@ def todolist_get():
 @app.route('/api/todolist', methods=['POST'])
 def todolist_post():
     return render_template('login.html')
-
 
 if __name__ == '__main__':    app.run('0.0.0.0', port=5000, debug=True)
