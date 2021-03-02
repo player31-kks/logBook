@@ -6,7 +6,10 @@ import secrets
 from flask import Flask, render_template, jsonify, request, redirect, url_for, session, escape
 from werkzeug.utils import secure_filename
 from datetime import datetime, timedelta
+<<<<<<< HEAD
 
+=======
+>>>>>>> 70380d9e06fe1a8decc20f9f2473ceee21ef69c4
 app = Flask(__name__)
 
 app.config["SECRET_KEY"] = 'TPmi4aLWRbyVq8zu9v82dWYW1'
@@ -18,33 +21,42 @@ db = client.LogBook
 # HTML 화면 보여주기
 @app.route('/')
 def home():
+<<<<<<< HEAD
     return render_template('login.html')
 
 # API 역할을 하는 부분
 ##login
 @app.route('/api/login', methods=['GET'])
 def login_get():
+=======
+>>>>>>> 70380d9e06fe1a8decc20f9f2473ceee21ef69c4
     return render_template('login.html')
 
+@app.route('/api/page', methods=['GET'])
+def join():
+    return render_template('join.html')
+# API 역할을 하는 부분
+#login
 @app.route('/api/login', methods=['POST'])
-def login_set():
+def login_post():
     username_receive = request.form['username_give']
     password_receive = request.form['password_give']
 
-    print(username_receive,password_receive)
+    password_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
 
-    result = db.users.find_one({'id': username_receive, 'pw': password_receive})
-
+    result = db.users.find_one({'email': username_receive, 'password': password_hash})
+    print(result);
 
     if result is not None:
         
-        session['user_id'] = username_receive
+        payload = {
+            'id': username_receive,
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds = 600)
+        }
+        print(payload)
+        token = jwt.encode(payload, SECRET_KEY, algorithm='HS256').decode('utf-8')
 
-        print('%s' % escape(session['user_id']))
-
-        return jsonify({'result': 'success'})
-
-    # 찾지 못하면
+    # 찾지 못하면   
     else:
         return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
 
@@ -54,7 +66,29 @@ def login_set():
 ##join
 @app.route('/api/signup', methods=['POST'])
 def signup():
+<<<<<<< HEAD
     return render_template('login.html')
+=======
+    email = request.form['email']
+    exists = bool(db.users.find_one({'email':email}))
+    if exists:
+        # return jsonify({'result' : "id is already exist"})
+        return jsonify({'result': 'fail', 'msg': '아이디가 이미 존재합니다.'})
+    name = request.form['name']
+    birth = request.form['birth']
+    password = request.form['password']
+    password_hash = hashlib.sha256(password.encode('utf-8')).hexdigest()
+
+    doc = {
+        "email" : email,
+        "name" : name,
+        "birth" : birth,
+        "password" : password_hash
+    }
+    db.users.insert_one(doc)
+    # return jsonify({"result":"success"})
+    return jsonify({'result': 'success'})
+>>>>>>> 70380d9e06fe1a8decc20f9f2473ceee21ef69c4
 
 ## comment
 @app.route('/api/comment', methods=['GET'])
@@ -75,5 +109,4 @@ def create_todolist():
     return render_template('login.html')
 
 
-if __name__ == '__main__':
-    app.run('0.0.0.0', port=5000, debug=True)
+if __name__ == '__main__':    app.run('0.0.0.0', port=5000, debug=True)

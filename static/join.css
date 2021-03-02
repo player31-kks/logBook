@@ -1,3 +1,7 @@
+* {
+  font-family: "Nanum Gothic", sans-serif;
+}
+
 html {
   box-sizing: border-box;
 }
@@ -5,7 +9,7 @@ html {
 body {
   margin: 0;
   height: 100vh;
-  font-size: 1.6rem;
+  font-size: 1.3rem;
   font-family: Helvetica, Arial, sans-serif;
 }
 button {
@@ -13,6 +17,17 @@ button {
   outline: none;
   border: none;
   cursor: pointer;
+}
+input {
+  border: 1px solid gainsboro;
+  border-radius: 3px;
+  outline-style: none;
+  padding: 0.3rem 0.5rem;
+  font-family: inherit;
+}
+
+input:hover {
+  border-color: #999;
 }
 
 .join__box {
@@ -26,26 +41,48 @@ button {
 .join__img {
   height: 200px;
   width: 200px;
-  transform: translateX(40%);
 }
 
-#join-form {
+.join__container {
   display: flex;
   flex-direction: column;
+  width: min(70%, 500px);
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+  padding-right: 2rem;
 }
 .join__row {
-  margin: 10px;
+  margin: 1rem;
 }
 .join__row > input {
-  width: 150%;
+  width: 100%;
   height: 1.6rem;
 }
 
 .join__btn {
   text-align: center;
-  margin-top: 16px;
+  margin-top: 2rem;
   font-size: 1.6rem;
   background-color: dodgerblue;
+  width: min(50%, 200px);
+  padding: 3px 0px;
+  color: white;
+  border-radius: 5px;
+}
+.join__btn:hover {
+  background-color: #0068bf;
+}
+
+.checkOverlapBtn {
   text-align: center;
-  transform: translateX(20%);
+  background-color: dodgerblue;
+  padding: 3px 5px;
+  color: white;
+  width: min(50%, 100px);
+  border-radius: 5px;
+  transform: translateX(1rem);
+  margin-top: -6px;
+}
+
+.checkOverlapBtn:hover {
+  background-color: #0068bf;
 }
