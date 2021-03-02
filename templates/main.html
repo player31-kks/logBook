@@ -1,21 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <!-- css -->
 
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css"
-    />
-    <link rel="stylesheet" href="../static/reset.css" />
-    <link rel="stylesheet" href="../static/main.css" />
-    <!-- javascript -->
-  </head>
-  <body>
-    <section id="Map"></section>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+  <title>Document</title>
+  <script>
+    function logout() {
+      alert('로그아웃이 완료되었습니다.');
+      ctx.cookies.set('access_token');
+      window.location.href = "/api/login"
+    }
+  </script>
+  <style>
+    .container {
+      display: flex;
+      flex-direction: column;
+      margin: 20px 100px;
+      border: 2px solid dodgerblue;
+    }
+
+    .hero-body {
+      background: dodgerblue;
+    }
+
+    .map {
+      margin: 20px;
+    }
+
+    .button-location {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <section class="hero is-info">
+      <div class="hero-body">
+        <div class="button-location">
+          <p class="title">
+            항해일지
+          </p>
+          <button class="button is-info is-light" onclick="logout()">Log Out</button>
+        </div>
+        <p class="subtitle">
+          진행중인 날짜를 클릭하세요
+        </p>
+      </div>
+    </section>
+    <div class="map">
+      <img src="/Users/dabin/Desktop/sparta/logBook_m/static/hanghaeMap.png" alt="항해지도">
+    </div>
+  </div>
+</body>
+
 </html>
