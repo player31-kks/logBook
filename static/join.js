@@ -1,4 +1,3 @@
-
 const joinBtn = document.querySelector('.join__btn');
 const checkOverlapBtn = document.querySelector('.checkOverlapBtn')
 

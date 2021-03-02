@@ -21,7 +21,7 @@ def home():
     return render_template('login.html')
 
 ##login
-@app.route('/api/main', methods=['GET'])
+@app.route('/main', methods=['GET'])
 def main_get():
     return render_template('main.html')
 
@@ -53,9 +53,7 @@ def login_post():
 
 
 ##join
-@app.route('/api/page', methods=['GET'])
-def signup_get():
-    return render_template('join.html')
+
 
 @app.route('/api/signup', methods=['POST'])
 def signup_post():
