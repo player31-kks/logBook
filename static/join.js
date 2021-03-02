@@ -70,7 +70,7 @@ joinBtn.addEventListener('click', () => {
       name: nameInput.value,
       birth: birthInput.value,
       email: emailInput.value,
-      pw: pwInput.value
+      password: pwInput.value,
     },
     success: function (response) {
       if (response['result'] == true) {

@@ -50,20 +50,21 @@ def signup():
     email = request.form['email']
     exists = bool(db.users.find_one({'email':email}))
     if exists:
-        # return jsonify({'result' : "id is already exist"})
-        return render_template('fail.html')
+        return jsonify({'result' : False})
+        # return render_template('fail.html')
     name = request.form['name']
     birth = request.form['birth']
     password = request.form['password']
     password_hash = hashlib.sha256(password.encode('utf-8')).hexdigest()
+    
     db.users.insert_one({
         "email" : email,
         "name" : name,
         "birth" : birth,
         "password" : password_hash
     })
-    # return jsonify({"result":"success"})
-    return render_template('success.html')
+    return jsonify({"result":True})
+    # return render_template('success.html')
 
 ## comment
 @app.route('/api/comment', methods=['GET'])

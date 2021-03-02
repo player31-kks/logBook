@@ -16,6 +16,23 @@
     <!-- javascript -->
   </head>
   <body>
-    <section id="Map"></section>
+    <img
+      src="../static/map.jpg"
+      alt="이미지맵 테스트"
+      usemap="#imgmap"
+      border="0"
+    />
+    <map id="imgmap" name="imgmap">
+      {% for area in areas %}
+      <area
+        shape="circle"
+        alt=""
+        title=""
+        coords="{{area[0]}},{{area[1]}},{{area[2]}}"
+        href=""
+        target=""
+      />
+      {% endfor %}
+    </map>
   </body>
 </html>
