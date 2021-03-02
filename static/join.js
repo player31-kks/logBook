@@ -1,4 +1,3 @@
-
 const joinBtn = document.querySelector('.join__btn');
 const checkOverlapBtn = document.querySelector('.checkOverlapBtn')
 
@@ -13,9 +12,6 @@ const emailInput = emailLabel.querySelector('input')
 
 const pwLabel = document.querySelector('.join__password')
 const pwInput = pwLabel.querySelector('input')
-
-
-
 
 function isNameVaild(asValue) {
   if (asValue === "") {

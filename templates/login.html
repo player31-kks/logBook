@@ -40,6 +40,7 @@
           }
         })
       }
+
       function login() {
         let username = $("#username").val()
         let password = $("#password").val()
@@ -65,10 +66,10 @@
           data: { username_give: username, password_give: password },
           success: function (response) {
             if (response['result'] == 'success') {
-              $.cookie('mytoken', response['token']);
+              localStorage.setItem('mytoken', response['token']);
 
               alert('로그인이 완료되었습니다.')
-              window.location.href = 'main.html'
+              window.location.href = '/main'
             } else {
               alert(response['msg'])
               window.location.reload();
@@ -76,7 +77,6 @@
           }
         })
       }
-
       function page() {
         $.ajax({
           type: "GET",
