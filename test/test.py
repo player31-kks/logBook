@@ -12,5 +12,5 @@ app = Flask(__name__)
 client = MongoClient('localhost', 27017)
 db = client.LogBook
 
-doc = {'id': 'aaa','pw': 'bbb'}
+doc = {'eamil': 'aaa@aaa','password': 'bbb'}
 db.users.insert_one(doc)
