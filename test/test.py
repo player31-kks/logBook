@@ -130,5 +130,3 @@ print(arr_coord[0])
 for i in range(0, 99):
     doc = {'coords':arr_coord[i], 'num' : i + 1}
     db.imgcircle.insert_one(doc)
-
-
