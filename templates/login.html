@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <link rel="stylesheet" href="/static/reset.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+    function signup() {
+      let name = $('#name').val()
+      let email = $('#email').val()
+      let birth = $('#dateOfbirth').val()
+      let password = $('#joinPassword').val()
+      $.ajax({
+        type: "POST",
+        url: "/api/signup",
+        data: { name: name,
+                email: email,
+                birth: birth,
+                password: password
+              },
+        success: function (response) {
+          if (response['result'] == 'success') {
+            
+            alert('가입이 완료되었습니다.');
+            modal_close();
+          } else {
+            alert(response['msg']);
+          }
+        }
+      })
+    }
+    function login() {
+      let username = $("#username").val()
+      let password = $("#password").val()
+
+      if (username == null) {
+        $("#help_id").text("아이디를 입력해주세요.")
+        $("#username").focus()
+        return;
+      } else {
+        $("#help_id").text("")
+      }
+
+      if (password == null) {
+        $("#help_pw").text("비밀번호를 입력해주세요.")
+        $("#password").focus()
+        return;
+      } else {
+        $("#help_pw").text("")
+      }
+
+      $.ajax({
+        type: "POST",
+        url: "/api/login",
+        data: { username_give: username, password_give: password },
+        success: function (response) {
+          if (response['result'] == 'success') {
+            $.cookie('mytoken', response['token']);
+
+            alert('로그인이 완료되었습니다.')
+            window.location.href = 'main.html'
+          } else {
+            alert(response['msg'])
+            window.location.reload();
+          }
+        }
+      })
+    }
+
+    function page() {
+      $.ajax({
+        type: "GET",
+        url: "/api/page",
+        data: {},
+        success: function (response) {
+          window.location.href = '/api/page'
+        }
+      })
+    }
+
+    function modal_active() {
+      const signup = document.querySelector('.modal');
+      signup.classList.add('is-active');
+    }
+    function modal_close() {
+      const modalClose = document.querySelector('.modal');
+      modalClose.classList.remove('is-active');
+    }
+  </script>
+  <style>
+    body {
+      padding: 40px;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .icon-box {
+      padding-bottom: 20px;
+    }
+
+    .box {
+      width: 30vw;
+    }
+
+    .sign {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="icon-box">
+      <img src="static/hanghae.png" alt="항해">
+    </div>
+    <div class="box">
+      <div class="field">
+        <label class="label">ID</label>
+        <div class="control">
+          <input id="username" class="input" type="text" >
+          <p class="help_id"></p>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label">Password</label>
+        <div class="control">
+          <input id="password" class="input" type="text" >
+          <p class="help_pw"></p>
+        </div>
+      </div>
+      <div class="sign">
+        <button class="button is-primary" onclick="login()">Sign in</button>
+        <button class="button is-primary" onclick="modal_active()">Sign Up</button>
+        <!-- <button class="is-primary" onclick="page()">Sign Up</button> -->
+        <!-- <a href="/api/page" type="button" class="button is-primary">Sign Up</a> -->
+
+        <!-- <form action="/api/page" method="GET" id="join-form"> -->
+        <!-- <button class="button is-primary" type="submit" onclick="location.href = '/api/page'">Sign Up</button> -->
+        <!-- </form> -->
+      </div>
+    </div>
+    <div class="modal">
+      <div class="modal-background"></div>
+      <div class="modal-content">
+        <!DOCTYPE html>
+        <html lang="en">
+
+        <head>
+          <meta charset="UTF-8" />
+          <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+          <link rel="stylesheet" href="../static/join.css">
+          <title>logBook</title>
+        </head>
+
+        <body>
+          <main class="join__box">
+            <img class="join__img" src="../static/항해99.png"></img>
+            <!-- <form action="/api/signup" method="POST" id="join-form"> -->
+              <label class="join__name join__row">
+                <span>이름 : </span>
+                <input id="name" type="text" name="name" form="join-form">
+              </label>
+              <label class="join__date join__row">
+                <span>생년월일 : </span>
+                <input id="dateOfbirth" type="datetime" name="birth" form="join-form">
+              </label>
+              <label class="join__email join__row">
+                <span>이메일 : </span>
+                <input id="email" type="email" name="email" form="join-form">
+              </label>
+              <label class="join__password join__row">
+                <span>비밀번호 : </span>
+                <input id="joinPassword" type="password" name="password" form="join-form">
+              </label>
+              <button class="join__btn" type="submit" onclick="signup()">가입하기</button>
+            <!-- </form> -->
+          </main>
+        </body>
+
+        </html>
+
+      </div>
+      <button class="modal-close is-large button" aria-label="close" onclick="modal_close()"></button>
+    </div>
+  </div>
+</body>
+
+</html>
