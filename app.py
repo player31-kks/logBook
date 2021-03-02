@@ -192,21 +192,22 @@ def signup_post():
     email = request.form['email']
     exists = bool(db.users.find_one({'email':email}))
     if exists:
-        # return jsonify({'result' : "id is already exist"})
-        return jsonify({'result': 'fail', 'msg': '아이디가 이미 존재합니다.'})
+        return jsonify({'result' : False})
+        # return render_template('fail.html')
+
     name = request.form['name']
     birth = request.form['birth']
     password = request.form['password']
     password_hash = hashlib.sha256(password.encode('utf-8')).hexdigest()
 
-    doc = {
+    db.users.insert_one({
         "email" : email,
         "name" : name,
         "birth" : birth,
         "password" : password_hash
-    }
-    db.users.insert_one(doc)
-    return jsonify({'result': 'success'})
+    })
+    
+    return jsonify({"result":True})
 
 ## comment
 @app.route('/api/comment', methods=['GET'])
