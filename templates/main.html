@@ -16,23 +16,27 @@
     <!-- javascript -->
   </head>
   <body>
-    <img
-      src="../static/map.jpg"
-      alt="이미지맵 테스트"
-      usemap="#imgmap"
-      border="0"
-    />
-    <map id="imgmap" name="imgmap">
-      {% for area in areas %}
-      <area
-        shape="circle"
-        alt=""
-        title=""
-        coords="{{area[0]}},{{area[1]}},{{area[2]}}"
-        href=""
-        target=""
-      />
-      {% endfor %}
-    </map>
+    <section class="section is-medium">
+      <div class="container">
+        <img
+          src="../static/map.jpg"
+          alt="이미지맵 테스트"
+          usemap="#imgmap"
+          border="0"
+        />
+        <map id="imgmap" name="imgmap">
+          <!-- {% for area in areas %} -->
+          <area
+            shape="circle"
+            alt=""
+            title=""
+            coords="{{area[0]}},{{area[1]}},{{area[2]}}"
+            href=""
+            target=""
+          />
+          <!-- {% endfor %} -->
+        </map>
+      </div>
+    </section>
   </body>
 </html>

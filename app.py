@@ -83,6 +83,15 @@ def signup_post():
     
     return jsonify({"result":True})
 
+@app.route('/api/duplicate', methods=['POST'])
+def duplicate_post():
+    email = request.form['email']
+    exists = bool(db.users.find_one({"email": email}))
+    if not exists:
+        return jsonify({'result': True})
+    return jsonify({'result': False})
+
+
 ## comment
 @app.route('/api/comment', methods=['GET'])
 def comment_get():

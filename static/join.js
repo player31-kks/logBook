@@ -15,6 +15,8 @@ const pwLabel = document.querySelector('.join__password')
 const pwInput = pwLabel.querySelector('input')
 
 
+
+
 function isNameVaild(asValue) {
   if (asValue === "") {
     return false
@@ -41,9 +43,7 @@ function isPasswordVaild(asValue) {
 
 joinBtn.addEventListener('click', () => {
 
-  console.log(nameInput.value, birthInput.value, emailInput.value, pwInput.value)
-
-  if (!isNameVaild()) {
+  if (!isNameVaild(nameInput.value)) {
     nameInput.textContent = ""
     alert("이름이 유효하지 않습니다.")
     return
@@ -63,6 +63,7 @@ joinBtn.addEventListener('click', () => {
     alert("패스워드가 유효하지 않습니다.영문, 숫자는 1개 씩 무조건 포함, 일부 특수문자 사용 가능, 8-20자 길이")
     return
   }
+
   $.ajax({
     type: "POST",
     url: "/api/signup",
@@ -80,10 +81,30 @@ joinBtn.addEventListener('click', () => {
       }
     }
   })
-  console.log("성공")
 })
 
 checkOverlapBtn.addEventListener('click', () => {
-  alert("hhoh")
-  return
+  if (!isEamilVaild(emailInput.value)) {
+    emailInput.value = ""
+    alert("이메일이 유효하지 않습니다.")
+    return
+  }
+
+  console.log("here")
+  $.ajax({
+    type: "POST",
+    url: "/api/duplicate",
+    data: {
+      email: emailInput.value,
+    },
+    success: function (response) {
+      if (response['result'] == true) {
+        alert("사용가능한 아이디 입니다.")
+      } else {
+        alert("아이디가 중복되었습니다.")
+        emailInput.value = ""
+      }
+    }
+  })
+
 })
