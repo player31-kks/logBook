@@ -6,29 +6,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="../static/join.css">
     <title>logBook</title>
+    <!-- script -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" defer></script>
+    <script src="../static/join.js" defer></script>
   </head>
+  
   <body>
     <main class="join__box">
       <img class="join__img" src="../static/항해99.png"></img>
-      <form action="/api/signup" method="POST" id="join-form">
+      <div class="join__container">
         <label class="join__name join__row">
-          <span>이름 : </span>
-          <input type="text" name="name" form="join-form">
+          <div>이름</div>
+          <input type="text" name="name" form="join-form" placeholder="이름을 작성해 주세요">
         </label>
-        <label class="join__date join__row">
-          <span>생년월일 : </span>
-          <input type="datetime" name="birth" form="join-form">
+        <label class="join__birth join__row">
+          <div>생년월일</div>
+          <input type="datetime" name="birth" form="join-form" placeholder="생년월일을 작성해 주세요">
         </label>
         <label class="join__email join__row">
-          <span>이메일 : </span>
-          <input type="email" name="email" form="join-form">
+          <div>이메일</div>
+          <input type="email" name="email" form="join-form" placeholder="이메일을 작성해 주세요">
         </label>
+        <button class="checkOverlapBtn">중복 검사</button>
         <label class="join__password join__row">
-          <span>비밀번호 : </span>
-          <input type="password" name="password" form="join-form">
+          <div>비밀번호</div>
+          <input type="password" name="password" form="join-form" placeholder="비밀번호를 작성해주세요 ">
         </label>
-        <button class="join__btn" type="submit">가입하기</button> 
-      </form>
+      </div>
+      <button class="join__btn">join</button> 
     </main>
   </body>
 </html>
