@@ -13,9 +13,6 @@ const emailInput = emailLabel.querySelector('input')
 const pwLabel = document.querySelector('.join__password')
 const pwInput = pwLabel.querySelector('input')
 
-
-
-
 function isNameVaild(asValue) {
   if (asValue === "") {
     return false
