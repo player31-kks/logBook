@@ -10,6 +10,8 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
   <script>
     function signup() {
       let name = $('#name').val()
@@ -62,7 +64,7 @@
         data: { username_give: username, password_give: password },
         success: function (response) {
           if (response['result'] == 'success') {
-            // $.cookie('mytoken', response['token']);
+            $.cookie('mytoken', response['token']);
 
             alert('로그인이 완료되었습니다.')
             window.location.href = '/api/main'
@@ -169,6 +171,7 @@
           <title>logBook</title>
           <!-- script -->
           <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" defer></script>
+          <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
           <script src="../static/join.js" defer></script>
           <style>
             * {

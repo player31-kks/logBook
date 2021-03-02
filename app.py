@@ -20,10 +20,10 @@ SECRET_KEY = 'SPARTA'
 def home():
     return render_template('login.html')
 
-##login
+##main
 @app.route('/api/main', methods=['GET'])
 def main_get():
-    return render_template('main.html')
+    return jsonify({'result': 'success'})
 
 ##login
 @app.route('/api/login', methods=['GET'])
@@ -54,7 +54,7 @@ def login_post():
 ##join
 @app.route('/api/page', methods=['GET'])
 def signup_get():
-    return render_template('join.html')
+    return jsonify({'result': 'success'})
 
 @app.route('/api/signup', methods=['POST'])
 def signup_post():
@@ -81,19 +81,42 @@ def signup_post():
 ## comment
 @app.route('/api/comment', methods=['GET'])
 def comment_get():
-    return render_template('login.html')
+    num = request.form['num_give']
+    all_comment = list(db.users.find({'num': num},{'_id':False}))
+    return jsonify({'all_comment': all_comment})
 
 @app.route('/api/comment', methods=['POST'])
 def comment_post():
-    return render_template('login.html')
+    email = request.form['username_give']
+    num = request.form['num_give']    
+    comment = request.form['comment_give']
+
+    db.todolists.insert_one({
+        "email" : email,
+        "num" : num,
+        "comment" : comment
+    })
+    return jsonify({'result': 'success'})
 
 ## ToDolist
 @app.route('/api/todolist', methods=['GET'])
 def todolist_get():
-    return render_template('login.html')
+    num = request.form['num_give']
+    all_text = list(db.users.find({'num': num},{'_id':False}))
+    return jsonify({'all_text': all_text})
 
 @app.route('/api/todolist', methods=['POST'])
 def todolist_post():
-    return render_template('login.html')
+    email = request.form['username_give']
+    num = request.form['num_give']    
+    text = request.form['text_give']
+
+    db.todolists.insert_one({
+        "email" : email,
+        "num" : num,
+        "text" : text
+    })
+
+    return jsonify({'result': 'success'})
 
 if __name__ == '__main__':    app.run('0.0.0.0', port=5000, debug=True)
