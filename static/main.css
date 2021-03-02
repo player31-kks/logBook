@@ -1,0 +1,21 @@
+html {
+  box-sizing: border-box;
+  font-size: 62.5%; /*16px*62.5 = 10px =1rem */
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  font-size: 1.6rem;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+#Map {
+  background-image: url("../static/hanghaeMap.png");
+  background-color: #cccccc;
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: relative;
+}
