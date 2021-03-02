@@ -6,31 +6,35 @@ import secrets
 from flask import Flask, render_template, jsonify, request, redirect, url_for, session, escape
 from werkzeug.utils import secure_filename
 from datetime import datetime, timedelta
-client = MongoClient('localhost', 27017) 
-db = client.logbooks
 
 app = Flask(__name__)
+<<<<<<< HEAD
 app.config["SECRET_KEY"] = 'TPmi4aLWRbyVq8zu9v82dWYW1'
+=======
+SECRET_KEY = 'SPARTA'
+>>>>>>> f317dc30d8f82d9515deab1843de1dd4becdc6d3
 
 # client = MongoClient('내AWS아이피', 27017, username="아이디", password="비밀번호")
 client = MongoClient('localhost', 27017)
 db = client.LogBook
 
 # HTML 화면 보여주기
+
+
 @app.route('/')
 def home():
-    return render_template('join.html')
+    return render_template('login.html')
 
-# API 역할을 하는 부분
 ##login
 @app.route('/api/login', methods=['GET'])
 def login_get():
     return render_template('login.html')
 
 @app.route('/api/login', methods=['POST'])
-def login_set():
+def login_post():
     username_receive = request.form['username_give']
     password_receive = request.form['password_give']
+<<<<<<< HEAD
     print(username_receive,password_receive)
     result = db.users.find_one({'id': username_receive, 'pw': password_receive})
 
@@ -38,51 +42,71 @@ def login_set():
         session['user_id'] = username_receive
         print('%s' % escape(session['user_id']))
         return jsonify({'result': 'success'})
+=======
 
+    pw_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
+    result = db.users.find_one({'email': username_receive, 'password': pw_hash})
+
+    if result is not None:
+        payload = {
+         'email': username_receive,
+         'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24)  # 로그인 24시간 유지
+        }
+        token = jwt.encode(payload, SECRET_KEY, algorithm='HS256').decode('utf-8')
+>>>>>>> f317dc30d8f82d9515deab1843de1dd4becdc6d3
+
+        return jsonify({'result': 'success', 'token': token})
     # 찾지 못하면
     else:
         return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
+<<<<<<< HEAD
     return render_template('login.html')
+=======
+>>>>>>> f317dc30d8f82d9515deab1843de1dd4becdc6d3
 
 ##join
+@app.route('/api/page', methods=['GET'])
+def signup_get():
+    return render_template('join.html')
+
 @app.route('/api/signup', methods=['POST'])
-def signup():
+def signup_post():
     email = request.form['email']
     exists = bool(db.users.find_one({'email':email}))
     if exists:
         # return jsonify({'result' : "id is already exist"})
-        return render_template('fail.html')
+        return jsonify({'result': 'fail', 'msg': '아이디가 이미 존재합니다.'})
     name = request.form['name']
     birth = request.form['birth']
     password = request.form['password']
     password_hash = hashlib.sha256(password.encode('utf-8')).hexdigest()
-    db.users.insert_one({
+
+    doc = {
         "email" : email,
         "name" : name,
         "birth" : birth,
         "password" : password_hash
-    })
-    # return jsonify({"result":"success"})
-    return render_template('success.html')
+    }
+    db.users.insert_one(doc)
+    return jsonify({'result': 'success'})
 
 ## comment
 @app.route('/api/comment', methods=['GET'])
-def get_comment():
+def comment_get():
     return render_template('login.html')
 
 @app.route('/api/comment', methods=['POST'])
-def create_comment():
+def comment_post():
     return render_template('login.html')
 
 ## ToDolist
 @app.route('/api/todolist', methods=['GET'])
-def get_todolist():
+def todolist_get():
     return render_template('login.html')
 
 @app.route('/api/todolist', methods=['POST'])
-def create_todolist():
+def todolist_post():
     return render_template('login.html')
 
 
-if __name__ == '__main__':
-    app.run('0.0.0.0', port=5000, debug=True)
+if __name__ == '__main__':    app.run('0.0.0.0', port=5000, debug=True)
