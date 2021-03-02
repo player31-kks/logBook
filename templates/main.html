@@ -1,38 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <!-- css -->
 
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css"
-    />
-    <link rel="stylesheet" href="../static/reset.css" />
-    <link rel="stylesheet" href="../static/main.css" />
-    <!-- javascript -->
-  </head>
-  <body>
-    <img
-      src="../static/map.jpg"
-      alt="이미지맵 테스트"
-      usemap="#imgmap"
-      border="0"
-    />
-    <map id="imgmap" name="imgmap">
-      {% for area in areas %}
-      <area
-        shape="circle"
-        alt=""
-        title=""
-        coords="{{area[0]}},{{area[1]}},{{area[2]}}"
-        href=""
-        target=""
-      />
-      {% endfor %}
-    </map>
-  </body>
+<<<<<<< HEAD
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+  <title>Document</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+    function logout() {
+      localStorage.removeItem('wtw-token');
+          alert('로그아웃이 완료되었습니다.');
+          window.location.href = "/"
+    }
+    
+  </script>
+  <style>
+    .container {
+      display: flex;
+      flex-direction: column;
+      margin: 20px 100px;
+      border: 2px solid dodgerblue;
+    }
+
+    .hero-body {
+      background: dodgerblue;
+    }
+
+    .map {
+      margin: 20px;
+    }
+
+    .button-location {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <section class="hero is-info">
+      <div class="hero-body">
+        <div class="button-location">
+          <p class="title">
+            항해일지
+          </p>
+          <button class="button is-info is-light" onclick="logout()">Log Out</button>
+        </div>
+        <p class="subtitle">
+          진행중인 날짜를 클릭하세요
+        </p>
+      </div>
+    </section>
+    <div class="map">
+      <img src="/static/hanghaeMap.png" alt="항해지도">
+    </div>
+  </div>
+</body>
+
 </html>
