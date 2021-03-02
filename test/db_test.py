@@ -1,18 +1,12 @@
 from pymongo import MongoClient
-import jwt
-import datetime
-import hashlib
-from flask import Flask, render_template, jsonify, request, redirect, url_for, session
-from werkzeug.utils import secure_filename
-from datetime import datetime, timedelta
 
-app = Flask(__name__)
+
+
 
 # client = MongoClient('내AWS아이피', 27017, username="아이디", password="비밀번호")
 client = MongoClient('localhost', 27017)
 db = client.LogBook
 
-# doc = {'eamil': 'aaa@aaa','password': 'bbb'}
 
 arr_coord = [
     [358, 256, 18],
@@ -125,8 +119,6 @@ arr_coord = [
     [624, 1130, 16],
 ]
 
-
-print(arr_coord[0])
 for i in range(0, 99):
     doc = {'coords':arr_coord[i], 'num' : i + 1}
     db.imgcircle.insert_one(doc)

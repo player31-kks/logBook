@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="/static/reset.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
   <script>
     function signup() {
       let name = $('#name').val()
@@ -61,10 +62,10 @@
         data: { username_give: username, password_give: password },
         success: function (response) {
           if (response['result'] == 'success') {
-            $.cookie('mytoken', response['token']);
+            // $.cookie('mytoken', response['token']);
 
             alert('로그인이 완료되었습니다.')
-            window.location.href = 'main.html'
+            window.location.href = '/api/main'
           } else {
             alert(response['msg'])
             window.location.reload();
@@ -139,7 +140,7 @@
       <div class="field">
         <label class="label">Password</label>
         <div class="control">
-          <input id="password" class="input" type="text">
+          <input id="password" class="input" type="password">
           <p class="help_pw"></p>
         </div>
       </div>
@@ -298,9 +299,7 @@
             <button class="join__btn">join</button>
           </main>
         </body>
-
         </html>
-
       </div>
       <button class="modal-close is-large button" aria-label="close" onclick="modal_close()"></button>
     </div>
