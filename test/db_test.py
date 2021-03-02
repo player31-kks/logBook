@@ -119,6 +119,8 @@ arr_coord = [
     [624, 1130, 16],
 ]
 
+
 for i in range(0, 99):
+    arr_coord[i][2] = 18
     doc = {'coords':arr_coord[i], 'num' : i + 1}
     db.imgcircle.insert_one(doc)
