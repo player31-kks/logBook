@@ -39,6 +39,10 @@ def login_post():
         }
         token = jwt.encode(payload, SECRET_KEY, algorithm='HS256').decode('utf-8')
 
+        payload = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
+
+        print(payload)
+
         return jsonify({'result': 'success', 'token': token})
     # 찾지 못하면
     else:

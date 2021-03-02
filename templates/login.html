@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="/static/reset.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
   <script>
     function signup() {
       let name = $('#name').val()
@@ -63,7 +64,7 @@
             $.cookie('mytoken', response['token']);
 
             alert('로그인이 완료되었습니다.')
-            window.location.href = 'main.html'
+            window.location.href = '/main.html'
           } else {
             alert(response['msg'])
             window.location.reload();
@@ -192,9 +193,7 @@
             <!-- </form> -->
           </main>
         </body>
-
         </html>
-
       </div>
       <button class="modal-close is-large button" aria-label="close" onclick="modal_close()"></button>
     </div>
