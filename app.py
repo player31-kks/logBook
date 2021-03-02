@@ -10,7 +10,6 @@ client = MongoClient('localhost', 27017)
 db = client.logbooks
 
 app = Flask(__name__)
-
 app.config["SECRET_KEY"] = 'TPmi4aLWRbyVq8zu9v82dWYW1'
 
 # client = MongoClient('내AWS아이피', 27017, username="아이디", password="비밀번호")
@@ -32,25 +31,17 @@ def login_get():
 def login_set():
     username_receive = request.form['username_give']
     password_receive = request.form['password_give']
-
     print(username_receive,password_receive)
-
     result = db.users.find_one({'id': username_receive, 'pw': password_receive})
 
-
     if result is not None:
-        
         session['user_id'] = username_receive
-
         print('%s' % escape(session['user_id']))
-
         return jsonify({'result': 'success'})
 
     # 찾지 못하면
     else:
         return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
-
-    
     return render_template('login.html')
 
 ##join
