@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
   <title>Document</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script>
     function logout() {
-      alert('로그아웃이 완료되었습니다.');
-      ctx.cookies.set('access_token');
-      window.location.href = "/api/login"
+      localStorage.removeItem('wtw-token');
+          alert('로그아웃이 완료되었습니다.');
+          window.location.href = "/"
     }
+    
   </script>
   <style>
     .container {
@@ -53,7 +56,7 @@
       </div>
     </section>
     <div class="map">
-      <img src="/Users/dabin/Desktop/sparta/logBook_m/static/hanghaeMap.png" alt="항해지도">
+      <img src="/static/hanghaeMap.png" alt="항해지도">
     </div>
   </div>
 </body>

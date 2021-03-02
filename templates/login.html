@@ -62,7 +62,7 @@
         data: { username_give: username, password_give: password },
         success: function (response) {
           if (response['result'] == 'success') {
-            // $.cookie('mytoken', response['token']);
+            localStorage.setItem('wtw-token', response.token);
 
             alert('로그인이 완료되었습니다.')
             window.location.href = '/api/main'
