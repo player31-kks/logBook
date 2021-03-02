@@ -58,6 +58,10 @@ input:hover {
   height: 1.6rem;
 }
 
+span:nth-child(2) {
+  font-size: 0.8rem;
+}
+
 .join__btn {
   text-align: center;
   margin-top: 2rem;
