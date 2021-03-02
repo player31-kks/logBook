@@ -1,45 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-<<<<<<< HEAD
-  <head>
-    <title>Document</title>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-      crossorigin="anonymous"
-    ></script>
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="/static/reset.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css"
-    />
-    <script>
-      function login() {
-        let username = $("#username").val();
-        let password = $("#password").val();
-
-        if (username == "") {
-          $("#help_id").text("아이디를 입력해주세요.");
-          $("#username").focus();
-          return;
-        } else {
-          $("#help_id").text("");
-        }
-=======
->>>>>>> f317dc30d8f82d9515deab1843de1dd4becdc6d3
 
 <head>
   <meta charset="UTF-8" />
@@ -58,14 +18,15 @@
       $.ajax({
         type: "POST",
         url: "/api/signup",
-        data: { name: name,
-                email: email,
-                birth: birth,
-                password: password
-              },
+        data: {
+          name: name,
+          email: email,
+          birth: birth,
+          password: password
+        },
         success: function (response) {
           if (response['result'] == 'success') {
-            
+
             alert('가입이 완료되었습니다.');
             modal_close();
           } else {
@@ -158,7 +119,6 @@
       flex-direction: row;
       justify-content: space-between;
     }
-
   </style>
 </head>
 
@@ -171,7 +131,7 @@
       <div class="field">
         <label class="label">ID</label>
         <div class="control">
-          <input id="username" class="input" type="text" >
+          <input id="username" class="input" type="text">
           <p class="help_id"></p>
         </div>
       </div>
@@ -179,7 +139,7 @@
       <div class="field">
         <label class="label">Password</label>
         <div class="control">
-          <input id="password" class="input" type="text" >
+          <input id="password" class="input" type="text">
           <p class="help_pw"></p>
         </div>
       </div>
@@ -206,30 +166,136 @@
           <meta name="viewport" content="width=device-width, initial-scale=1.0" />
           <link rel="stylesheet" href="../static/join.css">
           <title>logBook</title>
+          <!-- script -->
+          <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" defer></script>
+          <script src="../static/join.js" defer></script>
+          <style>
+            * {
+              font-family: "Nanum Gothic", sans-serif;
+            }
+
+            html {
+              box-sizing: border-box;
+            }
+
+            body {
+              margin: 0;
+              height: 100vh;
+              font-size: 1.3rem;
+              font-family: Helvetica, Arial, sans-serif;
+            }
+
+            button {
+              background: transparent;
+              outline: none;
+              border: none;
+              cursor: pointer;
+            }
+
+            input {
+              border: 1px solid gainsboro;
+              border-radius: 3px;
+              outline-style: none;
+              padding: 0.3rem 0.5rem;
+              font-family: inherit;
+            }
+
+            input:hover {
+              border-color: #999;
+            }
+
+            .join__box {
+              height: 100%;
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+            }
+
+            .join__img {
+              height: 200px;
+              width: 200px;
+            }
+
+            .join__container {
+              display: flex;
+              flex-direction: column;
+              color: aliceblue;
+              width: min(70%, 500px);
+              box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+              padding-right: 2rem;
+            }
+
+            .join__row {
+              margin: 1rem;
+            }
+
+            .join__row>input {
+              width: 100%;
+              height: 1.6rem;
+            }
+
+            span:nth-child(2) {
+              font-size: 0.8rem;
+            }
+
+            .join__btn {
+              text-align: center;
+              margin-top: 2rem;
+              font-size: 1.6rem;
+              background-color: dodgerblue;
+              width: min(50%, 200px);
+              padding: 3px 0px;
+              color: white;
+              border-radius: 5px;
+            }
+
+            .join__btn:hover {
+              background-color: #0068bf;
+            }
+
+            .checkOverlapBtn {
+              text-align: center;
+              background-color: dodgerblue;
+              padding: 3px 5px;
+              color: white;
+              width: min(50%, 100px);
+              border-radius: 5px;
+              transform: translateX(1rem);
+              margin-top: -6px;
+            }
+
+            .checkOverlapBtn:hover {
+              background-color: #0068bf;
+            }
+          </style>
         </head>
 
         <body>
           <main class="join__box">
             <img class="join__img" src="../static/항해99.png"></img>
-            <!-- <form action="/api/signup" method="POST" id="join-form"> -->
+            <div class="join__container">
               <label class="join__name join__row">
-                <span>이름 : </span>
-                <input id="name" type="text" name="name" form="join-form">
+                <div>이름</div>
+                <input type="text" name="name" form="join-form" placeholder="이름을 작성해 주세요">
               </label>
-              <label class="join__date join__row">
-                <span>생년월일 : </span>
-                <input id="dateOfbirth" type="datetime" name="birth" form="join-form">
+              <label class="join__birth join__row">
+                <span>생년월일</span>
+                <span>ex)950331</span>
+                <input type="datetime" name="birth" form="join-form" placeholder="생년월일을 작성해 주세요">
               </label>
               <label class="join__email join__row">
-                <span>이메일 : </span>
-                <input id="email" type="email" name="email" form="join-form">
+                <div>이메일</div>
+                <input type="email" name="email" form="join-form" placeholder="이메일을 작성해 주세요">
               </label>
+              <button class="checkOverlapBtn">중복 검사</button>
               <label class="join__password join__row">
-                <span>비밀번호 : </span>
-                <input id="joinPassword" type="password" name="password" form="join-form">
+                <span>비밀번호</span>
+                <span>ex) 영문, 숫자는 1개 씩 무조건 포함,8-20자 길이</span>
+                <input type="password" name="password" form="join-form" placeholder="비밀번호를 작성해주세요 ">
               </label>
-              <button class="join__btn" type="submit" onclick="signup()">가입하기</button>
-            <!-- </form> -->
+            </div>
+            <button class="join__btn">join</button>
           </main>
         </body>
 
