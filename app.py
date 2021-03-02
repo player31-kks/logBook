@@ -21,6 +21,11 @@ def home():
     return render_template('login.html')
 
 ##login
+@app.route('/api/main', methods=['GET'])
+def main_get():
+    return render_template('main.html')
+
+##login
 @app.route('/api/login', methods=['GET'])
 def login_get():
     return jsonify({'result': 'success'})

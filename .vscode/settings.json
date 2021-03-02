@@ -1,7 +1,3 @@
 {
-<<<<<<< HEAD
-  "python.pythonPath": "/Users/dabin/opt/anaconda3/envs/sparta/bin/python"
-=======
-  "python.pythonPath": "venv\\Scripts\\python.exe"
->>>>>>> kks
+  "python.pythonPath": "C:\\ProgramData\\Anaconda3\\python.exe"
 }
