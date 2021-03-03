@@ -18,7 +18,8 @@ SECRET_KEY = 'SPARTA'
 def home():
     return render_template('login.html')
 
-##main
+##login
+
 @app.route('/main', methods=['GET'])
 def main_get():
     coords = list(db.imgcircle.find({},{'_id':False}))
@@ -43,15 +44,20 @@ def login_post():
         'email': username_receive,
          'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24)  # 로그인 24시간 유지
         }
-        token = jwt.encode(payload, SECRET_KEY, algorithm='HS256').decode('utf-8')
+        token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
 
         return jsonify({'result': 'success', 'token': token})
     # 찾지 못하면
     else:
         return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
 
+<<<<<<< HEAD
 
 ##join
+=======
+##signup
+
+>>>>>>> 7601a21d0e37eed5327b43774e8f3806cb82262a
 @app.route('/api/signup', methods=['POST'])
 def signup_post():
     email = request.form['email']
