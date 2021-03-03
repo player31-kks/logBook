@@ -22,8 +22,8 @@ def home():
 @app.route('/main', methods=['GET'])
 def main_get():
     coords = list(db.imgcircle.find({},{'_id':False}))
-
-    return render_template('main.html', coord = coords)
+    print(coords)
+    return render_template('main.html', coords = coords)
 
 ##login
 @app.route('/login', methods=['GET'])

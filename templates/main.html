@@ -62,16 +62,17 @@
         />
       </div>
       <map id="imgmap" name="imgmap">
-        <!-- {% for area in areas %} -->
+        {% for coord in coords %}
         <area
           shape="circle"
           alt=""
           title=""
-          coords="{{area[0]}|string},{{area[1]}|string},{{area[2]}|string}"
+          coords="{{coord['coords'][0]}},{{coord['coords'][1]}},{{coord['coords'][2]}}"
           href=""
           target=""
+          id="{{coord['num']}}"
         />
-        <!-- {% endfor %} -->
+        {% endfor %}
       </map>
     </div>
   </body>
