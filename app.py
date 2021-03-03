@@ -25,6 +25,20 @@ def main_get():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         coords = list(db.imgcircle.find({},{'_id':False}))
+        logbooks = list(db.logbook.find({'email': payload['email']},{'_id':False}))
+        print(logbooks)
+        return render_template('main.html', coords = coords, logbooks = logbooks)
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login_get", msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login_get", msg="로그인 정보가 존재하지 않습니다."))
+
+@app.route('/main/<keyword>', methods=['GET'])
+def main_friends_get(keyword):
+    token_receive = request.cookies.get('token')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        coords = list(db.imgcircle.find({},{'_id':False}))
         print(payload['email'])
         return render_template('main.html', coords = coords)
     except jwt.ExpiredSignatureError:
