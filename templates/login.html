@@ -66,8 +66,7 @@
           data: { username_give: username, password_give: password },
           success: function (response) {
             if (response['result'] == 'success') {
-              localStorage.setItem('mytoken', response['token']);
-
+              document.cookie = `token=${response['token']}`
               alert('로그인이 완료되었습니다.')
               window.location.href = '/main'
             } else {
