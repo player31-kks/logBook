@@ -22,7 +22,6 @@ def home():
 @app.route('/main', methods=['GET'])
 def main_get():
     coords = list(db.imgcircle.find({},{'_id':False}))
-    print(coords)
     return render_template('main.html', coords = coords)
 
 ##login
@@ -114,19 +113,23 @@ def comment_post():
 ## logbook
 @app.route('/logbook/<keyword>', methods=['GET'])
 def todolist_get(keyword):
-    token=request.cookies.get('token')
-    payload=jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
-    user_info = db.users.find_one({'email' : payload['email']})
     
-    if not user_info:
-        return jsonify({'result' : False,'content' : "null",})
+    try:
+        token=request.cookies.get('token')
+        payload=jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
+        user_info = db.users.find_one({'email' : payload['email']})
+    except jwt.ExpiredSignatureError:
+        return redirect('/')
+    except jwt.exceptions.DecodeError:
+        return redirect('/')
+    except:
+        return redirect('/')
     
-    logbook_info = db.logbook.find_one({'email':user_info['email'],'num':keyword})
-    
-    return jsonify({'result':True,'cotent':{
-        'text' : logbook_info['text'],
-        'src' : logbook_info['src']
-    }})
+    logbook_info = db.logbook.find_one({'email':user_info['email'],'num':int(keyword) })
+    if not logbook_info:
+        return render_template('logbook.html')
+    else:
+        return render_template('logbook.html',logbook=logbook_info)
 
 @app.route('/api/todolist', methods=['POST'])
 def todolist_post():
