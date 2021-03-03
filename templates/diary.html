@@ -21,7 +21,6 @@
         <div class="banner">
             <div class="banner-body">
                 <div class="title">
-                    항해일지 일차
                 </div>
                 <div class="subtitle">
                     오늘의 목표를 설정해주세요
@@ -31,17 +30,16 @@
     </div>
     <div class="update">
         <button class="button is-info is-light" onclick="modal_active()">write</button>
-        <button class="button is-info is-light" onclick="update_content()">update</button>
-        <button class="button is-info is-light" onclick="delete_content()">delete</button>
+        <button class="button is-info is-light" onclick="update_content()">Main Page</button>
     </div>
     <div class="body-box">
         <div class="left">
-            <img src="/static/arrowleft.png" alt="이전페이지" onclick="move()">
+            <img src="/static/arrowleft.png" alt="이전페이지" onclick="move('L')">
         </div>
         <div class="content-box">
             <div id="todo" class="todo">
                 <div class="control-img">
-                    <img class="main-img" src="static/hanghae.png" alt="">
+                    <img class="main-img" src="" alt="">
                 </div>
                 <div class="control-text">
                     <p class="text"></P>
@@ -52,18 +50,11 @@
 
             </div>
             <div id="comment" class="comment">
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Natus quod pariatur culpa saepe sunt
-                voluptatem cum ab quia ullam cumque porro sequi eveniet esse itaque id dolor atque, excepturi
-                reprehenderit tempora magnam rem minima veritatis voluptas. Eius dolorem, totam ut qui officia,
-                architecto quo voluptas deleniti et, ea eos. Minus obcaecati veritatis id nemo suscipit consectetur
-                molestias ut accusamus maxime necessitatibus quidem delectus exercitationem cupiditate eos, aperiam
-                blanditiis sint dolore. Quaerat excepturi molestias nobis animi, provident hic velit dolor
-                exercitationem eaque enim neque minus optio nam veniam perspiciatis, possimus quae modi? Laboriosam
-                impedit fuga voluptas illum, ullam repellat sint maiores!
+                {% if logbook %} {{logbook['text']}} {% endif %}
             </div>
         </div>
         <div class="right">
-            <img src="/static/arrowright.png" alt="다음페이지" onclick="move()">
+            <img src="/static/arrowright.png" alt="다음페이지" onclick="move('R')">
         </div>
     </div>
     <div class="modal">

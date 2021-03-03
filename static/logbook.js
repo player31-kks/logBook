@@ -9,17 +9,12 @@
 //     }
 // });
 
-
-function move() {
-    $.ajax({
-        type: "GET",
-        url: "/api/move",
-        data: {},
-        success: function (response) {
-
-        }
-    })
-}
+$(window).on("load", function () {
+    const url = document.location.href.split("/");
+    let num = Number(url[url.length - 1]);
+    const title = document.querySelector(".title");
+    title.textContent = `항해일지 ${num} 일차`;
+  });
         
 function save() {
     const url = document.location.href.split("/");
@@ -33,6 +28,9 @@ function save() {
     form_data.append("num_give", num)
     form_data.append("file_give", file)
 
+    function update() {
+        window.location.href = `/logbook/${num}`;
+      }
     $.ajax({
         type: "POST",
         url: "/diary",
@@ -43,6 +41,7 @@ function save() {
         success: function (response) {
             alert(response["msg"])
             modal_close();
+            update();
         }
     });
 }
@@ -59,3 +58,17 @@ function modal_close() {
     const modalClose = document.querySelector('.modal');
     modalClose.classList.remove('is-active');
 }
+
+function move(direction) {
+    const url = document.location.href.split("/");
+    let num = Number(url[url.length - 1]);
+
+    if (direction === "R") {
+      num = num + 1 > 99 ? 1 : num + 1;
+    } else if (direction === "L") {
+      console.log("here");
+      num = num - 1 < 1 ? 99 : num - 1;
+    }
+    console.log(num);
+    window.location.href = `/logbook/${num}`;
+  }
