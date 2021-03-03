@@ -16,6 +16,10 @@
         alert("로그아웃이 완료되었습니다.");
         window.location.href = "/";
       }
+      function open_diary() {
+        alert('상세페이지로 이동');
+        window.location.href = "/diary"
+      }
     </script>
     <style>
       .container {
@@ -25,34 +29,9 @@
         border: 2px solid dodgerblue;
       }
 
-<<<<<<< HEAD
       .hero-body {
         background: dodgerblue;
       }
-=======
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
-  <title>Log Book</title>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script>
-    function logout() {
-      localStorage.removeItem('wtw-token');
-          alert('로그아웃이 완료되었습니다.');
-          window.location.href = "/"
-    }
-    
-  </script>
-  <style>
-    .container {
-      display: flex;
-      flex-direction: column;
-      margin: 20px 100px;
-      border: 2px solid dodgerblue;
-    }
->>>>>>> 7601a21d0e37eed5327b43774e8f3806cb82262a
 
       .map {
         margin: 20px;
@@ -86,7 +65,7 @@
           border="0"
         />
       </div>
-      <map id="imgmap" name="imgmap">
+      <map id="imgmap" name="imgmap" onclick="open_diary()">
         {% for coord in coords %}
         <area
           shape="circle"

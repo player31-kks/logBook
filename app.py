@@ -16,7 +16,34 @@ SECRET_KEY = 'SPARTA'
 # HTML 화면 보여주기
 @app.route('/')
 def home():
-    return render_template('login.html')
+    return render_template('diary.html')
+
+@app.route('/diary', methods=['POST'])
+def save_diary():
+    text_receive = request.form["text_give"]
+    num_receive = request.form["num_give"]
+    
+    file = request.files["file_give"]
+
+    extension = file.name.split('.')[-1]
+
+    today = datetime.now()
+    mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
+
+    filename = f'file-{mytime}'
+
+    # save_to = f'static/{filename}.{extension}'
+    # file.save(save_to)
+
+    doc = {
+        'text':text_receive,
+        'num':num_receive,
+        'src':f'{filename}.{extension}'
+    }
+
+    db.uploadtest.insert_one(doc)
+
+    return jsonify({'msg':'Complete Writing'})
 
 ##login
 
@@ -51,13 +78,8 @@ def login_post():
     else:
         return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
 
-<<<<<<< HEAD
-
-##join
-=======
 ##signup
 
->>>>>>> 7601a21d0e37eed5327b43774e8f3806cb82262a
 @app.route('/api/signup', methods=['POST'])
 def signup_post():
     email = request.form['email']

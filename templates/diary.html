@@ -6,138 +6,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+              integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+              crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <link rel="stylesheet" href="/static/diary.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <style>
-        .comment {
-            height: 100vh;
-            border: dodgerblue solid 1px;
-            border-radius: 10px;
-        }
-
-        .wrap {
-            margin: 20px;
-        }
-
-        .banner {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            justify-content: center;
-            width: 100%;
-            height: 20vh;
-            margin: 20px 0;
-            background: dodgerblue;
-            border-radius: 10px;
-        }
-
-        .banner-body {
-            margin-left: 50px;
-        }
-
-        .title {
-            color: lavender;
-            padding-bottom: 20px;
-        }
-
-        .subtitle {
-            color: lavender;
-        }
-
-        .body-box {
-            display: flex;
-            flex-direction: row;
-            margin: 20px;
-        }
-
-        .left {
-            width: 600px;
-            margin-top: 200px;
-        }
-
-        .right {
-            width: 600px;
-            margin-top: 200px;
-        }
-
-        img {
-            width: 300px;
-            height: 100px;
-            padding: 5px;
-            background-size: contain;
-        }
-
-        .todo {
-            width: 100%;
-            height: 500px;
-            border: dodgerblue solid 1px;
-            border-radius: 10px;
-            margin-bottom: 10px;
-        }
-
-        .like {
-            width: 100%;
-            height: 100px;
-            border: dodgerblue solid 1px;
-            border-radius: 10px;
-            margin: 10px 0;
-        }
-    </style>
-    <script>
-        function addList() {
-            let temp_html = `<div class="comment-box">안녕 나는 추가 되었어</div>`;
-            $('#comment').append(temp_html);
-        }
-
-        $(window).scroll(function () {
-            if ($(window).scrollTop() == $(document).height() - $(window).height()) {
-
-                addList();
-            }
-        });
-
-        function moveleft() {
-            $.ajax({
-                type: "GET",
-                url: "/api/previous",
-                data: {},
-                success: function (response) {
-                    
-                }
-            })
-        }
-
-        function moveright() {
-            $.ajax({
-                type: "GET",
-                url: "/api/next",
-                data: {},
-                success: function (response) {
-                    
-                }
-            })
-        }
-
-        // function moreList() {
-
-        // }
-        // $(window).scroll(function () {
-
-
-        //     let scrolltop = $(document).scrollTop();
-        //     console.log(scrolltop);
-        //     let height = $(document).height();
-        //     console.log(height);
-        //     let height_win = $(window).height();
-        //     console.log(height_win);
-
-
-        //     if (Math.round($(window).scrollTop()) == $(document).height() - $(window).height()) {
-        //         moreList();
-        //     }
-
-        // })
-    </script>
+    <script src="/static/diary.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.js"></script>
 </head>
 
 <body>
@@ -153,13 +29,24 @@
             </div>
         </div>
     </div>
+    <div class="update">
+        <button class="button is-info is-light" onclick="modal_active()">write</button>
+        <button class="button is-info is-light" onclick="update_content()">update</button>
+        <button class="button is-info is-light" onclick="delete_content()">delete</button>
+    </div>
     <div class="body-box">
         <div class="left">
-            <img src="/Users/dabin/Desktop/sparta/logBook_m/static/arrowleft.png" alt="이전페이지" onclick="moveleft()">
+            <img src="/static/arrowleft.png" alt="이전페이지" onclick="move()">
         </div>
         <div class="content-box">
-            <div class="todo">
-
+            <div id="todo" class="todo">
+                <div class="control-img">
+                    <img class="main-img" src="static/hanghae.png" alt="">
+                </div>
+                <div class="control-text">
+                    <p class="text"></P>
+                    <p class="who"></p>
+                </div>
             </div>
             <div class="like">
 
@@ -176,8 +63,24 @@
             </div>
         </div>
         <div class="right">
-            <img src="/Users/dabin/Desktop/sparta/logBook_m/static/arrowright.png" alt="다음페이지" onclick="moveright()">
+            <img src="/static/arrowright.png" alt="다음페이지" onclick="move()">
         </div>
+    </div>
+    <div class="modal">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+            
+            <input id="text" class="write-box" type="text" placeholder="오늘에 대하여">
+            <div class="save">
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="image">
+                    <label class="custom-file-label">Choose file</label>
+                  </div>
+                <button class="button is-info is-light" onclick="save()">Save</button>
+            </div>
+        </div>
+        <button class="modal-close is-large button" aria-label="close" onclick="modal_close()"></button>
+    </div>
     </div>
 </body>
 
