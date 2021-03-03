@@ -38,6 +38,7 @@ function save() {
     success: function (response) {
       alert(response["msg"])
       modal_close();
+      window.location.reload();
     }
   });
 }
@@ -57,8 +58,17 @@ function modal_close() {
 }
 
 function move(direction) {
-  const url = document.location.href.split("/");
+  let url = document.location.href.split("/");
   let num = Number(url[url.length - 1]);
+  let length = 0;
+
+  if(num > 10)
+  {
+    length = 2
+  }
+  else{
+    length = 1
+  }
 
   if (direction === "R") {
     num = num + 1 > 99 ? 1 : num + 1;
@@ -66,6 +76,14 @@ function move(direction) {
     console.log("here");
     num = num - 1 < 1 ? 99 : num - 1;
   }
-  console.log(num);
-  window.location.href = `/logbook/${num}`;
+  
+  let url_str = ''
+  url = document.location.href;
+
+  for(let i = 0; i < url.length - length; i++)
+  {
+      url_str += url[i];
+  }
+  url_str += num;
+  window.location.href = url_str;
 }

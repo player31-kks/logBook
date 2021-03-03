@@ -12,7 +12,6 @@ function isEamilVaild(asValue) {
 
 window.addEventListener('load', () => {
 
-  console.log(cookie)
   // email.innerHTML = response['email'] + "님";
 
   // 친구 목록 뿌려주기
