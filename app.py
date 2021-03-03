@@ -102,6 +102,7 @@ def todolist_get(keyword):
         return jsonify({'result' : False,'content' : "null",})
     
     logbook_info = db.logbook.find_one({'email':user_info['email'],'num':keyword})
+    
     return jsonify({'result':True,'cotent':{
         'text' : logbook_info['text'],
         'src' : logbook_info['src']
