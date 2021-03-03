@@ -18,7 +18,6 @@ window.addEventListener('load', () => {
     },
     success: function (response) {
       const friend_list = response['friend_list']
-
       for (let i = 0; i < friend_list.length; i++) {
         let friend = `
           <li class="friend">
@@ -27,7 +26,6 @@ window.addEventListener('load', () => {
           </li>`
         friendList.innerHTML += friend
       }
-
     }
   })
 })

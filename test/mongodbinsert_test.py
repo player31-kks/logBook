@@ -5,13 +5,8 @@ db = client.LogBook
 
 def insertTestData():
   print("db에게 보내는 중")
-  db.logbook.insert_one({
-        "email" : "skatjr30@naver.com",
-        "num" : 1,
-        "text" : "test입니다.test입니다.test입니다.test입니다.test입니다.",
-        "src" :"null",
-        "comment" : "멋쟁이"
-  })
+  todolist = list(db.logbook.find({'email':'keumks789@naver.com','num':1},{'_id':False}))
+  print(todolist)
   print("db에게 끝")
 
 

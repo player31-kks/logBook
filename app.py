@@ -130,10 +130,6 @@ def comment_post():
 ## logbook
 @app.route('/logbook/<keyword>', methods=['GET'])
 def logbook_get(keyword):
-    token=request.cookies.get('token')
-    payload=jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
-    user_info = db.users.find_one({'email' : payload['email']})
-    
     try:
         token=request.cookies.get('token')
         payload=jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
@@ -188,9 +184,7 @@ def friend_get():
     token_receive = request.cookies.get('token')    
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-
         friend_list = list(db.friends.find({'email':payload['email']},{'_id':False}))
-
         return jsonify({'friend_list': friend_list})
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login_get", msg="로그인 시간이 만료되었습니다."))
@@ -202,13 +196,15 @@ def friend_post():
     token_receive = request.cookies.get('token')    
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-
         friends_email_receive = request.form['friends_email']
-
+        
+        already_friend = db.friends.find_one({'email':payload['email'],"friends_email" : friends_email_receive},{'_id':False})
+        if already_friend:
+            return jsonify({'result':'False','err':'이미 존재하는 친구입니다.'})
+        
         user_info = db.users.find_one({'email' : friends_email_receive})
-
         if not user_info:
-            return jsonify({'result': False})
+            return jsonify({'result': False ,'err':'친구 정보가 없습니다.'})
         else:
             db.friends.insert_one({
                 "email" : payload['email'],
@@ -218,6 +214,8 @@ def friend_post():
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login_get", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
+        return redirect(url_for("login_get", msg="로그인 정보가 존재하지 않습니다."))
+    except:
         return redirect(url_for("login_get", msg="로그인 정보가 존재하지 않습니다."))
 
 @app.route('/api/friends', methods=['DELETE'])
