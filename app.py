@@ -19,15 +19,27 @@ SECRET_KEY = 'SPARTA'
 @app.route('/')
 def home():
     return render_template('login.html')
+    
+##key
+@app.route('/api/get_email', methods=['GET'])
+def email_get():
+    token_receive = request.cookies.get('token')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        return jsonify({"email":payload['email']})
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login_get", msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login_get", msg="로그인 정보가 존재하지 않습니다."))
 
-##login
+##main
 @app.route('/main', methods=['GET'])
 def main_get():
     token_receive = request.cookies.get('token')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         coords = list(db.imgcircle.find({},{'_id':False}))
-        return render_template('main.html', coords = coords, who = payload['email'])
+        return render_template('main.html', coords = coords)
         # logbooks = list(db.logbook.find({'email': payload['email']},{'_id':False}))
         # logbooks_num = []
         # for logbook in logbooks:
@@ -147,7 +159,7 @@ def logbook_get(email,num):
         # num 이 현재페이지일 경우에만 새로운 리스트에 모아서 jinja 템플릿 보냄
         logbooks=[]
         for logs in log:
-            if logs['num'] == int(num) :
+            if logs['num'] == int(num) and logs['email'] == email:
                 logbooks.append(logs)
         if not logbooks:
             return render_template('logbook.html')
