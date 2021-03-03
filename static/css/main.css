@@ -4,15 +4,18 @@ html {
 }
 
 body {
-  margin: 0;
+  margin: 0 auto;
   height: 100vh;
   font-size: 1.6rem;
   font-family: Helvetica, Arial, sans-serif;
 }
 
 .container {
+  margin: auto;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  /* align-items: center; */
   margin: 20px 100px;
   border: 2px solid dodgerblue;
 }
@@ -21,7 +24,10 @@ body {
 }
 
 .map {
-  margin: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  position: relative;
 }
 
 .button-location {
@@ -31,9 +37,9 @@ body {
 }
 
 .box {
-  position: absolute;
-  top: 200px;
-  right: 200px;
+  position: sticky;
+  margin-left: 100px;
+  top: 10px;
 }
 
 .friend > a {
@@ -43,4 +49,8 @@ body {
   display: flex;
   justify-content: space-around;
   align-items: center;
+}
+
+.red {
+  background-color: red;
 }

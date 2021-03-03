@@ -13,7 +13,19 @@
     <link rel="stylesheet" href="/static/css/main.css" />
 
     <!--js-script  -->
+    <!-- Add jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Add maphilight plugin -->
+    <script
+      type="text/javascript"
+      src="/static/src/jquery.maphilight.js"
+    ></script>
+    <!-- Activate maphilight plugin -->
+    <script type="text/javascript">
+      $(function () {
+        $(".imgMap").maphilight();
+      });
+    </script>
     <script>
       function logout() {
         // localStorage.removeItem("wtw-token");
@@ -29,64 +41,63 @@
     <script src="/static/src/main.js" defer></script>
   </head>
   <body>
-    <div class="container">
-      <section class="hero is-info">
-        <div class="hero-body">
-          <div class="button-location">
-            <p class="title">항해일지</p>
-            <button class="button is-info is-light" onclick="logout()">
-              Log Out
-            </button>
-          </div>
-          <p class="subtitle">진행중인 날짜를 클릭하세요</p>
-        </div>
-      </section>
-      <div class="map">
-        <img
-          src="/static/img/map.jpg"
-          alt="항해지도"
-          usemap="#imgmap"
-          border="0"
-        />
-      </div>
-      <map id="imgmap" name="imgmap" onclick="open_diary()">
-        {% for coord in coords %}
-        <area
-          shape="circle"
-          alt=""
-          title=""
-          coords="{{coord['coords'][0]}},{{coord['coords'][1]}},{{coord['coords'][2]}}"
-          href="/logbook/{{coord['num']}}"
-          target=""
-          id="{{coord['num']}}"
-        />
-        {% endfor %}
-      </map>
-    </div>
-    <div class="box">
-      <div class="block">
-        <div class="subtitle">친구 추가</div>
-        <div class="control columns">
-          <input
-            class="input column is-8"
-            type="email"
-            placeholder="e.g. alex@example.com"
-            id="friendEmail"
-          />
-          <button class="button is-info column is-4" id="addfriendBtn">
-            친구추가
+    <section class="hero is-info">
+      <div class="hero-body">
+        <div class="button-location">
+          <p class="title">항해일지</p>
+          <button class="button is-info is-light" onclick="logout()">
+            Log Out
           </button>
         </div>
+        <p class="subtitle">진행중인 날짜를 클릭하세요</p>
       </div>
-      <div class="block">
-        <div class="subtitle">친구목록</div>
-        <ul class="friends__list">
-          <li class="friend">
-            <a href="">keumks789@naver.com</a>
-            <button class="delete is-large delfriendBtn"></button>
-          </li>
-        </ul>
+    </section>
+    <section class="map">
+      <img
+        src="/static/img/map.jpg"
+        alt="항해지도"
+        usemap="#imgmap"
+        border="0"
+        class="imgMap"
+      />
+      <div class="box">
+        <div class="block">
+          <div class="subtitle">친구 추가</div>
+          <div class="control columns">
+            <input
+              class="input column is-8"
+              type="email"
+              placeholder="e.g. alex@example.com"
+              id="friendEmail"
+            />
+            <button class="button is-info column is-4" id="addfriendBtn">
+              친구추가
+            </button>
+          </div>
+        </div>
+        <div class="block">
+          <div class="subtitle">친구목록</div>
+          <ul class="friends__list">
+            <li class="friend">
+              <a href="">keumks789@naver.com</a>
+              <button class="delete is-large delfriendBtn"></button>
+            </li>
+          </ul>
+        </div>
       </div>
-    </div>
+    </section>
+    <map id="imgmap" name="imgmap" onclick="open_diary()">
+      {% for coord in coords %}
+      <area
+        shape="circle"
+        alt=""
+        title=""
+        coords="{{coord['coords'][0]}},{{coord['coords'][1]}},{{coord['coords'][2]}}"
+        href="/logbook/{{coord['num']}}"
+        target=""
+        id="{{coord['num']}}"
+      />
+      {% endfor %}
+    </map>
   </body>
 </html>
