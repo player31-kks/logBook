@@ -82,7 +82,7 @@ def duplicate_post():
     return jsonify({'result': False})
 
 ##logbook
-@app.route('/api/comment', methods=['POST'])
+@app.route('/api/logbook', methods=['POST'])
 def logbook_post():
     email_receive = request.form['username_give']
     num_receive = request.form['num_give']
