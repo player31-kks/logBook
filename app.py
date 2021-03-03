@@ -169,5 +169,58 @@ def logbook_post():
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login_get", msg="로그인 정보가 존재하지 않습니다."))
 
+##frined
+@app.route('/api/friends', methods=['GET'])
+def friend_get():
+    token_receive = request.cookies.get('token')    
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+
+        friend_list = list(db.friends.find({'email':payload['email']},{'_id':False}))
+
+        return jsonify({'friend_list': friend_list})
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login_get", msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login_get", msg="로그인 정보가 존재하지 않습니다."))
+
+@app.route('/api/friends', methods=['POST'])
+def friend_post():
+    token_receive = request.cookies.get('token')    
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+
+        friends_email_receive = request.form['friends_email_give']
+
+        user_info = db.users.find_one({'email' : friends_email_receive})
+
+        if not user_info:
+            return jsonify({'result': False})
+        else:
+            db.friends.insert_one({
+                "email" : payload['email'],
+                "friends_email" : friends_email_receive,
+            })
+            return jsonify({'result': True, 'friend': friends_email_receive})
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login_get", msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login_get", msg="로그인 정보가 존재하지 않습니다."))
+
+@app.route('/api/friends', methods=['DELETE'])
+def friend_delete():
+    token_receive = request.cookies.get('token')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        friends_email_receive = request.form['friends_email_give']
+
+        db.friends.remove({"email" : payload['email'], "friends_email" : friends_email_receive})
+        return jsonify({'result': True})
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login_get", msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login_get", msg="로그인 정보가 존재하지 않습니다."))
+
+
 if __name__ == '__main__':    
     app.run('0.0.0.0', port=5000, debug=True)
