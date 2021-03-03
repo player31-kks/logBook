@@ -5,17 +5,17 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-              integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-              crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
-    <link rel="stylesheet" href="/static/logbook.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="/static/logbook.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.js"></script>
-</head>
+    <title>logbook</title>
 
+    <!-- bulma && css -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <link rel="stylesheet" href="/static/css/logbook.css">
+
+    <!-- js-script -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.js"></script>
+    <script src="/static/src/logbook.js" defer></script>
+</head>
 <body>
     <div class="wrap">
         <div class="banner">
@@ -35,7 +35,7 @@
     </div>
     <div class="body-box">
         <div class="left">
-            <img src="/static/arrowleft.png" alt="이전페이지" onclick="move('L')">
+            <img src="/static/img/arrowleft.png" alt="이전페이지" onclick="move('L')">
         </div>
         <div class="content-box">
             <div id="todo" class="todo">
@@ -55,19 +55,18 @@
             </div>
         </div>
         <div class="right">
-            <img src="/static/arrowright.png" alt="다음페이지" onclick="move('R')">
+            <img src="/static/img/arrowright.png" alt="다음페이지" onclick="move('R')">
         </div>
     </div>
     <div class="modal">
         <div class="modal-background"></div>
-        <div class="modal-content">
-            
+        <div class="modal-content">     
             <input id="text" class="write-box" type="text" placeholder="오늘에 대하여">
             <div class="save">
                 <div class="custom-file">
                     <input type="file" class="custom-file-input" id="image">
                     <label class="custom-file-label">Choose file</label>
-                  </div>
+                </div>
                 <button class="button is-info is-light" onclick="save()">Save</button>
             </div>
         </div>

@@ -5,14 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>hanghae99</title>
-    <!-- css -->
-    <link rel="stylesheet" href="/static/reset.css">
+
+    <!-- bulma && css -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
-    <link rel="stylesheet" href="/static/join.css">
-    <link rel="stylesheet" href="/static/login.css">
+    <link rel="stylesheet" href="/static/css/reset.css">
+    <link rel="stylesheet" href="/static/css/login.css">
     <!-- script -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="/static/join.js" defer ></script>
+    <script src="/static/src/login.js" defer ></script>
     <script>
       function signup() {
         let name = $('#name').val()
@@ -87,11 +87,10 @@
     </script>
 
   </head>
-
   <body>
     <div class="container">
       <div class="icon-box">
-        <img src="static/hanghae.png" alt="항해">
+        <img src="/static/img/hanghae.png" alt="항해">
       </div>
       <div class="box">
         <div class="field">
@@ -117,7 +116,7 @@
         <div class="modal-background"></div>
         <div class="modal-content">
             <main class="join__box">
-              <img class="join__img" src="../static/항해99.png"></img>
+              <img class="join__img" src="/static/img/항해99.png"></img>
               <div class="join__container">
                 <label class="join__name join__row">
                   <div>이름</div>

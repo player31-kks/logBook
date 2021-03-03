@@ -9,14 +9,14 @@ body {
   margin: 0;
   height: 100vh;
   font-size: 1.3rem;
-  font-family: Helvetica, Arial, sans-serif;  
+  font-family: Helvetica, Arial, sans-serif;
 }
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;  
+  height: 100vh;
 }
 
 .icon-box {
@@ -24,7 +24,7 @@ body {
 }
 
 .box {
-  width: 30vw;
+  width: max(22vw, 300px);
 }
 
 .sign {
@@ -80,7 +80,7 @@ input:hover {
 
 .join__row > input {
   width: 100%;
-  height: 1.6rem;
+  height: 2rem;
 }
 
 span:nth-child(2) {
