@@ -107,11 +107,6 @@ def logbook_post():
     })
     return jsonify({'result': True})
 
-## comment
-@app.route('/api/comment', methods=['GET'])
-def comment_get():
-    return render_template('login.html')
-
 @app.route('/api/comment', methods=['POST'])
 def comment_post():
     return render_template('login.html')
