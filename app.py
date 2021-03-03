@@ -19,7 +19,6 @@ def home():
     return render_template('login.html')
 
 ##login
-
 @app.route('/main', methods=['GET'])
 def main_get():
     coords = list(db.imgcircle.find({},{'_id':False}))
@@ -51,13 +50,7 @@ def login_post():
     else:
         return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
 
-<<<<<<< HEAD
-
 ##join
-=======
-##signup
-
->>>>>>> 7601a21d0e37eed5327b43774e8f3806cb82262a
 @app.route('/api/signup', methods=['POST'])
 def signup_post():
     email = request.form['email']
