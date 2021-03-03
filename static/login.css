@@ -9,14 +9,14 @@ body {
   margin: 0;
   height: 100vh;
   font-size: 1.3rem;
-  font-family: Helvetica, Arial, sans-serif;
+  font-family: Helvetica, Arial, sans-serif;  
 }
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  height: 100vh;  
 }
 
 .icon-box {

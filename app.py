@@ -16,7 +16,7 @@ SECRET_KEY = 'SPARTA'
 # HTML 화면 보여주기
 @app.route('/')
 def home():
-    return render_template('login.html')
+    return redirect(url_for("login_get"))
 
 ##login
 @app.route('/main', methods=['GET'])
@@ -89,7 +89,46 @@ def duplicate_post():
         return jsonify({'result': True})
     return jsonify({'result': False})
 
-##logbook
+## comment
+@app.route('/api/comment', methods=['POST'])
+def comment_post():
+    token_receive = request.cookies.get('token')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        email = payload['email']
+        num_receive = request.form['comment']
+        comment_receive = request.form['comment_give']
+
+        db.users.insert_one({
+            "email" : email,
+            "num" : num_receive,
+            "comment" : comment_receive,
+        })
+        return jsonify({'result': True})
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login_get", msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login_get", msg="로그인 정보가 존재하지 않습니다."))
+
+    return jsonify({'result': True})
+    
+
+## logbook
+@app.route('/logbook/<keyword>', methods=['GET'])
+def logbook_get(keyword):
+    token=request.cookies.get('token')
+    payload=jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
+    user_info = db.users.find_one({'email' : payload['email']})
+    
+    if not user_info:
+        return jsonify({'result' : False,'content' : "null",})
+    
+    logbook_info = db.logbook.find_one({'email':user_info['email'],'num':keyword})
+    return jsonify({'result':True,'cotent':{
+        'text' : logbook_info['text'],
+        'src' : logbook_info['src']
+    }})
+
 @app.route('/api/logbook', methods=['POST'])
 def logbook_post():
     token_receive = request.cookies.get('token')
@@ -121,32 +160,6 @@ def logbook_post():
         return redirect(url_for("login_get", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login_get", msg="로그인 정보가 존재하지 않습니다."))
-
-@app.route('/api/comment', methods=['POST'])
-def comment_post():
-
-    return jsonify({'result': True})
-    
-
-## logbook
-@app.route('/logbook/<keyword>', methods=['GET'])
-def todolist_get(keyword):
-    token=request.cookies.get('token')
-    payload=jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
-    user_info = db.users.find_one({'email' : payload['email']})
-    
-    if not user_info:
-        return jsonify({'result' : False,'content' : "null",})
-    
-    logbook_info = db.logbook.find_one({'email':user_info['email'],'num':keyword})
-    return jsonify({'result':True,'cotent':{
-        'text' : logbook_info['text'],
-        'src' : logbook_info['src']
-    }})
-
-@app.route('/api/todolist', methods=['POST'])
-def todolist_post():
-    return render_template('login.html')
 
 if __name__ == '__main__':    
     app.run('0.0.0.0', port=5000, debug=True)
