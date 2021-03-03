@@ -8,37 +8,21 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css"
     />
+    <link rel="stylesheet" href="../static/main.css" />
     <title>Document</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
       function logout() {
         // localStorage.removeItem("wtw-token");
-        document.cookie = `token = `
+        document.cookie = `token = `;
         alert("로그아웃이 완료되었습니다.");
         window.location.href = "/";
       }
+      function open_diary() {
+        alert("상세페이지로 이동");
+        window.location.href = "/diary";
+      }
     </script>
-    <style>
-      .container {
-        display: flex;
-        flex-direction: column;
-        margin: 20px 100px;
-        border: 2px solid dodgerblue;
-      }
-      .hero-body {
-        background: dodgerblue;
-      }
-      
-      .map {
-        margin: 20px;
-      }
-
-      .button-location {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-      }
-    </style>
   </head>
   <body>
     <div class="container">
@@ -61,7 +45,7 @@
           border="0"
         />
       </div>
-      <map id="imgmap" name="imgmap">
+      <map id="imgmap" name="imgmap" onclick="open_diary()">
         {% for coord in coords %}
         <area
           shape="circle"
@@ -74,6 +58,31 @@
         />
         {% endfor %}
       </map>
+    </div>
+    <div class="box">
+      <div class="block">
+        <div class="subtitle">친구 추가</div>
+        <div class="control columns">
+          <input
+            class="input column is-8"
+            type="email"
+            placeholder="e.g. alex@example.com"
+            id="friendEmail"
+          />
+          <button class="button is-info column is-4" id="addfriendBtn">
+            친구추가
+          </button>
+        </div>
+      </div>
+      <div class="block">
+        <div class="subtitle">친구목록</div>
+        <ul class="friends__list">
+          <li class="friend">
+            <a href="">keumks789@naver.com</a>
+            <button class="delete is-large" id="delfriendBtn"></button>
+          </li>
+        </ul>
+      </div>
     </div>
   </body>
 </html>

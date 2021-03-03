@@ -16,7 +16,8 @@ SECRET_KEY = 'SPARTA'
 # HTML 화면 보여주기
 @app.route('/')
 def home():
-    return redirect(url_for("login_get"))
+    return render_template('login.html')
+
 
 ##login
 @app.route('/main', methods=['GET'])
@@ -65,14 +66,14 @@ def login_post():
         'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24)  # 로그인 24시간 유지
         # 'exp': datetime.utcnow() + timedelta(seconds= 5)  # 로그인 24시간 유지
         }
-        token = jwt.encode(payload, SECRET_KEY, algorithm='HS256').decode('utf-8')
+        token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
         # token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
         return jsonify({'result': 'success', 'token': token})
     # 찾지 못하면
     else:
         return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
 
-##join
+##signup
 @app.route('/api/signup', methods=['POST'])
 def signup_post():
     email = request.form['email']
@@ -156,28 +157,27 @@ def logbook_post():
     token_receive = request.cookies.get('token')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        email = payload['email']
-        num_receive = request.form['num_give']
-        text_receive = request.form['text_give']
-        src_receive = request.files['src_give']
+        text_receive = request.form["text_give"]
+        num_receive = request.form["num_give"]
+    
+        file = request.files["file_give"]
 
-        extension = src_receive.filename.split('.')[-1]
+        extension = file.name.split('.')[-1]
 
         today = datetime.now()
         mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
 
-        filename = f'file-{num_receive}-{mytime}'
+        filename = f'file-{mytime}'
 
-        save_to = f'static/img/{filename}.{extension}'
-        src_receive.save(save_to)
-
-        db.users.insert_one({
+        doc = {
             "email" : email,
             "num" : num_receive,
             "text" : text_receive,
             "file" : f'{filename}.{extension}'
-        })
-        return jsonify({'result': True})
+        }
+
+        db.users.insert_one(doc)
+        return jsonify({'msg':'저장 완료'})
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login_get", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:

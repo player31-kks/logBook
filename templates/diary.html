@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+              integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+              crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <link rel="stylesheet" href="/static/diary.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="/static/diary.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.js"></script>
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="banner">
+            <div class="banner-body">
+                <div class="title">
+                    항해일지 일차
+                </div>
+                <div class="subtitle">
+                    오늘의 목표를 설정해주세요
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="update">
+        <button class="button is-info is-light" onclick="modal_active()">write</button>
+        <button class="button is-info is-light" onclick="update_content()">update</button>
+        <button class="button is-info is-light" onclick="delete_content()">delete</button>
+    </div>
+    <div class="body-box">
+        <div class="left">
+            <img src="/static/arrowleft.png" alt="이전페이지" onclick="move()">
+        </div>
+        <div class="content-box">
+            <div id="todo" class="todo">
+                <div class="control-img">
+                    <img class="main-img" src="static/hanghae.png" alt="">
+                </div>
+                <div class="control-text">
+                    <p class="text"></P>
+                    <p class="who"></p>
+                </div>
+            </div>
+            <div class="like">
+
+            </div>
+            <div id="comment" class="comment">
+                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Natus quod pariatur culpa saepe sunt
+                voluptatem cum ab quia ullam cumque porro sequi eveniet esse itaque id dolor atque, excepturi
+                reprehenderit tempora magnam rem minima veritatis voluptas. Eius dolorem, totam ut qui officia,
+                architecto quo voluptas deleniti et, ea eos. Minus obcaecati veritatis id nemo suscipit consectetur
+                molestias ut accusamus maxime necessitatibus quidem delectus exercitationem cupiditate eos, aperiam
+                blanditiis sint dolore. Quaerat excepturi molestias nobis animi, provident hic velit dolor
+                exercitationem eaque enim neque minus optio nam veniam perspiciatis, possimus quae modi? Laboriosam
+                impedit fuga voluptas illum, ullam repellat sint maiores!
+            </div>
+        </div>
+        <div class="right">
+            <img src="/static/arrowright.png" alt="다음페이지" onclick="move()">
+        </div>
+    </div>
+    <div class="modal">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+            
+            <input id="text" class="write-box" type="text" placeholder="오늘에 대하여">
+            <div class="save">
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="image">
+                    <label class="custom-file-label">Choose file</label>
+                  </div>
+                <button class="button is-info is-light" onclick="save()">Save</button>
+            </div>
+        </div>
+        <button class="modal-close is-large button" aria-label="close" onclick="modal_close()"></button>
+    </div>
+    </div>
+</body>
+
+</html>
