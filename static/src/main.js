@@ -1,6 +1,7 @@
 const addFriend = document.querySelector('#addfriendBtn')
 const friendList = document.querySelector('.friends__list')
 const friendEmail = document.querySelector('#friendEmail')
+const email = document.querySelector('#email')
 
 
 function isEamilVaild(asValue) {
@@ -10,18 +11,21 @@ function isEamilVaild(asValue) {
 }
 
 window.addEventListener('load', () => {
+
+  console.log(cookie)
+  // email.innerHTML = response['email'] + "님";
+
   // 친구 목록 뿌려주기
   $.ajax({
     type: "GET",
     url: "/api/friends",
-    data: {
-    },
-    success: function (response) {
+    data: {},
+    success: function (response) {      
       const friend_list = response['friend_list']
       for (let i = 0; i < friend_list.length; i++) {
         let friend = `
           <li class="friend">
-            <a href="">${friend_list[i].email}</a>
+            <a href="/main/${friend_list[i].friends_email}">${friend_list[i].friends_email}</a>
             <button class="delete is-large delfriendBtn"></button>
           </li>`
         friendList.innerHTML += friend
@@ -52,12 +56,15 @@ addFriend.addEventListener('click', () => {
       if (result === false) {
         alert("친구 조회가 실패했습니다.")
       }
-      let friend = `
-          <li class="friend">
-            <a href="">${response['friend']}</a>
-            <button class="delete is-large"></button>
-          </li>`
-      friendList.innerHTML += friend
+      else{
+        location.reload();
+      }
+      // let friend = `
+      //     <li class="friend">
+      //       <a href='/main/'>${response['friend']}</a>
+      //       <button class="delete is-large"></button>
+      //     </li>`
+      // friendList.innerHTML += friend
     }
   })
 
