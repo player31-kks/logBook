@@ -81,6 +81,32 @@ def duplicate_post():
         return jsonify({'result': True})
     return jsonify({'result': False})
 
+##logbook
+@app.route('/api/comment', methods=['POST'])
+def logbook_post():
+    email_receive = request.form['username_give']
+    num_receive = request.form['num_give']
+    text_receive = request.form['text_give']
+    src_receive = request.files['src_give']
+
+    extension = src_receive.filename.split('.')[-1]
+
+    today = datetime.now()
+    mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
+
+    filename = f'file-{num_receive}-{mytime}'
+
+    save_to = f'static/{filename}.{extension}'
+    src_receive.save(save_to)
+
+    db.users.insert_one({
+        "email" : email_receive,
+        "num" : num_receive,
+        "text" : text_receive,
+        "file" : f'{filename}.{extension}'
+    })
+    return jsonify({'result': True})
+
 ## comment
 @app.route('/api/comment', methods=['GET'])
 def comment_get():
