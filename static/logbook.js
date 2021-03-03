@@ -45,8 +45,7 @@ function save() {
         }
     });
 }
-function showArticles() {
-    
+function showArticles() { 
 }
 
 function modal_active() {

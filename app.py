@@ -26,9 +26,12 @@ def main_get():
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         coords = list(db.imgcircle.find({},{'_id':False}))
         logbooks = list(db.logbook.find({'email': payload['email']},{'_id':False}))
+        logbooks_num = []
         for logbook in logbooks:
             print(logbook['num'])
-        return render_template('main.html', coords = coords, logbooks = logbooks)
+            logbooks_num.append(logbook['num'])
+        
+        return render_template('main.html', coords = coords, logbooks_num = logbooks_num)
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login_get", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
@@ -130,11 +133,7 @@ def comment_post():
 
 ## logbook
 @app.route('/logbook/<keyword>', methods=['GET'])
-def logbook_get(keyword):
-    token=request.cookies.get('token')
-    payload=jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
-    user_info = db.users.find_one({'email' : payload['email']})
-    
+def logbook_get(keyword):   
     try:
         token=request.cookies.get('token')
         payload=jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
@@ -146,7 +145,7 @@ def logbook_get(keyword):
     except:
         return redirect('/')
     
-    logbook_info = db.logbook.find_one({'email':user_info['email'],'num':int(keyword) })
+    logbook_info = db.logbook.find({'email':user_info['email'],'num':int(keyword) })
     if not logbook_info:
         return render_template('logbook.html')
     else:

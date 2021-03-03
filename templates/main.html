@@ -22,15 +22,13 @@
     }
 
     $(document).ready(function () {
-
-      logbooks = '{{logbooks}}'
-      
-      console.log(logbooks);
-      for (let i = 0; i < '{{logbooks}}'.legnth; i++) {
-        // console.log(i);
+      logbooks_num = String('{{logbooks_num}}').replace('[','').replace(']','').replace(/(\s*)/g, "")
+      logbooks_num_list = logbooks_num.split(',')
+      for (let i = 0; i < logbooks_num_list.length; i++) {
+        $('#' + logbooks_num_list[i]).css("display", "block")
+        $('#' + logbooks_num_list[i]).css("background-color", "yellow")
       }
     })
-
   </script>
   <script src="/static/main.js" defer></script>
 </head>
