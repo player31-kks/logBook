@@ -18,7 +18,6 @@ SECRET_KEY = 'SPARTA'
 def home():
     return render_template('login.html')
 
-
 ##login
 @app.route('/main', methods=['GET'])
 def main_get():
