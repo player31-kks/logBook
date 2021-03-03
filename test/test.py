@@ -125,6 +125,7 @@ arr_coord = [
     [624, 1130, 18],
 ]
 
+db.imgcircle.remove()
 
 print(arr_coord[0])
 for i in range(0, 99):
