@@ -16,7 +16,8 @@ SECRET_KEY = 'SPARTA'
 # HTML 화면 보여주기
 @app.route('/')
 def home():
-    return redirect(url_for("login_get"))
+    return render_template('login.html')
+
 
 ##login
 @app.route('/main', methods=['GET'])
@@ -51,14 +52,14 @@ def login_post():
         'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24)  # 로그인 24시간 유지
         # 'exp': datetime.utcnow() + timedelta(seconds= 5)  # 로그인 24시간 유지
         }
-        token = jwt.encode(payload, SECRET_KEY, algorithm='HS256').decode('utf-8')
+        token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
         # token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
         return jsonify({'result': 'success', 'token': token})
     # 찾지 못하면
     else:
         return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
 
-##join
+##signup
 @app.route('/api/signup', methods=['POST'])
 def signup_post():
     email = request.form['email']
@@ -142,32 +143,84 @@ def logbook_post():
     token_receive = request.cookies.get('token')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        email = payload['email']
-        num_receive = request.form['num_give']
-        text_receive = request.form['text_give']
-        src_receive = request.files['src_give']
+        text_receive = request.form["text_give"]
+        num_receive = request.form["num_give"]
+    
+        file = request.files["file_give"]
 
-        extension = src_receive.filename.split('.')[-1]
+        extension = file.name.split('.')[-1]
 
         today = datetime.now()
         mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
 
-        filename = f'file-{num_receive}-{mytime}'
+        filename = f'file-{mytime}'
 
-        save_to = f'static/img/{filename}.{extension}'
-        src_receive.save(save_to)
-
-        db.users.insert_one({
+        doc = {
             "email" : email,
             "num" : num_receive,
             "text" : text_receive,
             "file" : f'{filename}.{extension}'
-        })
+        }
+
+        db.users.insert_one(doc)
+        return jsonify({'msg':'저장 완료'})
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login_get", msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login_get", msg="로그인 정보가 존재하지 않습니다."))
+
+##frined
+@app.route('/api/friends', methods=['GET'])
+def friend_get():
+    token_receive = request.cookies.get('token')    
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+
+        friend_list = list(db.friends.find({'email':payload['email']},{'_id':False}))
+
+        return jsonify({'friend_list': friend_list})
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login_get", msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login_get", msg="로그인 정보가 존재하지 않습니다."))
+
+@app.route('/api/friends', methods=['POST'])
+def friend_post():
+    token_receive = request.cookies.get('token')    
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+
+        friends_email_receive = request.form['friends_email_give']
+
+        user_info = db.users.find_one({'email' : friends_email_receive})
+
+        if not user_info:
+            return jsonify({'result': False})
+        else:
+            db.friends.insert_one({
+                "email" : payload['email'],
+                "friends_email" : friends_email_receive,
+            })
+            return jsonify({'result': True, 'friend': friends_email_receive})
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login_get", msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login_get", msg="로그인 정보가 존재하지 않습니다."))
+
+@app.route('/api/friends', methods=['DELETE'])
+def friend_delete():
+    token_receive = request.cookies.get('token')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        friends_email_receive = request.form['friends_email_give']
+
+        db.friends.remove({"email" : payload['email'], "friends_email" : friends_email_receive})
         return jsonify({'result': True})
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login_get", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login_get", msg="로그인 정보가 존재하지 않습니다."))
+
 
 if __name__ == '__main__':    
     app.run('0.0.0.0', port=5000, debug=True)

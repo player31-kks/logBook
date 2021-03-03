@@ -10,8 +10,6 @@ function isEamilVaild(asValue) {
 
 }
 
-
-
 window.addEventListener('load', () => {
   // 친구 목록 뿌려주기
   $.ajax({

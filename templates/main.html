@@ -18,8 +18,11 @@
         alert("로그아웃이 완료되었습니다.");
         window.location.href = "/";
       }
+      function open_diary() {
+        alert("상세페이지로 이동");
+        window.location.href = "/diary";
+      }
     </script>
-    <script src="../static/main.js" defer></script>
   </head>
   <body>
     <div class="container">
@@ -42,7 +45,7 @@
           border="0"
         />
       </div>
-      <map id="imgmap" name="imgmap">
+      <map id="imgmap" name="imgmap" onclick="open_diary()">
         {% for coord in coords %}
         <area
           shape="circle"
