@@ -1,8 +1,8 @@
-.comment {
+/* .comment {
     height: 100vh;
     border: dodgerblue solid 1px;
     border-radius: 10px;
-}
+} */
 
 .wrap {
     margin: 20px;
@@ -46,12 +46,12 @@
 }
 
 .left {
-    width: 600px;
+    width: 200px;
     margin-top: 200px;
 }
 
 .right {
-    width: 600px;
+    width: 200px;
     margin-top: 200px;
 }
 
@@ -63,14 +63,18 @@ img {
 }
 
 .todo {
-    width: 100%;
-    height: 500px;
+    width: 80vw;
+    height: 80vh;
     border: dodgerblue solid 1px;
     border-radius: 10px;
     margin-bottom: 10px;
 }
 
-.control-img {
+.card {
+    margin: 10px;
+}
+
+.card-content {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -78,28 +82,17 @@ img {
     margin-top: 20px;
 }
 
-.control-text {
-    margin: 20px;
-}
-
-.who {
-    text-align: end;
-    font-size: 0.75rem;
-}
-
-.main-img {
-    width: 300px;
-    height: 300px;
-    background-repeat: no-repeat;
-    background-size: cover;
+.control-img {
+    width: 200px;
+    height: 200px;
 }
 
 .like {
-    width: 100%;
-    height: 100px;
-    border: dodgerblue solid 1px;
-    border-radius: 10px;
-    margin: 10px 0;
+    color: dodgerblue;
+}
+
+.like:hover {
+    color: firebrick;
 }
 
 .modal-content {

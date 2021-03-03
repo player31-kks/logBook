@@ -130,43 +130,42 @@ def comment_post():
 ## logbook
 @app.route('/logbook/<keyword>', methods=['GET'])
 def logbook_get(keyword):
-    token=request.cookies.get('token')
-    payload=jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
-    user_info = db.users.find_one({'email' : payload['email']})
     
     try:
         token=request.cookies.get('token')
-        payload=jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
         user_info = db.users.find_one({'email' : payload['email']})
+        payload=jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
+        
     except jwt.ExpiredSignatureError:
         return redirect('/')
     except jwt.exceptions.DecodeError:
         return redirect('/')
-    except:
-        return redirect('/')
-    
-    logbook_info = db.logbook.find_one({'email':user_info['email'],'num':int(keyword) })
-    if not logbook_info:
-        return render_template('logbook.html')
-    else:
-        return render_template('logbook.html',logbook=logbook_info)
+
+    todolist = list(db.logbook.find({'email':user_info['email'],'num':int(keyword) },{'_id':False}))
+    print(todolist)
+
+    return jsonify({'all_todo':todolist})
 
 @app.route('/api/logbook', methods=['POST'])
 def logbook_post():
     token_receive = request.cookies.get('token')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        email = payload['email']
         text_receive = request.form["text_give"]
         num_receive = request.form["num_give"]
     
         file = request.files["file_give"]
 
-        extension = file.name.split('.')[-1]
+        extension = file.filename.split('.')[-1]
 
         today = datetime.now()
         mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
 
         filename = f'file-{mytime}'
+
+        save_to = f'static/{filename}.{extension}'
+        file.save(save_to)
 
         doc = {
             "email" : email,
@@ -175,7 +174,7 @@ def logbook_post():
             "file" : f'{filename}.{extension}'
         }
 
-        db.users.insert_one(doc)
+        db.logbook.insert_one(doc)
         return jsonify({'msg':'저장 완료'})
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login_get", msg="로그인 시간이 만료되었습니다."))

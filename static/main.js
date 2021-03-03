@@ -18,7 +18,7 @@ window.addEventListener('load', () => {
     data: {
     },
     success: function (response) {
-      const firends_list = response['firends_list']
+      const firends_list = response['friends_list']
       for (let i = 0; i < firends_list.length; i++) {
         let firend = `
           <li class="friend">
