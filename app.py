@@ -21,6 +21,16 @@ def home():
 ##login
 @app.route('/main', methods=['GET'])
 def main_get():
+    token_receive = request.cookies.get('token')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        coords = list(db.imgcircle.find({},{'_id':False}))
+        return render_template('main.html', coords = coords)
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login_get", msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login_get", msg="로그인 정보가 존재하지 않습니다."))
+
     coords = list(db.imgcircle.find({},{'_id':False}))
     print(coords)
     return render_template('main.html', coords = coords)
@@ -41,7 +51,8 @@ def login_post():
     if result is not None:
         payload = {
         'email': username_receive,
-         'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24)  # 로그인 24시간 유지
+        'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24)  # 로그인 24시간 유지
+        # 'exp': datetime.utcnow() + timedelta(seconds= 5)  # 로그인 24시간 유지
         }
         token = jwt.encode(payload, SECRET_KEY, algorithm='HS256').decode('utf-8')
         # token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
@@ -96,7 +107,7 @@ def logbook_post():
 
     filename = f'file-{num_receive}-{mytime}'
 
-    save_to = f'static/{filename}.{extension}'
+    save_to = f'static/img/{filename}.{extension}'
     src_receive.save(save_to)
 
     db.users.insert_one({
@@ -107,7 +118,7 @@ def logbook_post():
     })
     return jsonify({'result': True})
 
-@app.route('/api/comment', methods=['POST'])
+@app.route('/comment', methods=['POST'])
 def comment_post():
     return render_template('login.html')
 
