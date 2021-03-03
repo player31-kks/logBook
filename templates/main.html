@@ -12,7 +12,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
       function logout() {
-        localStorage.removeItem("wtw-token");
+        // localStorage.removeItem("wtw-token");
+        document.cookie = `token = `
         alert("로그아웃이 완료되었습니다.");
         window.location.href = "/";
       }
@@ -72,7 +73,7 @@
           alt=""
           title=""
           coords="{{coord['coords'][0]}},{{coord['coords'][1]}},{{coord['coords'][2]}}"
-          href=""
+          href="/logbook/{{coord['num']}}"
           target=""
           id="{{coord['num']}}"
         />

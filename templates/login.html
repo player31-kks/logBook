@@ -66,8 +66,7 @@
           data: { username_give: username, password_give: password },
           success: function (response) {
             if (response['result'] == 'success') {
-              localStorage.setItem('mytoken', response['token']);
-
+              document.cookie = `token=${response['token']}`
               alert('로그인이 완료되었습니다.')
               window.location.href = '/main'
             } else {
@@ -106,7 +105,7 @@
         <div class="field">
           <label class="label">Password</label>
           <div class="control">
-            <input id="password" class="input" type="text">
+            <input id="password" class="input" type="password">
             <p class="help_pw"></p>
           </div>
         </div>

@@ -13,112 +13,123 @@ client = MongoClient('localhost', 27017)
 db = client.LogBook
 SECRET_KEY = 'SPARTA'
 
-# HTML 화면 보여주기
-@app.route('/')
-def home():
-    return render_template('diary.html')
 
-@app.route('/diary', methods=['POST'])
-def save_diary():
-    # text_receive = request.form['text']
-    # num_receive = request.form['num']
-    
-    file = request.files['src']
+# doc = {'eamil': 'aaa@aaa','password': 'bbb'}
 
-    save_to = 'static/mypicture.png'
-    file.save(save_to)
+arr_coord = [
+    [358, 256, 18],
+    [428, 236, 18],
+    [503, 253, 18],
+    [577, 235, 18],
+    [656, 222, 18],
+    [726, 242, 18],
+    [744, 300, 18],
+    [682, 334, 18],
+    [601, 329, 18],
+    [531, 341, 18],
 
-    doc = {
-        # 'text':text,
-        'src':src
-    }
+    [453, 335, 18],
+    [376, 348, 18],
+    [312, 402, 18],
+    [363, 427, 18],
+    [442, 422, 18],
+    [510, 418, 18],
+    [590, 424, 18],
+    [656, 420, 18],
+    [725, 423, 18],
+    [733, 485, 18],
 
-    db.uploadtest.insert_one(doc)
+    [682, 510, 18],
+    [615, 513, 18],
+    [546, 498, 18],
+    [463, 505, 18],
+    [396, 494, 18],
+    [325, 503, 18],
+    [243, 483, 18],
+    [171, 511, 18],
+    [218, 558, 18],
+    [288, 566, 18],
 
-    return jsonify({'msg':'Complete Writing'})
+    [357, 565, 18],
+    [423, 557, 18],
+    [479, 591, 18],
+    [553, 587, 18],
+    [610, 610, 18],
+    [670, 596, 18],
+    [752, 596, 18],
+    [821, 623, 18],
+    [853, 677, 18],
+    [793, 705, 18],
 
-##login
+    [724, 690, 18],
+    [659, 695, 18],
+    [606, 746, 18],
+    [529, 755, 18],
+    [476, 714, 18],
+    [422, 662, 18],
+    [368, 644, 18],
+    [298, 660, 18],
+    [236, 640, 18],
+    [167, 631, 18],
 
-@app.route('/main', methods=['GET'])
-def main_get():
-    coords = list(db.imgcircle.find({},{'_id':False}))
-    print(coords)
-    return render_template('main.html', coords = coords)
+    [110, 648, 18],
+    [128, 686, 18],
+    [179, 679, 18],
+    [233, 729, 18],
+    [312, 748, 18],
+    [381, 737, 18],
+    [440, 762, 18],
+    [480, 818, 18],
+    [554, 822, 18],
+    [623, 817, 18],
 
-##login
-@app.route('/login', methods=['GET'])
-def login_get():
-    return render_template('login.html')
+    [688, 782, 18],
+    [757, 781, 18],
+    [820, 810, 18],
+    [867, 849, 18],
+    [839, 893, 18],
+    [764, 908, 18],
+    [701, 885, 18],
+    [632, 886, 18],
+    [551, 905, 18],
+    [480, 884, 18],
 
-@app.route('/api/login', methods=['POST'])
-def login_post():
-    username_receive = request.form['username_give']
-    password_receive = request.form['password_give']
+    [409, 871, 18],
+    [368, 830, 18],
+    [302, 830, 18],
+    [244, 840, 18],
+    [173, 821, 18],
+    [113, 865, 18],
+    [156, 922, 18],
+    [212, 908, 18],
+    [280, 936, 18],
+    [354, 936, 18],
 
-    pw_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
-    result = db.users.find_one({'email': username_receive, 'password': pw_hash})
+    [423, 959, 18],
+    [507, 955, 18],
+    [589, 967, 18],
+    [659, 951, 18],
+    [734, 964, 18],
+    [802, 986, 18],
+    [743, 1035, 18],
+    [656, 1042, 18],
+    [580, 1030, 18],
+    [489, 1023, 18],
 
-    if result is not None:
-        payload = {
-        'email': username_receive,
-         'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24)  # 로그인 24시간 유지
-        }
-        token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
+    [418, 1038, 18],
+    [333, 1021, 18],
+    [258, 1036, 18],
+    [291, 1085, 18],
+    [361, 1117, 18],
+    [441, 1119, 18],
+    [507, 1165, 18],
+    [566, 1126, 18],
+    [624, 1130, 18],
+]
 
-        return jsonify({'result': 'success', 'token': token})
-    # 찾지 못하면
-    else:
-        return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
+db.imgcircle.remove()
 
-##signup
-
-@app.route('/api/signup', methods=['POST'])
-def signup_post():
-    email = request.form['email']
-    exists = bool(db.users.find_one({'email':email}))
-    if exists:
-        return jsonify({'result' : False})
-        # return render_template('fail.html')
-
-    name = request.form['name']
-    birth = request.form['birth']
-    password = request.form['password']
-    password_hash = hashlib.sha256(password.encode('utf-8')).hexdigest()
-
-    db.users.insert_one({
-        "email" : email,
-        "name" : name,
-        "birth" : birth,
-        "password" : password_hash
-    })
-    
-    return jsonify({"result":True})
-
-@app.route('/api/duplicate', methods=['POST'])
-def duplicate_post():
-    email = request.form['email']
-    exists = bool(db.users.find_one({"email": email}))
-    if not exists:
-        return jsonify({'result': True})
-    return jsonify({'result': False})
-
-## comment
-@app.route('/api/comment', methods=['GET'])
-def comment_get():
-    return render_template('login.html')
-
-@app.route('/api/comment', methods=['POST'])
-def comment_post():
-    return render_template('login.html')
-
-## ToDolist
-@app.route('/api/todolist', methods=['GET'])
-def todolist_get():
-    return render_template('login.html')
-
-@app.route('/api/todolist', methods=['POST'])
-def todolist_post():
-    return render_template('login.html')
-
-if __name__ == '__main__':    
-    app.run('0.0.0.0', port=5000, debug=True)
+print(arr_coord[0])
+for i in range(0, 99):
+    doc = {'coords':arr_coord[i], 'num' : i + 1}
+    db.imgcircle.insert_one(doc)
