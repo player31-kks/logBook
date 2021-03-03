@@ -37,28 +37,29 @@
     </div>
     <div class="content-box">
       <div id="todo" class="todo">
-        <div class="card">
-          <div class="card-content">
-            <img class="control-img" src="/static/hanghae.png" alt="">
-            <p class="subtitle">
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Explicabo, inventore omnis atque facilis architecto ex deserunt rerum magni ipsum, fugit cum libero nisi at laudantium tempore quos, mollitia earum dolorem corporis! Sit facere dolorum, cupiditate, nisi provident mollitia aperiam, veritatis expedita voluptatibus blanditiis deleniti repellat obcaecati. Sequi vero unde tenetur nemo assumenda magni pariatur expedita architecto quo voluptatibus dolorem molestias aspernatur nobis dolor, laborum saepe accusamus eaque minima qui reiciendis voluptates dignissimos dolore? Ea sint adipisci veritatis natus atque incidunt dolore, ipsum exercitationem ipsam! Dolore voluptatem asperiores, omnis numquam molestias maxime quidem aspernatur possimus harum, perspiciatis, earum saepe quod praesentium!
-            </p>
-          </div>
-          <footer class="card-footer">
-            <p class="card-footer-item">
-              <span class="like" onclick="like()">좋아요</span>
-            </p>
-            <p class="card-footer-item">
-              <span class="like" onclick="delete_card()">
-                삭제하기
-              </span>
-            </p>
-          </footer>
-        </div>
+        {% for logs in logbook %}
+          {% set text = logs["text"] %}
+          {% set file = logs["file"] %}
+            <div class="card">
+              <div class="card-content">
+                <img class="control-img" src="/static/{{file}}" alt="">
+                <p class="subtitle">
+                  {{text}}
+                </p>
+              </div>
+              <footer class="card-footer">
+                <p class="card-footer-item">
+                  <span class="like" onclick="like()">좋아요</span>
+                </p>
+                <p class="card-footer-item">
+                  <span class="like" onclick="delete_card()">
+                    삭제하기
+                  </span>
+                </p>
+              </footer>
+            </div>
+        {% endfor %}
       </div>
-      <!-- <div id="comment" class="comment">
-                {% if logbook %} {{logbook['text']}} {% endif %}
-            </div> -->
     </div>
     <div class="right">
       <img src="/static/arrowright.png" alt="다음페이지" onclick="move('R')">

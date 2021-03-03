@@ -6,6 +6,8 @@ import secrets
 from flask import Flask, render_template, jsonify, request, redirect, url_for, session, escape
 from werkzeug.utils import secure_filename
 from datetime import datetime, timedelta
+import json 
+from bson import json_util
 
 app = Flask(__name__)
 
@@ -26,8 +28,7 @@ def main_get():
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         coords = list(db.imgcircle.find({},{'_id':False}))
         logbooks = list(db.logbook.find({'email': payload['email']},{'_id':False}))
-        for logbook in logbooks:
-            print(logbook['num'])
+        print(logbooks)
         return render_template('main.html', coords = coords, logbooks = logbooks)
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login_get", msg="로그인 시간이 만료되었습니다."))
@@ -66,7 +67,7 @@ def login_post():
         'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24)  # 로그인 24시간 유지
         # 'exp': datetime.utcnow() + timedelta(seconds= 5)  # 로그인 24시간 유지
         }
-        token = jwt.encode(payload, SECRET_KEY, algorithm='HS256').decode('utf-8')
+        token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
         # token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
         return jsonify({'result': 'success', 'token': token})
     # 찾지 못하면
@@ -131,21 +132,34 @@ def comment_post():
 ## logbook
 @app.route('/logbook/<keyword>', methods=['GET'])
 def logbook_get(keyword):
+    token=request.cookies.get('token')
+    payload=jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
+    user_info = db.users.find_one({'email' : payload['email']})
     
     try:
         token=request.cookies.get('token')
-        user_info = db.users.find_one({'email' : payload['email']})
         payload=jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
-        
+        user_info = db.users.find_one({'email' : payload['email']})
     except jwt.ExpiredSignatureError:
         return redirect('/')
     except jwt.exceptions.DecodeError:
         return redirect('/')
+    except:
+        return redirect('/')
+    
+    logbook_info = db.logbook.find({'email':user_info['email'],'num':int(keyword) })
+    
+    log = list(db.logbook.find({},{'_id':False}))
 
-    todolist = list(db.logbook.find({'email':user_info['email'],'num':int(keyword) },{'_id':False}))
-    print(todolist)
-
-    return jsonify({'all_todo':todolist})
+    # num 이 현재페이지일 경우에만 새로운 리스트에 모아서 jinja 템플릿 보냄
+    logbooks=[]
+    for logs in log:
+        if logs['num'] == int(keyword) :
+            logbooks.append(logs)
+    if not logbooks:
+        return render_template('logbook.html')
+    else:
+        return render_template('logbook.html',logbook=logbooks)
 
 @app.route('/api/logbook', methods=['POST'])
 def logbook_post():
@@ -155,6 +169,7 @@ def logbook_post():
         email = payload['email']
         text_receive = request.form["text_give"]
         num_receive = request.form["num_give"]
+        num = int(num_receive)
     
         file = request.files["file_give"]
 
@@ -170,7 +185,7 @@ def logbook_post():
 
         doc = {
             "email" : email,
-            "num" : num_receive,
+            "num" : num,
             "text" : text_receive,
             "file" : f'{filename}.{extension}'
         }
@@ -203,7 +218,7 @@ def friend_post():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
 
-        friends_email_receive = request.form['friends_email']
+        friends_email_receive = request.form['friends_email_give']
 
         user_info = db.users.find_one({'email' : friends_email_receive})
 
@@ -225,7 +240,7 @@ def friend_delete():
     token_receive = request.cookies.get('token')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        friends_email_receive = request.form['friends_email']
+        friends_email_receive = request.form['friends_email_give']
 
         db.friends.remove({"email" : payload['email'], "friends_email" : friends_email_receive})
         return jsonify({'result': True})

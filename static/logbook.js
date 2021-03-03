@@ -42,47 +42,6 @@ function save() {
   });
 }
 
-function post_on_page() {
-  const url = document.location.href.split("/");
-  let num = Number(url[url.length - 1]);
-
-  $.ajax({
-    type: "GET",
-    url: `/logbook/${num}`,
-    data: {},
-    success: function (response) {
-      let logBook = response['all_todo']
-      for(let i = 0; i < logBook.length; i++) {
-        let text = logBook[i]['text']
-        let file = logBook[i]['file']
-
-        let temp_html = `<div class="content-box">
-                          <div id="todo" class="todo">
-                            <div class="card">
-                              <div class="card-content">
-                                <img class="control-img" src="/static/${file}" alt="">
-                                <p class="subtitle">
-                                  ${text}
-                                </p>
-                              </div>
-                              <footer class="card-footer">
-                                <p class="card-footer-item">
-                                  <span class="like" onclick="like()">좋아요</span>
-                                </p>
-                                <p class="card-footer-item">
-                                  <span class="like" onclick="delete_card()">
-                                    삭제하기
-                                  </span>
-                                </p>
-                              </footer>
-                            </div>
-                          </div>`
-        $('#todo').append(temp_html);
-      }
-    }
-  });
-}
-
 function go_main() {
   window.location.href = '/main'
 }
