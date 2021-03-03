@@ -89,7 +89,12 @@
       }
     </style>
     <script>
-      $(window).load(function () {});
+      $(window).on("load", function () {
+        const url = document.location.href.split("/");
+        let num = Number(url[url.length - 1]);
+        const title = document.querySelector(".title");
+        title.textContent = `항해일지 ${num} 일차`;
+      });
 
       function addList() {
         let temp_html = `<div class="comment-box">안녕 나는 추가 되었어</div>`;
@@ -110,12 +115,14 @@
         const url = document.location.href.split("/");
         let num = Number(url[url.length - 1]);
 
-        if ((direction = "R")) {
+        if (direction === "R") {
           num = num + 1 > 99 ? 1 : num + 1;
-        } else if ((direction = "L")) {
+        } else if (direction === "L") {
+          console.log("here");
           num = num - 1 < 1 ? 99 : num - 1;
         }
-        window.location.href = `logbook/${num}`;
+        console.log(num);
+        window.location.href = `/logbook/${num}`;
       }
       // function moreList() {
       // }
@@ -139,7 +146,7 @@
     <div class="wrap">
       <div class="banner">
         <div class="banner-body">
-          <div class="title">항해일지 일차</div>
+          <div class="title"></div>
           <div class="subtitle">오늘의 목표를 설정해주세요</div>
         </div>
       </div>
@@ -162,17 +169,7 @@
         </ul>
         <div class="like"></div>
         <p id="comment" class="comment">
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Natus quod
-          pariatur culpa saepe sunt voluptatem cum ab quia ullam cumque porro
-          sequi eveniet esse itaque id dolor atque, excepturi reprehenderit
-          tempora magnam rem minima veritatis voluptas. Eius dolorem, totam ut
-          qui officia, architecto quo voluptas deleniti et, ea eos. Minus
-          obcaecati veritatis id nemo suscipit consectetur molestias ut
-          accusamus maxime necessitatibus quidem delectus exercitationem
-          cupiditate eos, aperiam blanditiis sint dolore. Quaerat excepturi
-          molestias nobis animi, provident hic velit dolor exercitationem eaque
-          enim neque minus optio nam veniam perspiciatis, possimus quae modi?
-          Laboriosam impedit fuga voluptas illum, ullam repellat sint maiores!
+          {% if logbook %} {{logbook['text']}} {% endif %}
         </p>
       </div>
       <div class="right">
