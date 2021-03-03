@@ -25,15 +25,12 @@ def main_get():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         coords = list(db.imgcircle.find({},{'_id':False}))
+        print(payload['email'])
         return render_template('main.html', coords = coords)
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login_get", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login_get", msg="로그인 정보가 존재하지 않습니다."))
-
-    coords = list(db.imgcircle.find({},{'_id':False}))
-    print(coords)
-    return render_template('main.html', coords = coords)
 
 ##login
 @app.route('/login', methods=['GET'])
@@ -95,32 +92,41 @@ def duplicate_post():
 ##logbook
 @app.route('/api/logbook', methods=['POST'])
 def logbook_post():
-    email_receive = request.form['username_give']
-    num_receive = request.form['num_give']
-    text_receive = request.form['text_give']
-    src_receive = request.files['src_give']
+    token_receive = request.cookies.get('token')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        email = payload['email']
+        num_receive = request.form['num_give']
+        text_receive = request.form['text_give']
+        src_receive = request.files['src_give']
 
-    extension = src_receive.filename.split('.')[-1]
+        extension = src_receive.filename.split('.')[-1]
 
-    today = datetime.now()
-    mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
+        today = datetime.now()
+        mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
 
-    filename = f'file-{num_receive}-{mytime}'
+        filename = f'file-{num_receive}-{mytime}'
 
-    save_to = f'static/img/{filename}.{extension}'
-    src_receive.save(save_to)
+        save_to = f'static/img/{filename}.{extension}'
+        src_receive.save(save_to)
 
-    db.users.insert_one({
-        "email" : email_receive,
-        "num" : num_receive,
-        "text" : text_receive,
-        "file" : f'{filename}.{extension}'
-    })
-    return jsonify({'result': True})
+        db.users.insert_one({
+            "email" : email,
+            "num" : num_receive,
+            "text" : text_receive,
+            "file" : f'{filename}.{extension}'
+        })
+        return jsonify({'result': True})
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login_get", msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login_get", msg="로그인 정보가 존재하지 않습니다."))
 
-@app.route('/comment', methods=['POST'])
+@app.route('/api/comment', methods=['POST'])
 def comment_post():
-    return render_template('login.html')
+
+    return jsonify({'result': True})
+    
 
 ## logbook
 @app.route('/logbook/<keyword>', methods=['GET'])
