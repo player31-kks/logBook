@@ -26,7 +26,6 @@ window.addEventListener('load', () => {
           </li>`
         friendList.innerHTML += friend
       }
-
     }
   })
 })

@@ -34,7 +34,6 @@ body {
   position: absolute;
   top: 200px;
   right: 200px;
-  border: 1px solid black;
 }
 
 .friend > a {
