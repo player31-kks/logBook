@@ -26,7 +26,8 @@ def main_get():
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         coords = list(db.imgcircle.find({},{'_id':False}))
         logbooks = list(db.logbook.find({'email': payload['email']},{'_id':False}))
-        print(logbooks)
+        for logbook in logbooks:
+            print(logbook['num'])
         return render_template('main.html', coords = coords, logbooks = logbooks)
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login_get", msg="로그인 시간이 만료되었습니다."))
@@ -156,6 +157,7 @@ def logbook_post():
     token_receive = request.cookies.get('token')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        email = payload['email']
         text_receive = request.form["text_give"]
         num_receive = request.form["num_give"]
     
