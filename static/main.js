@@ -1,5 +1,5 @@
 const addFriend = document.querySelector('#addfriendBtn')
-const delFriend = document.querySelector('#delfriendBtn')
+const delFriend = document.querySelector('.delfriendBtn')
 const friendList = document.querySelector('.friends__list')
 const friendEmail = document.querySelector('#friendEmail')
 
@@ -21,13 +21,14 @@ window.addEventListener('load', () => {
       const friend_list = response['friend_list']
 
       for (let i = 0; i < friend_list.length; i++) {
-        let firend = `
+        let friend = `
           <li class="friend">
             <a href="">${friend_list[i].email}</a>
-            <button class="delete is-large" id="delfriendBtn"></button>
+            <button class="delete is-large delfriendBtn"></button>
           </li>`
+        friendList.innerHTML += friend
       }
-      friend_list.append(friend)
+
     }
   })
 })
@@ -74,6 +75,8 @@ delFriend.addEventListener('click', (event) => {
 
   //   }
   // })
+  console.log("hello")
   const friend = event.target.parentNode
+  console.log(friend)
   friendList.removeChild(friend)
 })
