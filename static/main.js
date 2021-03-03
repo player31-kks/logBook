@@ -18,15 +18,16 @@ window.addEventListener('load', () => {
     data: {
     },
     success: function (response) {
-      const firends_list = response['firends_list']
-      for (let i = 0; i < firends_list.length; i++) {
+      const friend_list = response['friend_list']
+
+      for (let i = 0; i < friend_list.length; i++) {
         let firend = `
           <li class="friend">
-            <a href="">${firends_list[i].email}</a>
+            <a href="">${friend_list[i].email}</a>
             <button class="delete is-large" id="delfriendBtn"></button>
           </li>`
       }
-      friendList.append(firend)
+      friend_list.append(friend)
     }
   })
 })

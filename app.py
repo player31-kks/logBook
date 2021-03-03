@@ -203,7 +203,7 @@ def friend_post():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
 
-        friends_email_receive = request.form['friends_email_give']
+        friends_email_receive = request.form['friends_email']
 
         user_info = db.users.find_one({'email' : friends_email_receive})
 
