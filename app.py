@@ -43,8 +43,8 @@ def login_post():
         'email': username_receive,
          'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24)  # 로그인 24시간 유지
         }
-        token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
-
+        token = jwt.encode(payload, SECRET_KEY, algorithm='HS256').decode('utf-8')
+        # token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
         return jsonify({'result': 'success', 'token': token})
     # 찾지 못하면
     else:
@@ -116,10 +116,21 @@ def comment_get():
 def comment_post():
     return render_template('login.html')
 
-## ToDolist
-@app.route('/api/todolist', methods=['GET'])
-def todolist_get():
-    return render_template('login.html')
+## logbook
+@app.route('/logbook/<keyword>', methods=['GET'])
+def todolist_get(keyword):
+    token=request.cookies.get('token')
+    payload=jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
+    user_info = db.users.find_one({'email' : payload['email']})
+    
+    if not user_info:
+        return jsonify({'result' : False,'content' : "null",})
+    
+    logbook_info = db.logbook.find_one({'email':user_info['email'],'num':keyword})
+    return jsonify({'result':True,'cotent':{
+        'text' : logbook_info['text'],
+        'src' : logbook_info['src']
+    }})
 
 @app.route('/api/todolist', methods=['POST'])
 def todolist_post():

@@ -1,3 +1,10 @@
 {
+<<<<<<< HEAD
     "python.pythonPath": "C:\\ProgramData\\Anaconda3\\python.exe"
 }
+=======
+
+  "python.pythonPath": "venv\\Scripts\\python.exe"
+}
+
+>>>>>>> 088c92812e35ad5a257fd10a8ffa87d7fa50f9be
