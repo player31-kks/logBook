@@ -1,5 +1,4 @@
 const addFriend = document.querySelector('#addfriendBtn')
-const delFriend = document.querySelector('#delfriendBtn')
 const friendList = document.querySelector('.friends__list')
 const friendEmail = document.querySelector('#friendEmail')
 
@@ -22,14 +21,16 @@ window.addEventListener('load', () => {
       for (let i = 0; i < firends_list.length; i++) {
         let firend = `
           <li class="friend">
-            <a href="">${firends_list[i].email}</a>
-            <button class="delete is-large" id="delfriendBtn"></button>
+            <a href="">${friend_list[i].email}</a>
+            <button class="delete is-large delfriendBtn"></button>
           </li>`
+        friendList.innerHTML += friend
       }
-      friendList.append(firend)
+
     }
   })
 })
+
 
 addFriend.addEventListener('click', () => {
 
@@ -48,31 +49,38 @@ addFriend.addEventListener('click', () => {
     },
     success: function (response) {
       const result = response['result']
+      console.log(response)
       if (result === false) {
         alert("친구 조회가 실패했습니다.")
       }
-      let firend = `
+      let friend = `
           <li class="friend">
-            <a href="">${response['friend_email']}</a>
-            <button class="delete is-large" id="delfriendBtn"></button>
+            <a href="">${response['friend']}</a>
+            <button class="delete is-large"></button>
           </li>`
-      friendList.append(firend)
+      friendList.innerHTML += friend
     }
   })
 
 })
 
-delFriend.addEventListener('click', (event) => {
-  // $.ajax({
-  //   type: "DELETE",
-  //   url: "/api/friends",
-  //   data: {
-  //     friends_email
-  //   },
-  //   success: function (response) {
+friendList.addEventListener('click', (event) => {
+  if (event.currentTarget !== event.target) {
+    if (event.target.tagName = "BUTTON") {
+      const friend = event.target.parentNode
+      const friends_email = friend.querySelector('a')
+      friendList.removeChild(friend)
 
-  //   }
-  // })
-  const friend = event.target.parentNode
-  friendList.removeChild(friend)
+      $.ajax({
+        type: "DELETE",
+        url: "/api/friends",
+        data: {
+          friends_email: friends_email.textContent
+        },
+        success: function (response) {
+
+        }
+      })
+    }
+  }
 })

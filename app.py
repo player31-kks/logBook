@@ -26,7 +26,8 @@ def main_get():
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         coords = list(db.imgcircle.find({},{'_id':False}))
         logbooks = list(db.logbook.find({'email': payload['email']},{'_id':False}))
-        print(logbooks)
+        for logbook in logbooks:
+            print(logbook['num'])
         return render_template('main.html', coords = coords, logbooks = logbooks)
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login_get", msg="로그인 시간이 만료되었습니다."))
@@ -65,7 +66,7 @@ def login_post():
         'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24)  # 로그인 24시간 유지
         # 'exp': datetime.utcnow() + timedelta(seconds= 5)  # 로그인 24시간 유지
         }
-        token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
+        token = jwt.encode(payload, SECRET_KEY, algorithm='HS256').decode('utf-8')
         # token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
         return jsonify({'result': 'success', 'token': token})
     # 찾지 못하면
@@ -202,7 +203,7 @@ def friend_post():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
 
-        friends_email_receive = request.form['friends_email_give']
+        friends_email_receive = request.form['friends_email']
 
         user_info = db.users.find_one({'email' : friends_email_receive})
 
@@ -224,7 +225,7 @@ def friend_delete():
     token_receive = request.cookies.get('token')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        friends_email_receive = request.form['friends_email_give']
+        friends_email_receive = request.form['friends_email']
 
         db.friends.remove({"email" : payload['email'], "friends_email" : friends_email_receive})
         return jsonify({'result': True})
