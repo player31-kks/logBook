@@ -6,6 +6,8 @@ import secrets
 from flask import Flask, render_template, jsonify, request, redirect, url_for, session, escape
 from werkzeug.utils import secure_filename
 from datetime import datetime, timedelta
+import json 
+from bson import json_util
 
 app = Flask(__name__)
 
@@ -25,6 +27,7 @@ def main_get():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         coords = list(db.imgcircle.find({},{'_id':False}))
+<<<<<<< HEAD
 
         return render_template('main.html', coords = coords, who = payload['email'])
         # logbooks = list(db.logbook.find({'email': payload['email']},{'_id':False}))
@@ -35,6 +38,11 @@ def main_get():
         
         # return render_template('main.html', coords = coords, logbooks_num = logbooks_num)
         
+=======
+        logbooks = list(db.logbook.find({'email': payload['email']},{'_id':False}))
+        print(logbooks)
+        return render_template('main.html', coords = coords, logbooks = logbooks)
+>>>>>>> cdfdb21158d044a26814dbf0e0365eea7dc5aafc
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login_get", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
@@ -72,7 +80,7 @@ def login_post():
         'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24)  # 로그인 24시간 유지
         # 'exp': datetime.utcnow() + timedelta(seconds= 5)  # 로그인 24시간 유지
         }
-        token = jwt.encode(payload, SECRET_KEY, algorithm='HS256').decode('utf-8')
+        token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
         # token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
         return jsonify({'result': 'success', 'token': token})
     # 찾지 못하면
@@ -149,10 +157,22 @@ def logbook_get(keyword):
         return redirect('/')
     
     logbook_info = db.logbook.find({'email':user_info['email'],'num':int(keyword) })
+<<<<<<< HEAD
     if not logbook_info:
+=======
+    
+    log = list(db.logbook.find({},{'_id':False}))
+
+    # num 이 현재페이지일 경우에만 새로운 리스트에 모아서 jinja 템플릿 보냄
+    logbooks=[]
+    for logs in log:
+        if logs['num'] == int(keyword) :
+            logbooks.append(logs)
+    if not logbooks:
+>>>>>>> cdfdb21158d044a26814dbf0e0365eea7dc5aafc
         return render_template('logbook.html')
     else:
-        return render_template('logbook.html',logbook=logbook_info)
+        return render_template('logbook.html',logbook=logbooks)
 
 @app.route('/api/logbook', methods=['POST'])
 def logbook_post():
@@ -162,24 +182,28 @@ def logbook_post():
         email = payload['email']
         text_receive = request.form["text_give"]
         num_receive = request.form["num_give"]
+        num = int(num_receive)
     
         file = request.files["file_give"]
 
-        extension = file.name.split('.')[-1]
+        extension = file.filename.split('.')[-1]
 
         today = datetime.now()
         mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
 
         filename = f'file-{mytime}'
 
+        save_to = f'static/{filename}.{extension}'
+        file.save(save_to)
+
         doc = {
             "email" : email,
-            "num" : num_receive,
+            "num" : num,
             "text" : text_receive,
             "file" : f'{filename}.{extension}'
         }
 
-        db.users.insert_one(doc)
+        db.logbook.insert_one(doc)
         return jsonify({'msg':'저장 완료'})
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login_get", msg="로그인 시간이 만료되었습니다."))
@@ -231,7 +255,7 @@ def friend_delete():
     token_receive = request.cookies.get('token')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        friends_email_receive = request.form['friends_email']
+        friends_email_receive = request.form['friends_email_give']
 
         db.friends.remove({"email" : payload['email'], "friends_email" : friends_email_receive})
         return jsonify({'result': True})

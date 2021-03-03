@@ -20,7 +20,7 @@ window.addEventListener('load', () => {
     type: "GET",
     url: "/api/friends",
     data: {},
-    success: function (response) {      
+    success: function (response) {
       const friend_list = response['friend_list']
       for (let i = 0; i < friend_list.length; i++) {
         let friend = `
@@ -56,7 +56,7 @@ addFriend.addEventListener('click', () => {
       if (result === false) {
         alert("친구 조회가 실패했습니다.")
       }
-      else{
+      else {
         location.reload();
       }
       // let friend = `
