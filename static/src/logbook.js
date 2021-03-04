@@ -14,6 +14,12 @@ $(window).on("load", function () {
   let num = Number(url[url.length - 1]);
   const title = document.querySelector(".title");
   title.textContent = `항해일지 ${num} 일차`;
+
+  const user = document.querySelector('.user-info');
+  
+  let eamil = url[url.length - 2].split('@')[0]
+  user.innerHTML = eamil + "님 항해일지 입니다."
+
 });
 
 function save() {
@@ -63,14 +69,9 @@ function save() {
 }
 
 function go_main() {
-  $.ajax({
-    type: "GET",
-    url: "/api/get_email",
-    data: {},
-    success: function (response) {
-      window.location.href = '/main/' + response["email"]
-    }
-  });
+  let url = document.location.href.split("/");
+  let email = url[url.length - 2];
+  window.location.href = '/main/' + email
 }
 
 function modal_active() {
@@ -88,7 +89,8 @@ function move(direction) {
   let num = Number(url[url.length - 1]);
   let length = 0;
 
-  if (num >= 10) {
+  if(num >= 10)
+  {
     length = 2
   }
   else {

@@ -64,7 +64,6 @@ function init() {
         let url = document.location.href.split("/");
         let eamil = url[url.length - 1].split('@')[0]
         login_email.innerHTML = eamil + "님 항해일지 입니다."
-        // response["email"]
       }
     });
 
