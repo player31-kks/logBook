@@ -18,23 +18,20 @@ SECRET_KEY = 'SPARTA'
 # HTML 화면 보여주기
 @app.route('/')
 def home():
-    return render_template('login.html')
-
-##login
-@app.route('/main', methods=['GET'])
-def main_get():
+    return render_template('login.html')    
+##email_get
+@app.route('/api/get_email', methods=['GET'])
+def email_get():
     token_receive = request.cookies.get('token')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        coords = list(db.imgcircle.find({},{'_id':False}))
-        logbooks = list(db.logbook.find({'email': payload['email']},{'_id':False}))
-        print(logbooks)
-        return render_template('main.html', coords = coords, logbooks = logbooks)
+        return jsonify({"email":payload['email']})
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login_get", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login_get", msg="로그인 정보가 존재하지 않습니다."))
 
+##main
 @app.route('/main/<keyword>', methods=['GET'])
 def main_get(keyword):
     token_receive = request.cookies.get('token')
@@ -138,32 +135,31 @@ def comment_post():
     return jsonify({'result': True})    
 
 ## logbook
-@app.route('/logbook/<keyword>', methods=['GET'])
-def logbook_get(keyword):
+@app.route('/logbook/<email>/<num>', methods=['GET'])
+def logbook_get(email,num):
     try:
         token=request.cookies.get('token')
         payload=jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
-        user_info = db.users.find_one({'email' : payload['email']})
+        # user_info = db.users.find_one({'email' : payload['email']})
+        # logbook_info = db.logbook.find({'email':user_info['email'],'num':int(keyword) })    
+        log = list(db.logbook.find({},{'_id':False}))
+
+        # num 이 현재페이지일 경우에만 새로운 리스트에 모아서 jinja 템플릿 보냄
+        logbooks=[]
+        for logs in log:
+            if logs['num'] == int(num) and logs['email'] == email:
+                logbooks.append(logs)
+        if not logbooks:
+            return render_template('logbook.html')
+        else:
+            return render_template('logbook.html',logbook=logbooks)
+
     except jwt.ExpiredSignatureError:
         return redirect('/')
     except jwt.exceptions.DecodeError:
         return redirect('/')
     except:
-        return redirect('/')
-    
-    logbook_info = db.logbook.find({'email':user_info['email'],'num':int(keyword) })
-    
-    log = list(db.logbook.find({},{'_id':False}))
-
-    # num 이 현재페이지일 경우에만 새로운 리스트에 모아서 jinja 템플릿 보냄
-    logbooks=[]
-    for logs in log:
-        if logs['num'] == int(keyword) :
-            logbooks.append(logs)
-    if not logbooks:
-        return render_template('logbook.html')
-    else:
-        return render_template('logbook.html',logbook=logbooks)
+        return redirect('/') 
 
 @app.route('/api/logbook', methods=['POST'])
 def logbook_post():
@@ -184,7 +180,7 @@ def logbook_post():
 
         filename = f'file-{mytime}'
 
-        save_to = f'static/{filename}.{extension}'
+        save_to = f'static/logbook_img/{filename}.{extension}'
         file.save(save_to)
 
         doc = {
@@ -201,6 +197,25 @@ def logbook_post():
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login_get", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
+        return redirect(url_for("login_get", msg="로그인 정보가 존재하지 않습니다."))
+
+@app.route('/api/logbook', methods=['DELETE'])
+def logbook_delete():
+    token_receive = request.cookies.get('token')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        email = request.form['email_give']
+        num = request.form['num_give']
+        file_name = request.form['file_give']
+
+        db.logbook.delete_one({'email': email, "file_name" : file_name, "num" : num})
+        
+        return jsonify({'result': True})
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login_get", msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login_get", msg="로그인 정보가 존재하지 않습니다."))
+    except:
         return redirect(url_for("login_get", msg="로그인 정보가 존재하지 않습니다."))
 
 ##frined
@@ -257,23 +272,12 @@ def friend_delete():
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login_get", msg="로그인 정보가 존재하지 않습니다."))
 
-
-@app.route('/api/like', methods=['POST'])
-def like_post():
+##like
+@app.route('/api/like', methods=['GET'])
+def like_get():
     token_receive = request.cookies.get('token')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        email = request.form['email_give']
-        text = request.form['text_give']
-        file_name = request.form['file_give']
-
-        target_logbook = db.logbook.find_one({'email': email, "file_name" : file_name, "text" : text})
-        current_like = target_logbook['like']
-
-        new_like = current_like + 1
-
-        db.logbook.update_one({'email': email, "file_name" : file_name, "text" : text}, {'$set': {'like': new_like}})
-        
         return jsonify({'result': True})
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login_get", msg="로그인 시간이 만료되었습니다."))
@@ -282,6 +286,29 @@ def like_post():
     except:
         return redirect(url_for("login_get", msg="로그인 정보가 존재하지 않습니다."))
 
+@app.route('/api/like', methods=['POST'])
+def like_post():
+    token_receive = request.cookies.get('token')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        email = request.form['email_give']
+        num = request.form['num_give']
+        file_name = request.form['file_give']
+
+        target_logbook = db.logbook.find_one({'email': email, "file_name" : file_name, "num" : num})
+        current_like = target_logbook['like']
+
+        new_like = current_like + 1
+
+        db.logbook.update_one({'email': email, "file_name" : file_name, "num" : num}, {'$set': {'like': new_like}})
+        
+        return jsonify({'result': True})
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login_get", msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login_get", msg="로그인 정보가 존재하지 않습니다."))
+    except:
+        return redirect(url_for("login_get", msg="로그인 정보가 존재하지 않습니다."))
 
 if __name__ == '__main__':    
     app.run('0.0.0.0', port=5000, debug=True)
