@@ -11,40 +11,11 @@
       href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css"
     />
     <link rel="stylesheet" href="/static/css/main.css" />
-
-    <!--js-script  -->
     <!-- Add jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- Add maphilight plugin -->
-    <script
-      type="text/javascript"
-      src="/static/src/jquery.maphilight.js"
-    ></script>
+    <script src="/static/src/jquery.maphilight.js" defer></script>
     <!-- Activate maphilight plugin -->
-    <script type="text/javascript">
-      $(function () {
-        $(".imgMap").maphilight({
-          fillColor: "008800",
-          strokeColor: "ff0000",
-          strokeWidth: 2,
-        });
-        const data = {};
-        data.alwaysOn = true;
-        $("area[class='on']").data("maphilight", data);
-      });
-    </script>
-    <script>
-      function logout() {
-        // localStorage.removeItem("wtw-token");
-        document.cookie = "token =; expires=Thu, 01 Jan 1999 00:00:10 GMT;";
-        alert("로그아웃이 완료되었습니다.");
-        window.location.href = "/";
-      }
-      function open_diary() {
-        alert("상세페이지로 이동");
-        window.location.href = "/diary";
-      }
-    </script>
     <script src="/static/src/main.js" defer></script>
   </head>
   <body>
@@ -52,9 +23,7 @@
       <div class="hero-body">
         <div class="button-location">
           <p class="title">항해일지</p>
-          <button class="button is-info is-light" onclick="logout()">
-            Log Out
-          </button>
+          <button class="button is-info is-light" id="logout">Log Out</button>
         </div>
         <p class="subtitle">진행중인 날짜를 클릭하세요</p>
       </div>
@@ -88,7 +57,7 @@
         </div>
       </div>
     </section>
-    <map id="imgmap" name="imgmap" onclick="open_diary()">
+    <map id="imgmap" name="imgmap">
       {% for coord in coords %}
       <area
         shape="circle"
