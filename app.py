@@ -15,7 +15,8 @@ app = Flask(__name__)
 app.autoversion = True
 Autoversion(app)
 
-client = MongoClient('mongodb://test:test@localhost', 27017)
+# client = MongoClient('mongodb://test:test@localhost', 27017)
+client = MongoClient('localhost', 27017)
 db = client.LogBook
 SECRET_KEY = 'SPARTA'
 

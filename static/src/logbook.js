@@ -1,13 +1,4 @@
-// function addList() {
-//     let temp_html = `<div class="comment-box">안녕 나는 추가 되었어</div>`;
-//     $('#comment').append(temp_html);
-// }
 
-// $(window).scroll(function () {
-//     if ($(window).scrollTop() == $(document).height() - $(window).height()) {
-//         addList();
-//     }
-// });
 
 $(window).on("load", function () {
   const url = document.location.href.split("/");
@@ -28,13 +19,11 @@ $(window).on("load", function () {
       let name = ''
 
       let articles = response['all_users']
-      for(let i = 0; i < articles.length; i++)
-      {
-        if(articles[i]['email'] == email)
-        {
+      for (let i = 0; i < articles.length; i++) {
+        if (articles[i]['email'] == email) {
           name = articles[i]['name']
           break;
-        }            
+        }
       }
       user.innerHTML = name + "님 항해일지 입니다."
     }
@@ -109,8 +98,7 @@ function move(direction) {
   let num = Number(url[url.length - 1]);
   let length = 0;
 
-  if(num >= 10)
-  {
+  if (num >= 10) {
     length = 2
   }
   else {
