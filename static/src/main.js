@@ -12,7 +12,7 @@ function isEamilVaild(asValue) {
   return regExp.test(asValue);
 }
 //myPage
-function myPage(){
+function myPage() {
   $.ajax({
     type: "GET",
     url: "/api/get_email",
@@ -62,25 +62,23 @@ function init() {
 
         //현재 Load된 Page의 주인 ID 보이게 하기
         let url = document.location.href.split("/");
-        let eamil = url[url.length-1].split('@')[0]
+        let eamil = url[url.length - 1].split('@')[0]
         login_email.innerHTML = eamil + "님 항해일지 입니다."
         response["email"]
       }
     });
 
   })
-
-
   $(function () {
     $(".imgMap").maphilight({
       fillColor: "008800",
       strokeColor: "ff0000",
       strokeWidth: 2,
     });
-    const data = {};
+    var data = $('#star').mouseout().data('maphilight') || {};
     data.alwaysOn = true;
+    console.log(data)
     $("area[class='on']").data("maphilight", data);
-    console.log($("area[class='on']"))
   });
   //친구추가
   addFriend.addEventListener('click', () => {
@@ -99,30 +97,29 @@ function init() {
       },
       success: function (response) {
         const result = response['result']
-        console.log(response)
-        if (result === false) {
-          alert("친구 조회가 실패했습니다.")
+        if (result === 'False') {
+          alert(response['err'])
+          friendEmail.value = ''
         }
         else {
-          location.reload();
+          let friend = `
+              <li class="friend">
+                <a href='/main/${response['friend']}'>${response['friend']}</a>
+                <button class="delete is-large"></button>
+              </li>`
+          friendList.innerHTML += friend
+          friendEmail.value = ''
         }
-        // let friend = `
-        //     <li class="friend">
-        //       <a href='/main/'>${response['friend']}</a>
-        //       <button class="delete is-large"></button>
-        //     </li>`
-        // friendList.innerHTML += friend
       }
     })
   })
   //친구삭제
   friendList.addEventListener('click', (event) => {
     if (event.currentTarget !== event.target) {
-      if (event.target.tagName = "BUTTON") {
+      if (event.target.tagName === "BUTTON") {
         const friend = event.target.parentNode
         const friends_email = friend.querySelector('a')
         friendList.removeChild(friend)
-
         $.ajax({
           type: "DELETE",
           url: "/api/friends",
@@ -135,8 +132,6 @@ function init() {
       }
     }
   })
-
-
   //로그아웃
   myPageBtn.addEventListener('click', myPage)
   //로그아웃

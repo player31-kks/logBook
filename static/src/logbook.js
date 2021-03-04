@@ -28,8 +28,8 @@ function save() {
       type: "POST",
       url: "/api/logbook",
       data: {
-        text_give:text,
-        num_give:num,
+        text_give: text,
+        num_give: num,
       },
       success: function (response) {
         alert(response["msg"])
@@ -42,8 +42,8 @@ function save() {
     let form_data = new FormData()
     form_data.append("text_give", text)
     form_data.append("num_give", num)
-    form_data.append("file_give",file)
-    
+    form_data.append("file_give", file)
+
 
     $.ajax({
       type: "POST",
@@ -92,7 +92,7 @@ function move(direction) {
   {
     length = 2
   }
-  else{
+  else {
     length = 1
   }
 
@@ -102,13 +102,12 @@ function move(direction) {
     console.log("here");
     num = num - 1 < 1 ? 99 : num - 1;
   }
-  
+
   let url_str = ''
   url = document.location.href;
 
-  for(let i = 0; i < url.length - length; i++)
-  {
-      url_str += url[i];
+  for (let i = 0; i < url.length - length; i++) {
+    url_str += url[i];
   }
   url_str += num;
   window.location.href = url_str;
@@ -137,7 +136,7 @@ function like(obj) {
         alert('에러 발생');
       }
     }
-});
+  });
 }
 
 function delete_card(obj) {
@@ -146,7 +145,7 @@ function delete_card(obj) {
   let url = document.location.href.split("/");
   let num = Number(url[url.length - 1]);
   let email = url[url.length - 2];
-  
+
   $.ajax({
     type: 'DELETE',
     url: '/api/logbook',
@@ -164,15 +163,15 @@ function delete_card(obj) {
         alert('에러 발생');
       }
     }
-});
+  });
 
-//   $.ajax({
-//     type: 'DELETE',
-//     url: '/api/logbook',
-//     data: form_data,
-//     success: function (response) {
-//         alert(response['msg']);
-//         window.location.reload();
-//     }
-// });
+  //   $.ajax({
+  //     type: 'DELETE',
+  //     url: '/api/logbook',
+  //     data: form_data,
+  //     success: function (response) {
+  //         alert(response['msg']);
+  //         window.location.reload();
+  //     }
+  // });
 }

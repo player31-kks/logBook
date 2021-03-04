@@ -76,8 +76,8 @@ def login_post():
         'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24)  # 로그인 24시간 유지
         # 'exp': datetime.utcnow() + timedelta(seconds= 5)  # 로그인 24시간 유지
         }
-        # token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
-        token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
+        # token = jwt.encode(payload, SECRET_KEY, algorithm='HS256').decode('utf-8')
+        token = jwt.encode(payload, SECRET_KEY, algorithm='HS256').decode('utf-8')
         return jsonify({'result': 'success', 'token': token})
     # 찾지 못하면
     else:
@@ -240,7 +240,9 @@ def friend_post():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         friends_email_receive = request.form['friends_email']
-        
+        if payload['email'] ==friends_email_receive:
+            return jsonify({'result':'False','err':'자신은 친구가 될 수 없습니다.'})
+            
         already_friend = db.friends.find_one({'email':payload['email'],"friends_email" : friends_email_receive},{'_id':False})
         if already_friend:
             return jsonify({'result':'False','err':'이미 존재하는 친구입니다.'})
