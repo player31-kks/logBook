@@ -97,7 +97,7 @@
       {% for coord in coords %}
       <area
         shape="circle"
-        class="on"
+        class="{{coord['is_date']}}"
         alt=""
         title=""
         coords="{{coord['coords'][0]}},{{coord['coords'][1]}},{{coord['coords'][2]}}"

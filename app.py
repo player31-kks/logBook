@@ -41,15 +41,14 @@ def main_get(keyword):
         coords = list(db.imgcircle.find({},{'_id':False}))
 
         lokbook_list = list(db.logbook.find({'email':keyword},{'_id':False}).sort('num'))
-        is_date = []
-
-        for i in range(0,99):
-            is_date.append(False)
-        
+        is_date = ['off' for i in range(len(coords))]
         for lokbook in lokbook_list:
-            is_date[lokbook['num'] - 1] = True
+            is_date[lokbook['num'] - 1] = 'on'
+            
+        for i in range(len(coords)):
+            coords[i]['is_date'] = is_date[i]
         
-        return render_template('main.html', coords = coords, email = keyword, is_date = is_date)
+        return render_template('main.html', coords = coords, email = keyword)
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login_get", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
