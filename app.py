@@ -8,8 +8,12 @@ from werkzeug.utils import secure_filename
 from datetime import datetime, timedelta
 import json 
 from bson import json_util
+from flaskext.autoversion import Autoversion
+
 
 app = Flask(__name__)
+app.autoversion = True
+Autoversion(app)
 
 client = MongoClient('localhost', 27017)
 db = client.LogBook
@@ -73,7 +77,7 @@ def login_post():
         # 'exp': datetime.utcnow() + timedelta(seconds= 5)  # 로그인 24시간 유지
         }
         # token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
-        token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
+        token = jwt.encode(payload, SECRET_KEY, algorithm='HS256').decode('utf-8')
         return jsonify({'result': 'success', 'token': token})
     # 찾지 못하면
     else:

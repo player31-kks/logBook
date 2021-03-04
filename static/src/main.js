@@ -48,6 +48,7 @@ function init() {
     const data = {};
     data.alwaysOn = true;
     $("area[class='on']").data("maphilight", data);
+    console.log($("area[class='on']"))
   });
   //친구추가
   addFriend.addEventListener('click', () => {
