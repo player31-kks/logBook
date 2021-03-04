@@ -56,7 +56,14 @@ function init() {
       url: "/api/get_email",
       data: {},
       success: function (response) {
-        console.log(login_email)
+        // login된 사람 ID 보이게 하기
+        // let eamil = response["email"].split('@')[0]
+        // login_email.innerHTML = eamil + "님 환영합니다"
+
+        //현재 Load된 Page의 주인 ID 보이게 하기
+        let url = document.location.href.split("/");
+        let eamil = url[url.length-1].split('@')[0]
+        login_email.innerHTML = eamil + "님 항해일지 입니다."
         // response["email"]
       }
     });
