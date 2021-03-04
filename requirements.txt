@@ -1,11 +1,16 @@
 certifi==2020.12.5
+cffi==1.14.5
 chardet==4.0.0
 click==7.1.2
+cryptography==3.4.6
 Flask==1.1.2
+Flask-Autoversion==0.2.0
 idna==2.10
 itsdangerous==1.1.0
 Jinja2==2.11.3
+jwt==1.2.0
 MarkupSafe==1.1.1
+pycparser==2.20
 PyJWT==1.7.1
 pymongo==3.11.3
 requests==2.25.1
