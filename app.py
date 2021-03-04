@@ -264,12 +264,12 @@ def like_post():
         text = request.form['text_give']
         file_name = request.form['file_give']
 
-        target_logbook = db.logbook.find_one({'email': email, "num" : num, "text" : text})
+        target_logbook = db.logbook.find_one({'email': email, "file_name" : file_name, "text" : text})
         current_like = target_logbook['like']
 
         new_like = current_like + 1
 
-        db.logbook.update_one({'email': email, "num" : num, "text" : text}, {'$set': {'like': new_like}})
+        db.logbook.update_one({'email': email, "file_name" : file_name, "text" : text}, {'$set': {'like': new_like}})
         
         return jsonify({'result': True})
     except jwt.ExpiredSignatureError:
