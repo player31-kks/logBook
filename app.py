@@ -18,7 +18,7 @@ SECRET_KEY = 'SPARTA'
 # HTML 화면 보여주기
 @app.route('/')
 def home():
-    return render_template('login.html')    
+    return render_template('login.html')
 ##email_get
 @app.route('/api/get_email', methods=['GET'])
 def email_get():
@@ -98,8 +98,7 @@ def signup_post():
         "name" : name,
         "birth" : birth,
         "password" : password_hash
-    })
-    
+    })    
     return jsonify({"result":True})
 
 @app.route('/api/duplicate', methods=['POST'])
