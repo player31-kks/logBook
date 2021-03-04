@@ -54,6 +54,12 @@ function go_main() {
   });
 }
 
+function like(obj) {
+  console.log($(obj))
+  console.log($(obj).closest('.card').children('.card-content').children('.subtitle').text())
+  // console.log($(obj).parent().children('.subtitle'))
+}
+
 function modal_active() {
   const signup = document.querySelector('.modal');
   signup.classList.add('is-active');
