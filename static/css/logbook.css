@@ -59,7 +59,7 @@ img {
 
 .todo {
     width: 80vw;
-    height: 80vh;
+    height: 100%;
     border: dodgerblue solid 1px;
     border-radius: 10px;
     margin-bottom: 10px;
