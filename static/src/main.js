@@ -3,11 +3,24 @@ const friendList = document.querySelector('.friends__list')
 const friendEmail = document.querySelector('#friendEmail')
 const email = document.querySelector('#email')
 const logoutBtn = document.querySelector('#logout')
+const myPageBtn = document.querySelector('#my_page')
+const login_email = document.querySelector('#login_email')
 
 // email validation
 function isEamilVaild(asValue) {
   const regExp = /^[a-zA-Z0-9._+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9.]/;
   return regExp.test(asValue);
+}
+//myPage
+function myPage() {
+  $.ajax({
+    type: "GET",
+    url: "/api/get_email",
+    data: {},
+    success: function (response) {
+      window.location.href = '/main/' + response["email"]
+    }
+  });
 }
 //logout
 function logout() {
@@ -37,6 +50,24 @@ function init() {
         }
       }
     })
+
+    $.ajax({
+      type: "GET",
+      url: "/api/get_email",
+      data: {},
+      success: function (response) {
+        // login된 사람 ID 보이게 하기
+        // let eamil = response["email"].split('@')[0]
+        // login_email.innerHTML = eamil + "님 환영합니다"
+
+        //현재 Load된 Page의 주인 ID 보이게 하기
+        let url = document.location.href.split("/");
+        let eamil = url[url.length - 1].split('@')[0]
+        login_email.innerHTML = eamil + "님 항해일지 입니다."
+        // response["email"]
+      }
+    });
+
   })
   $(function () {
     $(".imgMap").maphilight({
@@ -102,6 +133,8 @@ function init() {
       }
     }
   })
+  //로그아웃
+  myPageBtn.addEventListener('click', myPage)
   //로그아웃
   logoutBtn.addEventListener('click', logout)
 }

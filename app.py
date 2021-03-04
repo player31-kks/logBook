@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+import os.path
 import jwt
 import datetime
 import hashlib
@@ -9,7 +10,6 @@ from datetime import datetime, timedelta
 import json 
 from bson import json_util
 from flaskext.autoversion import Autoversion
-
 
 app = Flask(__name__)
 app.autoversion = True
@@ -77,7 +77,7 @@ def login_post():
         # 'exp': datetime.utcnow() + timedelta(seconds= 5)  # 로그인 24시간 유지
         }
         # token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
-        token = jwt.encode(payload, SECRET_KEY, algorithm='HS256').decode('utf-8')
+        token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
         return jsonify({'result': 'success', 'token': token})
     # 찾지 못하면
     else:
@@ -173,19 +173,20 @@ def logbook_post():
         text_receive = request.form["text_give"]
         num_receive = request.form["num_give"]
         num = int(num_receive)
-    
-        file = request.files["file_give"]
-
-        extension = file.filename.split('.')[-1]
-
+        file = ''
+        
         today = datetime.now()
         mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
-
         filename = f'file-{mytime}'
-
-        save_to = f'static/logbook_img/{filename}.{extension}'
-        file.save(save_to)
-
+        extension = 'temp'
+        try:
+            file = request.files["file_give"]
+            extension = file.filename.split('.')[-1]
+            save_to = f'static/logbook_img/{filename}.{extension}'
+            file.save(save_to)
+        except:
+            print('error')
+        print('hello')
         doc = {
             "email" : email,
             "num" : num,

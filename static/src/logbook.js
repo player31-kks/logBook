@@ -20,27 +20,46 @@ function save() {
   const url = document.location.href.split("/");
   let num = Number(url[url.length - 1]);
   let text = $('#text').val()
-
   let file = $('#image')[0].files[0]
-  let form_data = new FormData()
+  console.log(file)
+  if (file == undefined) {
+    console.log(file)
+    $.ajax({
+      type: "POST",
+      url: "/api/logbook",
+      data: {
+        text_give:text,
+        num_give:num,
+      },
+      success: function (response) {
+        alert(response["msg"])
+        modal_close();
+        window.location.reload();
+      }
+    });
 
-  form_data.append("text_give", text)
-  form_data.append("num_give", num)
-  form_data.append("file_give", file)
+  } else {
+    let form_data = new FormData()
+    form_data.append("text_give", text)
+    form_data.append("num_give", num)
+    form_data.append("file_give",file)
+    
 
-  $.ajax({
-    type: "POST",
-    url: "/api/logbook",
-    data: form_data,
-    cache: false,
-    contentType: false,
-    processData: false,
-    success: function (response) {
-      alert(response["msg"])
-      modal_close();
-      window.location.reload();
-    }
-  });
+    $.ajax({
+      type: "POST",
+      url: "/api/logbook",
+      data: form_data,
+      cache: false,
+      contentType: false,
+      processData: false,
+      success: function (response) {
+        alert(response["msg"])
+        modal_close();
+        window.location.reload();
+      }
+    });
+
+  }
 }
 
 function go_main() {
@@ -52,12 +71,6 @@ function go_main() {
       window.location.href = '/main/' + response["email"]
     }
   });
-}
-
-function like(obj) {
-  console.log($(obj))
-  console.log($(obj).closest('.card').children('.card-content').children('.subtitle').text())
-  // console.log($(obj).parent().children('.subtitle'))
 }
 
 function modal_active() {
