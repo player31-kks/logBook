@@ -19,14 +19,17 @@ SECRET_KEY = 'SPARTA'
 @app.route('/')
 def home():
     return render_template('login.html')
-    
-##key
-@app.route('/api/get_email', methods=['GET'])
-def email_get():
+
+##login
+@app.route('/main', methods=['GET'])
+def main_get():
     token_receive = request.cookies.get('token')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        return jsonify({"email":payload['email']})
+        coords = list(db.imgcircle.find({},{'_id':False}))
+        logbooks = list(db.logbook.find({'email': payload['email']},{'_id':False}))
+        print(logbooks)
+        return render_template('main.html', coords = coords, logbooks = logbooks)
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login_get", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
@@ -35,12 +38,11 @@ def email_get():
 @app.route('/main/<keyword>', methods=['GET'])
 def main_friends_get(keyword):
     token_receive = request.cookies.get('token')
-    print(request.cookies)
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         coords = list(db.imgcircle.find({},{'_id':False}))
         print(payload['email'])
-        return render_template('main.html', coords = coords, email = keyword)
+        return render_template('main.html', coords = coords)
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login_get", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
@@ -128,25 +130,12 @@ def comment_post():
     
 
 ## logbook
-@app.route('/logbook/<email>/<num>', methods=['GET'])
-def logbook_get(email,num):
+@app.route('/logbook/<keyword>', methods=['GET'])
+def logbook_get(keyword):
     try:
         token=request.cookies.get('token')
         payload=jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
-        # user_info = db.users.find_one({'email' : payload['email']})
-        # logbook_info = db.logbook.find({'email':user_info['email'],'num':int(keyword) })    
-        log = list(db.logbook.find({},{'_id':False}))
-
-        # num 이 현재페이지일 경우에만 새로운 리스트에 모아서 jinja 템플릿 보냄
-        logbooks=[]
-        for logs in log:
-            if logs['num'] == int(num) and logs['email'] == email:
-                logbooks.append(logs)
-        if not logbooks:
-            return render_template('logbook.html')
-        else:
-            return render_template('logbook.html',logbook=logbooks)
-
+        user_info = db.users.find_one({'email' : payload['email']})
     except jwt.ExpiredSignatureError:
         return redirect('/')
     except jwt.exceptions.DecodeError:
@@ -154,7 +143,19 @@ def logbook_get(email,num):
     except:
         return redirect('/')
     
+    logbook_info = db.logbook.find({'email':user_info['email'],'num':int(keyword) })
+    
+    log = list(db.logbook.find({},{'_id':False}))
 
+    # num 이 현재페이지일 경우에만 새로운 리스트에 모아서 jinja 템플릿 보냄
+    logbooks=[]
+    for logs in log:
+        if logs['num'] == int(keyword) :
+            logbooks.append(logs)
+    if not logbooks:
+        return render_template('logbook.html')
+    else:
+        return render_template('logbook.html',logbook=logbooks)
 
 @app.route('/api/logbook', methods=['POST'])
 def logbook_post():
@@ -175,7 +176,7 @@ def logbook_post():
 
         filename = f'file-{mytime}'
 
-        save_to = f'static/logbook_img/{filename}.{extension}'
+        save_to = f'static/{filename}.{extension}'
         file.save(save_to)
 
         doc = {
