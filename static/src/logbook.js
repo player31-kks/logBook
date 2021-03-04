@@ -14,6 +14,12 @@ $(window).on("load", function () {
   let num = Number(url[url.length - 1]);
   const title = document.querySelector(".title");
   title.textContent = `항해일지 ${num} 일차`;
+
+  const user = document.querySelector('.user-info');
+  
+  let eamil = url[url.length - 2].split('@')[0]
+  user.innerHTML = eamil + "님 항해일지 입니다."
+
 });
 
 function save() {
