@@ -206,14 +206,9 @@ def logbook_delete():
         email = request.form['email_give']
         num = request.form['num_give']
         file_name = request.form['file_give']
-
-        # temp = db.logbook.find_one({'email': email, "file" : file_name, "num" : num})
-        temp = db.logbook.find_one({'email':email})
-        print(email, file_name, num)
-        print(temp)
-        # db.logbook.delete_one({'email': email, "file" : file_name, "num" : num})
         
-        return jsonify({'msg': True})
+        db.logbook.remove({'email': email, 'file' : file_name, 'num' : int(num)})        
+        return jsonify({'result': True})
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login_get", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
@@ -298,11 +293,11 @@ def like_post():
         num = request.form['num_give']
         file_name = request.form['file_give']
 
-        target_logbook = db.logbook.find_one({'email': email, "file_name" : file_name, "num" : num})
+        target_logbook = db.logbook.find_one({'email': email, 'file' : file_name, 'num' : int(num)})
         current_like = target_logbook['like']
 
         new_like = current_like + 1
-        db.logbook.update_one({'email': email, "file_name" : file_name, "num" : num}, {'$set': {'like': new_like}})
+        db.logbook.update_one({'email': email, 'file' : file_name, 'num' : int(num)}, {'$set': {'like': new_like}})
         
         return jsonify({'result': True})
     except jwt.ExpiredSignatureError:

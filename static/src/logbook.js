@@ -127,10 +127,6 @@ function like(obj) {
 });
 }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 4d61fbf1fa2ea76c8d26c4114e96cc0684aeae31
 function delete_card(obj) {
   let find_img = $(obj.closest('.card')).children('.card-content').children('#img').attr('src').split("/")
   let img = find_img[3]
@@ -139,19 +135,6 @@ function delete_card(obj) {
   let email = url[url.length - 2];
   
   $.ajax({
-<<<<<<< HEAD
-    type: "DELETE",
-    url: "/api/logbook",
-    data: {
-      'num_give' : num,
-      'email_give' : email,
-      'file_give' : img
-    },
-    success: function (response) {
-      alert(response['msg']);
-      window.location.reload();
-  }
-=======
     type: 'DELETE',
     url: '/api/logbook',
     data: {
@@ -168,7 +151,6 @@ function delete_card(obj) {
         alert('에러 발생');
       }
     }
->>>>>>> 4d61fbf1fa2ea76c8d26c4114e96cc0684aeae31
 });
 
 //   $.ajax({
