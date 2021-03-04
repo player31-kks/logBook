@@ -56,7 +56,7 @@ function init() {
       url: "/api/get_email",
       data: {},
       success: function (response) {
-        conolse.log(login_email)
+        console.log(login_email)
         // response["email"]
       }
     });

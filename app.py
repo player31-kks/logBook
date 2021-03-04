@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+import os.path
 import jwt
 import datetime
 import hashlib
@@ -172,19 +173,20 @@ def logbook_post():
         text_receive = request.form["text_give"]
         num_receive = request.form["num_give"]
         num = int(num_receive)
-    
-        file = request.files["file_give"]
-
-        extension = file.filename.split('.')[-1]
-
+        file = ''
+        
         today = datetime.now()
         mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
-
         filename = f'file-{mytime}'
-
-        save_to = f'static/logbook_img/{filename}.{extension}'
-        file.save(save_to)
-
+        extension = 'temp'
+        try:
+            file = request.files["file_give"]
+            extension = file.filename.split('.')[-1]
+            save_to = f'static/logbook_img/{filename}.{extension}'
+            file.save(save_to)
+        except:
+            print('error')
+        print('hello')
         doc = {
             "email" : email,
             "num" : num,

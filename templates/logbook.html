@@ -42,10 +42,15 @@
           {% set like = logs["like"] %}
             <div class="card">
               <div class="card-content">
-                {% if file %}
+                {% set extension = file.split('.') %}
+                {% if extension[1] != 'temp' %}
                 <img id="img" class="control-img" 
                 src="/static/logbook_img/{{file}}"
                 alt="">
+                {% else %}
+                <img id="img" class="control-img" 
+                src="/static/logbook_img/{{file}}"
+                alt="" style = "display:none">
                 {% endif %}
                 <p class="subtitle">
                   {{text}}
