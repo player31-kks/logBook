@@ -32,23 +32,28 @@
   </div>
   <div class="body-box">
     <div class="left">
-      <img src="/static/arrowleft.png" alt="이전페이지" onclick="move('L')">
+      <img src="/static/img/arrowleft.png" alt="이전페이지" onclick="move('L')">
     </div>
     <div class="content-box">
       <div id="todo" class="todo">
         {% for logs in logbook %}
           {% set text = logs["text"] %}
           {% set file = logs["file"] %}
+          {% set like = logs["like"] %}
             <div class="card">
               <div class="card-content">
-                <img id="img" class="control-img" src="/static/logbook_img/{{file}}" alt="">
+                {% if file %}
+                <img id="img" class="control-img" 
+                src="/static/logbook_img/{{file}}"
+                alt="">
+                {% endif %}
                 <p class="subtitle">
                   {{text}}
                 </p>
               </div>
               <footer class="card-footer">
                 <p class="card-footer-item">
-                  <span class="like" onclick="like(this)">좋아요</span>
+                  <span class="like" onclick="like(this)">좋아요 {{like}}</span>
                 </p>
                 <p class="card-footer-item">
                   <span class="like" onclick="delete_card(this)">
@@ -61,7 +66,7 @@
       </div>
     </div>
     <div class="right">
-      <img src="/static/arrowright.png" alt="다음페이지" onclick="move('R')">
+      <img src="/static/img/arrowright.png" alt="다음페이지" onclick="move('R')">
     </div>
   </div>
   <div class="modal">
