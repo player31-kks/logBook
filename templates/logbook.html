@@ -42,7 +42,11 @@
           {% set like = logs["like"] %}
             <div class="card">
               <div class="card-content">
-                <img id="img" class="control-img" src="/static/logbook_img/{{file}}" alt="">
+                {% if file %}
+                <img id="img" class="control-img" 
+                src="/static/logbook_img/{{file}}"
+                alt="">
+                {% endif %}
                 <p class="subtitle">
                   {{text}}
                 </p>

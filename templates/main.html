@@ -84,12 +84,7 @@
         </div>
         <div class="block">
           <div class="subtitle">친구목록</div>
-          <ul class="friends__list">
-            <li class="friend">
-              <a href="">keumks789@naver.com</a>
-              <button class="delete is-large delfriendBtn"></button>
-            </li>
-          </ul>
+          <ul class="friends__list"></ul>
         </div>
       </div>
     </section>
@@ -97,7 +92,7 @@
       {% for coord in coords %}
       <area
         shape="circle"
-        class="on"
+        class="{{coord['is_date']}}"
         alt=""
         title=""
         coords="{{coord['coords'][0]}},{{coord['coords'][1]}},{{coord['coords'][2]}}"
