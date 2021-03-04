@@ -137,8 +137,8 @@ function delete_card() {
   form_data.append("file_give",img)
 
   $.ajax({
-    type: 'POST',
-    url: '/api/delete',
+    type: 'DELETE',
+    url: '/api/logbook',
     data: form_data,
     success: function (response) {
         alert(response['msg']);
