@@ -16,9 +16,29 @@ $(window).on("load", function () {
   title.textContent = `항해일지 ${num} 일차`;
 
   const user = document.querySelector('.user-info');
-  
-  let eamil = url[url.length - 2].split('@')[0]
-  user.innerHTML = eamil + "님 항해일지 입니다."
+
+  $.ajax({
+    type: "GET",
+    url: "/api/get_userlist",
+    data: {},
+    success: function (response) {
+
+      let url = document.location.href.split("/");
+      let email = url[url.length - 2]
+      let name = ''
+
+      let articles = response['all_users']
+      for(let i = 0; i < articles.length; i++)
+      {
+        if(articles[i]['email'] == email)
+        {
+          name = articles[i]['name']
+          break;
+        }            
+      }
+      user.innerHTML = name + "님 항해일지 입니다."
+    }
+  });
 
 });
 

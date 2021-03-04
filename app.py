@@ -35,6 +35,18 @@ def email_get():
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login_get", msg="로그인 정보가 존재하지 않습니다."))
 
+##userlist_get
+@app.route('/api/get_userlist', methods=['GET'])
+def userlist_get():
+    token_receive = request.cookies.get('token')
+    try:
+        users = list(db.users.find({},{'_id':False}))
+        return jsonify({"all_users":users})
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login_get", msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login_get", msg="로그인 정보가 존재하지 않습니다."))
+
 ##main
 @app.route('/main/<keyword>', methods=['GET'])
 def main_get(keyword):
