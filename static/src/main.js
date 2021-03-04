@@ -51,9 +51,10 @@ function init() {
       }
     })
 
+
     $.ajax({
       type: "GET",
-      url: "/api/get_email",
+      url: "/api/get_userlist",
       data: {},
       success: function (response) {
         // login된 사람 ID 보이게 하기
@@ -61,9 +62,24 @@ function init() {
         // login_email.innerHTML = eamil + "님 환영합니다"
 
         //현재 Load된 Page의 주인 ID 보이게 하기
+        // let url = document.location.href.split("/");
+        // let eamil = url[url.length - 1].split('@')[0]
+        // login_email.innerHTML = eamil + "님 항해일지 입니다."
+
         let url = document.location.href.split("/");
-        let eamil = url[url.length - 1].split('@')[0]
-        login_email.innerHTML = eamil + "님 항해일지 입니다."
+        let email = url[url.length - 1]
+        let name = ''
+
+        let articles = response['all_users']
+        for(let i = 0; i < articles.length; i++)
+        {
+          if(articles[i]['email'] == email)
+          {
+            name = articles[i]['name']
+            break;
+          }            
+        }
+        login_email.innerHTML = name + "님 항해일지 입니다."
       }
     });
 
