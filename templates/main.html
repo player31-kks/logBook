@@ -37,18 +37,6 @@
         alert("상세페이지로 이동");
         window.location.href = "/diary";
       }
-
-      $(document).ready(function () {
-        logbooks_num = String("{{logbooks_num}}")
-          .replace("[", "")
-          .replace("]", "")
-          .replace(/(\s*)/g, "");
-        logbooks_num_list = logbooks_num.split(",");
-        for (let i = 0; i < logbooks_num_list.length; i++) {
-          $("#" + logbooks_num_list[i]).css("display", "block");
-          $("#" + logbooks_num_list[i]).css("background-color", "yellow");
-        }
-      });
     </script>
     <script src="/static/src/main.js" defer></script>
   </head>
