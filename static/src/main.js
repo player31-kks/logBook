@@ -38,17 +38,16 @@ function init() {
       }
     })
   })
-
   $(function () {
     $(".imgMap").maphilight({
       fillColor: "008800",
       strokeColor: "ff0000",
       strokeWidth: 2,
     });
-    const data = {};
+    var data = $('#star').mouseout().data('maphilight') || {};
     data.alwaysOn = true;
+    console.log(data)
     $("area[class='on']").data("maphilight", data);
-    console.log($("area[class='on']"))
   });
   //친구추가
   addFriend.addEventListener('click', () => {
