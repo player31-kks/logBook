@@ -50,7 +50,19 @@ function init() {
         }
       }
     })
+
+    $.ajax({
+      type: "GET",
+      url: "/api/get_email",
+      data: {},
+      success: function (response) {
+        conolse.log(login_email)
+        // response["email"]
+      }
+    });
+
   })
+
 
   $(function () {
     $(".imgMap").maphilight({
@@ -115,6 +127,8 @@ function init() {
       }
     }
   })
+
+
   //로그아웃
   myPageBtn.addEventListener('click', myPage)
   //로그아웃
