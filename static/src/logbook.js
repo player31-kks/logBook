@@ -88,7 +88,7 @@ function move(direction) {
   let num = Number(url[url.length - 1]);
   let length = 0;
 
-  if(num > 10)
+  if(num >= 10)
   {
     length = 2
   }
