@@ -63,14 +63,9 @@ function save() {
 }
 
 function go_main() {
-  $.ajax({
-    type: "GET",
-    url: "/api/get_email",
-    data: {},
-    success: function (response) {
-      window.location.href = '/main/' + response["email"]
-    }
-  });
+  let url = document.location.href.split("/");
+  let email = url[url.length - 2];
+  window.location.href = '/main/' + email
 }
 
 function modal_active() {

@@ -249,7 +249,7 @@ def friend_post():
         
         user_info = db.users.find_one({'email' : friends_email_receive})
         if not user_info:
-            return jsonify({'result': False ,'err':'친구 정보가 없습니다.'})
+            return jsonify({'result': 'False' ,'err':'친구 정보가 없습니다.'})
         else:
             db.friends.insert_one({
                 "email" : payload['email'],
