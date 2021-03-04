@@ -206,15 +206,19 @@ def logbook_delete():
         num = request.form['num_give']
         file_name = request.form['file_give']
 
-        db.logbook.delete_one({'email': email, "file_name" : file_name, "num" : num})
+        # temp = db.logbook.find_one({'email': email, "file" : file_name, "num" : num})
+        temp = db.logbook.find_one({'email':email})
+        print(email, file_name, num)
+        print(temp)
+        # db.logbook.delete_one({'email': email, "file" : file_name, "num" : num})
         
-        return jsonify({'result': True})
+        return jsonify({'msg': True})
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login_get", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login_get", msg="로그인 정보가 존재하지 않습니다."))
     except:
-        return redirect(url_for("login_get", msg="로그인 정보가 존재하지 않습니다."))
+        return redirect(url_for("login_get", msg="error"))
 
 ##frined
 @app.route('/api/friends', methods=['GET'])

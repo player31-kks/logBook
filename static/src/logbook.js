@@ -124,7 +124,7 @@ function like(obj) {
 });
 }
 
-function delete_card() {
+function delete_card(obj) {
   let find_img = $(obj.closest('.card')).children('.card-content').children('#img').attr('src').split("/")
   let img = find_img[3]
   let url = document.location.href.split("/");
@@ -137,12 +137,26 @@ function delete_card() {
   form_data.append("file_give",img)
 
   $.ajax({
-    type: 'POST',
-    url: '/api/delete',
-    data: form_data,
+    type: "DELETE",
+    url: "/api/logbook",
+    data: {
+      'num_give' : num,
+      'email_give' : email,
+      'file_give' : img
+    },
     success: function (response) {
-        alert(response['msg']);
-        window.location.reload();
-    }
+      alert(response['msg']);
+      window.location.reload();
+  }
 });
+
+//   $.ajax({
+//     type: 'DELETE',
+//     url: '/api/logbook',
+//     data: form_data,
+//     success: function (response) {
+//         alert(response['msg']);
+//         window.location.reload();
+//     }
+// });
 }
