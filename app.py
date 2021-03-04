@@ -148,6 +148,7 @@ def logbook_get(email,num):
         for logs in log:
             if logs['num'] == int(num) and logs['email'] == email:
                 logbooks.append(logs)
+        
         if not logbooks:
             return render_template('logbook.html')
         else:
