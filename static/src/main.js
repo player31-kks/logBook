@@ -3,11 +3,24 @@ const friendList = document.querySelector('.friends__list')
 const friendEmail = document.querySelector('#friendEmail')
 const email = document.querySelector('#email')
 const logoutBtn = document.querySelector('#logout')
+const myPageBtn = document.querySelector('#my_page')
+const login_email = document.querySelector('#login_email')
 
 // email validation
 function isEamilVaild(asValue) {
   const regExp = /^[a-zA-Z0-9._+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9.]/;
   return regExp.test(asValue);
+}
+//myPage
+function myPage(){
+  $.ajax({
+    type: "GET",
+    url: "/api/get_email",
+    data: {},
+    success: function (response) {
+      window.location.href = '/main/' + response["email"]
+    }
+  });
 }
 //logout
 function logout() {
@@ -37,7 +50,19 @@ function init() {
         }
       }
     })
+
+    $.ajax({
+      type: "GET",
+      url: "/api/get_email",
+      data: {},
+      success: function (response) {
+        conolse.log(login_email)
+        // response["email"]
+      }
+    });
+
   })
+
 
   $(function () {
     $(".imgMap").maphilight({
@@ -103,6 +128,10 @@ function init() {
       }
     }
   })
+
+
+  //로그아웃
+  myPageBtn.addEventListener('click', myPage)
   //로그아웃
   logoutBtn.addEventListener('click', logout)
 }

@@ -1,3 +1,7 @@
 {
+<<<<<<< HEAD
     "python.pythonPath": "/Users/dabin/opt/anaconda3/envs/sparta/bin/python"
+=======
+    "python.pythonPath": "C:\\ProgramData\\Anaconda3\\python.exe"
+>>>>>>> 0f39a03f64559398e8b3d08f1481a31d6df13ca3
 }
