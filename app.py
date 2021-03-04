@@ -266,7 +266,7 @@ def friend_delete():
     token_receive = request.cookies.get('token')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        friends_email_receive = request.form['friends_email_give']
+        friends_email_receive = request.form['friends_email']
 
         db.friends.remove({"email" : payload['email'], "friends_email" : friends_email_receive})
         return jsonify({'result': True})
