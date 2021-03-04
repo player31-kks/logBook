@@ -107,43 +107,50 @@ function like(obj) {
   let url = document.location.href.split("/");
   let num = Number(url[url.length - 1]);
   let email = url[url.length - 2];
-  let form_data = new FormData()
-
-  form_data.append("num_give", num)
-  form_data.append("email_give", email)
-  form_data.append("file_give",img)
 
   $.ajax({
     type: 'POST',
     url: '/api/like',
-    data: form_data,
+    data: {
+      num_give: num,
+      email_give: email,
+      file_give: img,
+    },
     success: function (response) {
-        alert(response['msg']);
+      if (response['result'] == true) {
+        alert('좋아요.');
         window.location.reload();
+      } else {
+        alert('에러 발생');
+      }
     }
 });
 }
 
 
-function delete_card() {
+function delete_card(obj) {
   let find_img = $(obj.closest('.card')).children('.card-content').children('#img').attr('src').split("/")
   let img = find_img[3]
   let url = document.location.href.split("/");
   let num = Number(url[url.length - 1]);
   let email = url[url.length - 2];
-  let form_data = new FormData()
-
-  form_data.append("num_give", num)
-  form_data.append("email_give", email)
-  form_data.append("file_give",img)
-
+  
   $.ajax({
     type: 'DELETE',
     url: '/api/logbook',
-    data: form_data,
+    data: {
+      num_give: num,
+      email_give: email,
+      file_give: img,
+    },
     success: function (response) {
-        alert(response['msg']);
+      if (response['result'] == true) {
+
+        alert('삭제되었습니다.');
         window.location.reload();
+      } else {
+        alert('에러 발생');
+      }
     }
 });
 }

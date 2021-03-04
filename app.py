@@ -74,7 +74,7 @@ def login_post():
         # 'exp': datetime.utcnow() + timedelta(seconds= 5)  # 로그인 24시간 유지
         }
         # token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
-        token = jwt.encode(payload, SECRET_KEY, algorithm='HS256').decode('utf-8')
+        token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
         return jsonify({'result': 'success', 'token': token})
     # 찾지 못하면
     else:
@@ -299,7 +299,6 @@ def like_post():
         current_like = target_logbook['like']
 
         new_like = current_like + 1
-
         db.logbook.update_one({'email': email, "file_name" : file_name, "num" : num}, {'$set': {'like': new_like}})
         
         return jsonify({'result': True})
