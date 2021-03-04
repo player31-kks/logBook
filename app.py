@@ -40,10 +40,16 @@ def main_get(keyword):
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         coords = list(db.imgcircle.find({},{'_id':False}))
 
-        temp = list(db.logbook.find({'email':keyword},{'_id':False}))      
+        lokbook_list = list(db.logbook.find({'email':keyword},{'_id':False}).sort('num'))
+        is_date = []
 
-        print(payload['email'])
-        return render_template('main.html', coords = coords, email = keyword)
+        for i in range(0,99):
+            is_date.append(False)
+        
+        for lokbook in lokbook_list:
+            is_date[lokbook['num'] - 1] = True
+        
+        return render_template('main.html', coords = coords, email = keyword, is_date = is_date)
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login_get", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
