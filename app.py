@@ -18,8 +18,7 @@ SECRET_KEY = 'SPARTA'
 # HTML 화면 보여주기
 @app.route('/')
 def home():
-    return render_template('login.html')
-    
+    return render_template('login.html')    
 ##email_get
 @app.route('/api/get_email', methods=['GET'])
 def email_get():
@@ -36,7 +35,6 @@ def email_get():
 @app.route('/main/<keyword>', methods=['GET'])
 def main_get(keyword):
     token_receive = request.cookies.get('token')
-    print(request.cookies)
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         coords = list(db.imgcircle.find({},{'_id':False}))

@@ -100,3 +100,49 @@ function move(direction) {
   url_str += num;
   window.location.href = url_str;
 }
+
+function like(obj) {
+  let find_img = $(obj.closest('.card')).children('.card-content').children('#img').attr('src').split("/")
+  let img = find_img[3]
+  let url = document.location.href.split("/");
+  let num = Number(url[url.length - 1]);
+  let email = url[url.length - 2];
+  let form_data = new FormData()
+
+  form_data.append("num_give", num)
+  form_data.append("email_give", email)
+  form_data.append("file_give",img)
+
+  $.ajax({
+    type: 'POST',
+    url: '/api/like',
+    data: form_data,
+    success: function (response) {
+        alert(response['msg']);
+        window.location.reload();
+    }
+});
+}
+
+function delete_card() {
+  let find_img = $(obj.closest('.card')).children('.card-content').children('#img').attr('src').split("/")
+  let img = find_img[3]
+  let url = document.location.href.split("/");
+  let num = Number(url[url.length - 1]);
+  let email = url[url.length - 2];
+  let form_data = new FormData()
+
+  form_data.append("num_give", num)
+  form_data.append("email_give", email)
+  form_data.append("file_give",img)
+
+  $.ajax({
+    type: 'POST',
+    url: '/api/delete',
+    data: form_data,
+    success: function (response) {
+        alert(response['msg']);
+        window.location.reload();
+    }
+});
+}
