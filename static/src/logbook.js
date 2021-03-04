@@ -124,6 +124,7 @@ function like(obj) {
 });
 }
 
+
 function delete_card() {
   let find_img = $(obj.closest('.card')).children('.card-content').children('#img').attr('src').split("/")
   let img = find_img[3]

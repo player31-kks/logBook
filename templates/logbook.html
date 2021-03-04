@@ -39,6 +39,7 @@
         {% for logs in logbook %}
           {% set text = logs["text"] %}
           {% set file = logs["file"] %}
+          {% set like = logs["like"] %}
             <div class="card">
               <div class="card-content">
                 <img id="img" class="control-img" src="/static/logbook_img/{{file}}" alt="">
@@ -48,7 +49,7 @@
               </div>
               <footer class="card-footer">
                 <p class="card-footer-item">
-                  <span class="like" onclick="like(this)">좋아요</span>
+                  <span class="like" onclick="like(this)">좋아요 {{like}}</span>
                 </p>
                 <p class="card-footer-item">
                   <span class="like" onclick="delete_card(this)">
