@@ -10,7 +10,6 @@ import json
 from bson import json_util
 from flaskext.autoversion import Autoversion
 
-
 app = Flask(__name__)
 app.autoversion = True
 Autoversion(app)
