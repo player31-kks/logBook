@@ -66,9 +66,11 @@
                   <span class="like" onclick="like(this)">좋아요 {{like}}</span>
                 </p>
                 <p class="card-footer-item">
+                  {% if mine %}
                   <span class="like" onclick="delete_card(this)">
                     삭제하기
                   </span>
+                  {% endif %}
                 </p>
               </footer>
             </div>
