@@ -4,6 +4,7 @@ html {
 }
 
 body {
+  min-width: 1200px;
   margin: 0 auto;
   height: 100vh;
   font-size: 1.6rem;
@@ -53,4 +54,10 @@ body {
 
 .red {
   background-color: red;
+}
+
+@media screen and (max-width: 1360px) {
+  .box {
+    display: none;
+  }
 }
