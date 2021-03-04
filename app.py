@@ -142,26 +142,29 @@ def logbook_get(email,num):
     try:
         token=request.cookies.get('token')
         payload=jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
-        # user_info = db.users.find_one({'email' : payload['email']})
-        # logbook_info = db.logbook.find({'email':user_info['email'],'num':int(keyword) })    
+        if payload['email'] == email:
+            mine = True
+        else:
+            mine =False
+        
         log = list(db.logbook.find({},{'_id':False}))
-
         # num 이 현재페이지일 경우에만 새로운 리스트에 모아서 jinja 템플릿 보냄
         logbooks=[]
         for logs in log:
             if logs['num'] == int(num) and logs['email'] == email:
                 logbooks.append(logs)
-        
+        print(logbooks)
         if not logbooks:
-            return render_template('logbook.html')
+            return render_template('logbook.html',mine=mine)
         else:
-            return render_template('logbook.html',logbook=logbooks)
+            return render_template('logbook.html',mine=mine,logbook=logbooks)
 
     except jwt.ExpiredSignatureError:
         return redirect('/')
     except jwt.exceptions.DecodeError:
         return redirect('/')
-    except:
+    except Exception as e:
+        print(e)
         return redirect('/') 
 
 @app.route('/api/logbook', methods=['POST'])
@@ -249,7 +252,7 @@ def friend_post():
         
         user_info = db.users.find_one({'email' : friends_email_receive})
         if not user_info:
-            return jsonify({'result': False ,'err':'친구 정보가 없습니다.'})
+            return jsonify({'result': 'False' ,'err':'친구 정보가 없습니다.'})
         else:
             db.friends.insert_one({
                 "email" : payload['email'],
