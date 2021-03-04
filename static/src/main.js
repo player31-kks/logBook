@@ -97,30 +97,29 @@ function init() {
       },
       success: function (response) {
         const result = response['result']
-        console.log(response)
-        if (result === false) {
-          alert("친구 조회가 실패했습니다.")
+        if (result === 'False') {
+          alert(response['err'])
+          friendEmail.value = ''
         }
         else {
-          location.reload();
+          let friend = `
+              <li class="friend">
+                <a href='/main/${response['friend']}'>${response['friend']}</a>
+                <button class="delete is-large"></button>
+              </li>`
+          friendList.innerHTML += friend
+          friendEmail.value = ''
         }
-        // let friend = `
-        //     <li class="friend">
-        //       <a href='/main/'>${response['friend']}</a>
-        //       <button class="delete is-large"></button>
-        //     </li>`
-        // friendList.innerHTML += friend
       }
     })
   })
   //친구삭제
   friendList.addEventListener('click', (event) => {
     if (event.currentTarget !== event.target) {
-      if (event.target.tagName = "BUTTON") {
+      if (event.target.tagName === "BUTTON") {
         const friend = event.target.parentNode
         const friends_email = friend.querySelector('a')
         friendList.removeChild(friend)
-
         $.ajax({
           type: "DELETE",
           url: "/api/friends",
