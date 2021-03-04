@@ -4,6 +4,7 @@ const friendEmail = document.querySelector('#friendEmail')
 const email = document.querySelector('#email')
 const logoutBtn = document.querySelector('#logout')
 const myPageBtn = document.querySelector('#my_page')
+const login_email = document.querySelector('#login_email')
 
 // email validation
 function isEamilVaild(asValue) {
