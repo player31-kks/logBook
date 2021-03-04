@@ -2,77 +2,84 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>logbook</title>
-
-    <!-- bulma && css -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
-    <link rel="stylesheet" href="/static/css/logbook.css">
-
-    <!-- js-script -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.js"></script>
-    <script src="/static/src/logbook.js" defer></script>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+  <link rel="stylesheet" href="/static/css/logbook.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="/static/src/logbook.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.js"></script>
 </head>
 <body>
-    <div class="wrap">
-        <div class="banner">
-            <div class="banner-body">
-                <div class="title">
-                </div>
-                <div class="subtitle">
-                    오늘의 목표를 설정해주세요
-                </div>
-            </div>
+  <div class="wrap">
+    <div class="banner">
+      <div class="banner-body">
+        <div class="title">
         </div>
-    </div>
-    <div class="update">
-        <button class="button is-info is-light" onclick="modal_active()">write</button>
-        <button class="button is-info is-light" onclick="update_content()">update</button>
-        <button class="button is-info is-light" onclick="delete_content()">delete</button>
-    </div>
-    <div class="body-box">
-        <div class="left">
-            <img src="/static/img/arrowleft.png" alt="이전페이지" onclick="move('L')">
+        <div class="subtitle">
+          오늘의 목표를 설정해주세요
         </div>
-        <div class="content-box">
-            <div id="todo" class="todo">
-                <div class="control-img">
-                    <img class="main-img" src="" alt="">
-                </div>
-                <div class="control-text">
-                    <p class="text"></P>
-                    <p class="who"></p>
-                </div>
+      </div>
+    </div>
+  </div>
+  <div class="update">
+    <button class="button is-info is-light" onclick="modal_active()">write</button>
+    <button class="button is-info is-light" onclick="go_main()">Back to MainPage</button>
+  </div>
+  <div class="body-box">
+    <div class="left">
+      <img src="/static/arrowleft.png" alt="이전페이지" onclick="move('L')">
+    </div>
+    <div class="content-box">
+      <div id="todo" class="todo">
+        {% for logs in logbook %}
+          {% set text = logs["text"] %}
+          {% set file = logs["file"] %}
+            <div class="card">
+              <div class="card-content">
+                <img class="control-img" src="/static/logbook_img/{{file}}" alt="">
+                <p class="subtitle">
+                  {{text}}
+                </p>
+              </div>
+              <footer class="card-footer">
+                <p class="card-footer-item">
+                  <span class="like" onclick="like()">좋아요</span>
+                </p>
+                <p class="card-footer-item">
+                  <span class="like" onclick="delete_card()">
+                    삭제하기
+                  </span>
+                </p>
+              </footer>
             </div>
-            <div class="like">
+        {% endfor %}
+      </div>
+    </div>
+    <div class="right">
+      <img src="/static/arrowright.png" alt="다음페이지" onclick="move('R')">
+    </div>
+  </div>
+  <div class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-content">
 
-            </div>
-            <div id="comment" class="comment">
-                {% if logbook %} {{logbook['text']}} {% endif %}
-            </div>
+      <input id="text" class="write-box" type="text" placeholder="오늘에 대하여">
+      <div class="save">
+        <div class="custom-file">
+          <input type="file" class="custom-file-input" id="image">
+          <label class="custom-file-label">Choose file</label>
         </div>
-        <div class="right">
-            <img src="/static/img/arrowright.png" alt="다음페이지" onclick="move('R')">
-        </div>
+        <button class="button is-info is-light" onclick="save()">Save</button>
+      </div>
     </div>
-    <div class="modal">
-        <div class="modal-background"></div>
-        <div class="modal-content">     
-            <input id="text" class="write-box" type="text" placeholder="오늘에 대하여">
-            <div class="save">
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="image">
-                    <label class="custom-file-label">Choose file</label>
-                </div>
-                <button class="button is-info is-light" onclick="save()">Save</button>
-            </div>
-        </div>
-        <button class="modal-close is-large button" aria-label="close" onclick="modal_close()"></button>
-    </div>
-    </div>
+    <button class="modal-close is-large button" aria-label="close" onclick="modal_close()"></button>
+  </div>
+  </div>
 </body>
 
 </html>

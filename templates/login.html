@@ -67,7 +67,8 @@
             if (response['result'] == 'success') {
               document.cookie = `token=${response['token']}`
               alert('로그인이 완료되었습니다.')
-              window.location.href = '/main'
+              console.log(response['token'])
+              window.location.href = '/main/' + username
             } else {
               alert(response['msg'])
               window.location.reload();
