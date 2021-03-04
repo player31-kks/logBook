@@ -31,10 +31,18 @@ body {
   position: relative;
 }
 
-.button-location {
+.banner-location {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
+}
+
+.button-location {
+  width: 300px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
 }
 
 .box {
