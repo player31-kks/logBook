@@ -146,7 +146,6 @@ function like(obj) {
 });
 }
 
-
 function delete_card(obj) {
   let find_img = $(obj.closest('.card')).children('.card-content').children('#img').attr('src').split("/")
   let img = find_img[3]
@@ -172,4 +171,14 @@ function delete_card(obj) {
       }
     }
 });
+
+//   $.ajax({
+//     type: 'DELETE',
+//     url: '/api/logbook',
+//     data: form_data,
+//     success: function (response) {
+//         alert(response['msg']);
+//         window.location.reload();
+//     }
+// });
 }

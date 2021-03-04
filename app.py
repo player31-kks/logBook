@@ -8,8 +8,12 @@ from werkzeug.utils import secure_filename
 from datetime import datetime, timedelta
 import json 
 from bson import json_util
+from flaskext.autoversion import Autoversion
+
 
 app = Flask(__name__)
+app.autoversion = True
+Autoversion(app)
 
 client = MongoClient('localhost', 27017)
 db = client.LogBook
@@ -18,7 +22,7 @@ SECRET_KEY = 'SPARTA'
 # HTML 화면 보여주기
 @app.route('/')
 def home():
-    return render_template('login.html')    
+    return render_template('login.html')
 ##email_get
 @app.route('/api/get_email', methods=['GET'])
 def email_get():
@@ -73,7 +77,7 @@ def login_post():
         # 'exp': datetime.utcnow() + timedelta(seconds= 5)  # 로그인 24시간 유지
         }
         # token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
-        token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
+        token = jwt.encode(payload, SECRET_KEY, algorithm='HS256').decode('utf-8')
         return jsonify({'result': 'success', 'token': token})
     # 찾지 못하면
     else:
@@ -98,8 +102,7 @@ def signup_post():
         "name" : name,
         "birth" : birth,
         "password" : password_hash
-    })
-    
+    })    
     return jsonify({"result":True})
 
 @app.route('/api/duplicate', methods=['POST'])
@@ -207,16 +210,15 @@ def logbook_delete():
         email = request.form['email_give']
         num = request.form['num_give']
         file_name = request.form['file_give']
-
-        db.logbook.delete_one({'email': email, "file_name" : file_name, "num" : num})
         
+        db.logbook.remove({'email': email, 'file' : file_name, 'num' : int(num)})        
         return jsonify({'result': True})
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login_get", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login_get", msg="로그인 정보가 존재하지 않습니다."))
     except:
-        return redirect(url_for("login_get", msg="로그인 정보가 존재하지 않습니다."))
+        return redirect(url_for("login_get", msg="error"))
 
 ##frined
 @app.route('/api/friends', methods=['GET'])
@@ -295,11 +297,11 @@ def like_post():
         num = request.form['num_give']
         file_name = request.form['file_give']
 
-        target_logbook = db.logbook.find_one({'email': email, "file_name" : file_name, "num" : num})
+        target_logbook = db.logbook.find_one({'email': email, 'file' : file_name, 'num' : int(num)})
         current_like = target_logbook['like']
 
         new_like = current_like + 1
-        db.logbook.update_one({'email': email, "file_name" : file_name, "num" : num}, {'$set': {'like': new_like}})
+        db.logbook.update_one({'email': email, 'file' : file_name, 'num' : int(num)}, {'$set': {'like': new_like}})
         
         return jsonify({'result': True})
     except jwt.ExpiredSignatureError:
